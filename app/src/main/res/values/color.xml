@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="black">#000</color>
+    <color name="white">#FFF</color>
+    <color name="transparent">#0000</color>
+    <color name="black_transparent">#4000</color>
+    <color name="app_backgroung">#013F28</color>
+    
+    <color name="gray_light">#C3C3C3</color>
+    <color name="gray_lighter">#DADADA</color>
+    
+    <color name="blue_light">#0a7cb0</color>
+    <color name="blue_lighter">#449cc3</color>
+    
+    <color name="back_selector_brown">#88AC691C</color>
+    
+    <!-- CATEGORIE -->
+    <color name="cat_blue">#137DE8</color>
+    <color name="cat_red">#F22929</color>
+    <color name="cat_green">#30F25E</color>
+    <color name="cat_orange">#FC9B44</color>
+    <color name="cat_violet">#B549FC</color>
+
+</resources>

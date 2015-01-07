@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:background="@color/app_backgroung"
+    android:weightSum="100" >
+
+    <ImageView
+        android:id="@+id/sub_categorie_img_aide"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_margin="30dp"
+        android:layout_weight="40"
+        android:contentDescription="@string/content_description"
+        android:src="@drawable/mascotte" />
+
+    <ListView
+        android:id="@+id/sub_categorie_list"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_weight="60"/>
+
+</LinearLayout><!-- From: file:/Users/iem/Documents/AndroidProject/Apprenti-Sage/app/src/main/res/layout/sub_categorie_list.xml -->

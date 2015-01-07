@@ -1,0 +1,5 @@
+/Users/iem/Documents/AndroidProject/Apprenti-Sage/app/build/intermediates/classes/debug
+/Users/iem/Documents/AndroidProject/Apprenti-Sage/app/build/intermediates/pre-dexed/debug/support-annotations-21.0.2-039ce9034fa18382dbb1bbbf9c3a4ec31ea7df2b.jar
+/Users/iem/Documents/AndroidProject/Apprenti-Sage/app/build/intermediates/pre-dexed/debug/internal_impl-21.0.2-0a74fb5475f25bcbde77fab267019fc1c1466a09.jar
+/Users/iem/Documents/AndroidProject/Apprenti-Sage/app/build/intermediates/pre-dexed/debug/classes-a839d22202c9bb8a22f6690c286dcef17542af88.jar
+/Users/iem/Documents/AndroidProject/Apprenti-Sage/app/build/intermediates/pre-dexed/debug/classes-657cff0839b5919e2404dffc6ec6282e55f45c62.jar

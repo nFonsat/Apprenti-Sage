@@ -1,0 +1,20 @@
+<resources>
+
+    <string name="app_name">Apprentisage</string>
+    <string name="content_description"></string>
+    <string name="default_text">Texte</string>
+    <string name="back">Retour</string>
+    <string name="valider">Valider</string>
+    <string name="ok">OK</string>
+    
+    <string name="cat_titre">Choisi une catégorie</string>
+    <string name="profil_titre">Profil</string>
+    <string name="new_profil_titre">Créé ton profil</string>
+    <string name="compter_titre">Compter</string>
+    <string name="success_serie">séries reussies</string>
+    <string name="choose_serie">Clique sur une série dans la liste.</string>
+    
+    <!-- RANGER -->
+	<string name="ranger_warning_valider">Tu dois placer tous les mots pour valider ta réponse !</string>
+
+</resources>

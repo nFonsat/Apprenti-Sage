@@ -1,0 +1,363 @@
+[
+  {
+    "name": "Lecture",
+    "sub": [
+      {
+        "mode": "lecture",
+        "name": "Mots",
+        "series": [
+          {
+            "content": [
+              "je",
+              "tu",
+              "il",
+              "elle",
+              "on",
+              "nous",
+              "vous"
+            ],
+            "name": "Série 1"
+          },
+          {
+            "content": [
+              "c'est",
+              "dans",
+              "avec",
+              "mais",
+              "ne",
+              "pas"
+            ],
+            "name": "Série 2"
+          }
+        ]
+      },
+      {
+        "mode": "ranger",
+        "name": "Phrases",
+        "series": [
+          {
+            "content": [
+              "Il marche.",
+              "Samir mange vite.",
+              "Le cheval galope.",
+              "Elle dort",
+              "Le soleil brille.",
+              "Maman est arrivée",
+              "Le chaton miaule.",
+              "Il neige.",
+              "Les élèves courent.",
+              "Le téléphone sonne."
+            ],
+            "name": "Série 1"
+          },
+          {
+            "content": [
+              "Pierre fait du vélo.",
+              "Papa va faire les courses.",
+              "Je vais à la piscine.",
+              "Maman regarde la télévision.",
+              "Il lit un livre.",
+              "Nous partons en voyage.",
+              "Les plantes poussent doucement.",
+              "Les lions chassent les gazelles.",
+              "Elle parlait à sa maman.",
+              "Il fête son anniversaire."
+            ],
+            "name": "Série 2"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Dictée",
+    "sub": [
+      {
+        "mode": "dictee",
+        "name": "Mots",
+        "series": [
+          {
+            "content": [
+              "je",
+              "tu",
+              "il",
+              "elle",
+              "on",
+              "nous",
+              "vous"
+            ],
+            "name": "Série 1"
+          },
+          {
+            "content": [
+              "c'est",
+              "dans",
+              "avec",
+              "mais",
+              "ne",
+              "pas"
+            ],
+            "name": "Série 2"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Conjugaison",
+    "sub": [
+      {
+        "mode": "conjugaison",
+        "name": "Présent",
+        "series": [
+          {
+            "content": [
+              "chante",
+              "chantes",
+              "chante",
+              "chantons",
+              "chantez",
+              "chantent"
+            ],
+            "name": "Chanter"
+          },
+          {
+            "content": [
+              "finis",
+              "finis",
+              "finit",
+              "finissons",
+              "finissez",
+              "finissent"
+            ],
+            "name": "Finir"
+          }
+        ]
+      },
+      {
+        "mode": "conjugaison",
+        "name": "Futur",
+        "series": [
+          {
+            "content": [
+              "chanterai",
+              "chanteras",
+              "chantera",
+              "chanterons",
+              "chanterez",
+              "chanteront"
+            ],
+            "name": "Chanter"
+          },
+          {
+            "content": [
+              "finirai",
+              "finiras",
+              "finira",
+              "finirons",
+              "finirez",
+              "finiront"
+            ],
+            "name": "Finir"
+          }
+        ]
+      },
+      {
+        "mode": "conjugaison",
+        "name": "Imparfait",
+        "series": [
+          {
+            "content": [
+              "chantais",
+              "chantais",
+              "chantait",
+              "chantions",
+              "chantiez",
+              "chantaient"
+            ],
+            "name": "Chanter"
+          },
+          {
+            "content": [
+              "finissais",
+              "finissais",
+              "finissait",
+              "finissions",
+              "finissiez",
+              "finissaient"
+            ],
+            "name": "Finir"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Maths",
+    "sub": [
+      {
+        "mode": "compter",
+        "name": "Compter",
+        "series": [
+          {
+            "content": [
+              "50"
+            ],
+            "name": "nombres <= à 50"
+          },
+          {
+            "content": [
+              "80"
+            ],
+            "name": "nombres <= à 80"
+          }
+        ]
+      },
+      {
+        "mode": "lecture",
+        "name": "Lire",
+        "series": [
+          {
+            "content": [
+              "10",
+              "20",
+              "30",
+              "40",
+              "50",
+              "60",
+              "70",
+              "80",
+              "90"
+            ],
+            "name": "Dizaines"
+          },
+          {
+            "content": [
+              "100",
+              "200",
+              "300",
+              "400",
+              "500",
+              "600",
+              "700",
+              "800",
+              "900"
+            ],
+            "name": "Centaines"
+          }
+        ]
+      },
+      {
+        "mode": "dictee",
+        "name": "Ecrire",
+        "series": [
+          {
+            "content": [
+              "10",
+              "20",
+              "30",
+              "40",
+              "50",
+              "60",
+              "70",
+              "80",
+              "90"
+            ],
+            "name": "Dizaines"
+          },
+          {
+            "content": [
+              "100",
+              "200",
+              "300",
+              "400",
+              "500",
+              "600",
+              "700",
+              "800",
+              "900"
+            ],
+            "name": "Centaines"
+          }
+        ]
+      },
+      {
+        "mode": "ranger",
+        "name": "Ranger",
+        "series": [
+          {
+            "content": [
+              "100"
+            ],
+            "name": "nombres <= à 100"
+          },
+          {
+            "content": [
+              "1000"
+            ],
+            "name": "nombres <= à 1000"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Calcul",
+    "sub": [
+      {
+        "mode": "calcul",
+        "name": "Additions",
+        "series": [
+          {
+            "content": [
+              "1"
+            ],
+            "name": "table du 1"
+          },
+          {
+            "content": [
+              "2"
+            ],
+            "name": "table du 2"
+          }
+        ]
+      },
+      {
+        "mode": "calcul",
+        "name": "Soustractions",
+        "series": [
+          {
+            "content": [
+              "1"
+            ],
+            "name": "table du 1"
+          },
+          {
+            "content": [
+              "2"
+            ],
+            "name": "table du 2"
+          }
+        ]
+      },
+      {
+        "mode": "calcul",
+        "name": "Multiplications",
+        "series": [
+          {
+            "content": [
+              "1"
+            ],
+            "name": "table du 1"
+          },
+          {
+            "content": [
+              "2"
+            ],
+            "name": "table du 2"
+          }
+        ]
+      }
+    ]
+  }
+]
