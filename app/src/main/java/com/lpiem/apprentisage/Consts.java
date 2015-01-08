@@ -4,7 +4,7 @@
 *
 * Consts.java
 * 
-* Michael Breton - Clément Bretin
+* Michael Breton - ClÃ©ment Bretin
 * LP IEM - 2014
 *
 *******************************************************************************************************************/

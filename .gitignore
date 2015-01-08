@@ -2,7 +2,13 @@
 /local.properties
 /.idea/workspace.xml
 /.idea/libraries
+<<<<<<< HEAD
 .DS_Store 
 /build 
 app/build 
  
+=======
+.DS_Store
+/build
+app/build
+>>>>>>> da20d30eb1cf3a4f4db244b810e28cbe1608bba1

@@ -44,4 +44,12 @@ public class Serie extends ParseObject {
     public void setExercices(ArrayList<Exercice> exercice) {
         put("exercice", exercice);
     }
+
+    public int getCreatedBy(){
+        return getInt("created_by");
+    }
+
+    public void setCreatedBy(Enseignant enseignant){
+        put("created_by", enseignant);
+    }
 }

@@ -15,6 +15,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -28,8 +29,6 @@ import com.lpiem.apprentisage.R;
 import com.lpiem.apprentisage.Shared;
 import com.lpiem.apprentisage.adapter.ProfilAdapter;
 
-import com.parse.Parse;
-
 public class AccueilActivity extends SherlockActivity{
 
 	private Button creerProfilBtn;
@@ -42,8 +41,6 @@ public class AccueilActivity extends SherlockActivity{
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_accueil);
-
-        Parse.initialize(this, "yxKdFS0RmDUbYEFCkLxOyp67TBydMBftMXh8mVrm", "oJUmo9DTjnoTXiM4wCdBnS1k13JkKkiM2q9F8pCv");
 
         context = this;
 		

@@ -44,4 +44,12 @@ public class Classe extends ParseObject {
     public void setEleves(ArrayList<Eleve> eleves) {
         put("eleves", eleves);
     }
+
+    public ArrayList<Enseignant> getEnseignant() {
+        return (ArrayList<Enseignant>) get("enseignants");
+    }
+
+    public void setEnseignant(ArrayList<Enseignant> enseignants) {
+        put("enseignants", enseignants);
+    }
 }
