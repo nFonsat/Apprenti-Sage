@@ -22,4 +22,4 @@
         android:layout_height="match_parent"
         android:background="@drawable/selector_transparent_btn" />
 
-</RelativeLayout><!-- From: file:/Users/iem/Documents/AndroidProject/Apprenti-Sage/app/src/main/res/layout/categorie_item.xml -->
+</RelativeLayout><!-- From: file:/Users/iem/AndroidStudioProjects/apprenti-sage/app/src/main/res/layout/categorie_item.xml -->

@@ -4,4 +4,4 @@
     <item android:drawable="@drawable/btn_wood_on" android:state_pressed="true"></item>
     <item android:drawable="@drawable/btn_wood_off"></item>
 
-</selector><!-- From: file:/Users/iem/Documents/AndroidProject/Apprenti-Sage/app/src/main/res/drawable/button_selector.xml -->
+</selector><!-- From: file:/Users/iem/AndroidStudioProjects/apprenti-sage/app/src/main/res/drawable/button_selector.xml -->

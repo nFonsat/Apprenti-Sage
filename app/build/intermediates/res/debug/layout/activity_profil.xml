@@ -86,7 +86,23 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="15dp"
                 android:layout_weight="1" />
+
+
         </LinearLayout>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Deconnexion"
+            android:id="@+id/button"
+            android:layout_gravity="left"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:textColor="@color/white"
+            android:textSize="50sp"/>
+
+
     </LinearLayout>
 
     <LinearLayout
@@ -97,4 +113,4 @@
         android:layout_weight="1"
         android:orientation="vertical" />
 
-</LinearLayout><!-- From: file:/Users/iem/Documents/AndroidProject/Apprenti-Sage/app/src/main/res/layout/activity_profil.xml -->
+</LinearLayout><!-- From: file:/Users/iem/AndroidStudioProjects/apprenti-sage/app/src/main/res/layout/activity_profil.xml -->

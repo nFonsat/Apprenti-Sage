@@ -36,4 +36,4 @@
         android:contentDescription="@string/content_description"
         android:src="@drawable/ic_crayon" />
 
-</RelativeLayout><!-- From: file:/Users/iem/Documents/AndroidProject/Apprenti-Sage/app/src/main/res/layout/custom_actionbar.xml -->
+</RelativeLayout><!-- From: file:/Users/iem/AndroidStudioProjects/apprenti-sage/app/src/main/res/layout/custom_actionbar.xml -->

@@ -2,32 +2,46 @@
 <items version="2" >
 
     <item
-        jar="/Users/iem/Documents/android-sdk/extras/android/m2repository/com/android/support/support-annotations/21.0.2/support-annotations-21.0.2.jar"
+        jar="/Users/iem/AndroidStudioProjects/apprenti-sage/app/build/intermediates/exploded-aar/com.android.support/support-v4/21.0.3/classes.jar"
         jumboMode="false"
-        revision="21.1.1"
-        sha1="99373741f99a0556ee293c41e8faa1ca3ae8a4e6">
-        <dex dex="/Users/iem/Documents/AndroidProject/Apprenti-Sage/app/build/intermediates/pre-dexed/debug/support-annotations-21.0.2-039ce9034fa18382dbb1bbbf9c3a4ec31ea7df2b.jar" />
+        revision="21.1.2"
+        sha1="2c91c949a45a21cdecf26e03951e46c7beec9ad8">
+        <dex dex="/Users/iem/AndroidStudioProjects/apprenti-sage/app/build/intermediates/pre-dexed/debug/classes-8481c1e347b8304bd3228574e0cfc707aa261bf0.jar" />
     </item>
     <item
-        jar="/Users/iem/Documents/AndroidProject/Apprenti-Sage/app/build/intermediates/exploded-aar/com.android.support/support-v4/21.0.2/libs/internal_impl-21.0.2.jar"
+        jar="/Users/iem/Documents/sdk/extras/android/m2repository/com/android/support/support-annotations/21.0.3/support-annotations-21.0.3.jar"
         jumboMode="false"
-        revision="21.1.1"
-        sha1="962e8b12569c56dbdcf8367eb4eac8bb129cd18f">
-        <dex dex="/Users/iem/Documents/AndroidProject/Apprenti-Sage/app/build/intermediates/pre-dexed/debug/internal_impl-21.0.2-0a74fb5475f25bcbde77fab267019fc1c1466a09.jar" />
+        revision="21.1.2"
+        sha1="4b74cefe1f0c1b819e7260c8627a14674e37fd35">
+        <dex dex="/Users/iem/AndroidStudioProjects/apprenti-sage/app/build/intermediates/pre-dexed/debug/support-annotations-21.0.3-58dbccf427664d9fe0654ffbf3dd75adfd10da58.jar" />
     </item>
     <item
-        jar="/Users/iem/Documents/AndroidProject/Apprenti-Sage/app/build/intermediates/exploded-aar/com.actionbarsherlock/actionbarsherlock/4.4.0/classes.jar"
+        jar="/Users/iem/.gradle/caches/modules-2/files-2.1/com.parse.bolts/bolts-android/1.1.4/129874135e6081269ace2312092031558865de12/bolts-android-1.1.4.jar"
         jumboMode="false"
-        revision="21.1.1"
+        revision="21.1.2"
+        sha1="129874135e6081269ace2312092031558865de12">
+        <dex dex="/Users/iem/AndroidStudioProjects/apprenti-sage/app/build/intermediates/pre-dexed/debug/bolts-android-1.1.4-7093bd6598cc410a2ce598d672b4ea58327429e9.jar" />
+    </item>
+    <item
+        jar="/Users/iem/AndroidStudioProjects/apprenti-sage/app/libs/Parse-1.8.0.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="61cf79e2775b882ac0ea32d60ea2dbbf6f245cea">
+        <dex dex="/Users/iem/AndroidStudioProjects/apprenti-sage/app/build/intermediates/pre-dexed/debug/Parse-1.8.0-ddad161f13371045f47f4ddbe870ed651e40013c.jar" />
+    </item>
+    <item
+        jar="/Users/iem/AndroidStudioProjects/apprenti-sage/app/build/intermediates/exploded-aar/com.android.support/support-v4/21.0.3/libs/internal_impl-21.0.3.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="01ec05bfbafcc07646ba813000bf2ef11742dd03">
+        <dex dex="/Users/iem/AndroidStudioProjects/apprenti-sage/app/build/intermediates/pre-dexed/debug/internal_impl-21.0.3-5a1f576d1a6d8a93cbebcdb7130ba4dc4a68f624.jar" />
+    </item>
+    <item
+        jar="/Users/iem/AndroidStudioProjects/apprenti-sage/app/build/intermediates/exploded-aar/com.actionbarsherlock/actionbarsherlock/4.4.0/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
         sha1="af64527b748983a75de9c0756e9768b56b240a49">
-        <dex dex="/Users/iem/Documents/AndroidProject/Apprenti-Sage/app/build/intermediates/pre-dexed/debug/classes-a839d22202c9bb8a22f6690c286dcef17542af88.jar" />
-    </item>
-    <item
-        jar="/Users/iem/Documents/AndroidProject/Apprenti-Sage/app/build/intermediates/exploded-aar/com.android.support/support-v4/21.0.2/classes.jar"
-        jumboMode="false"
-        revision="21.1.1"
-        sha1="d1bf02de1c56d942e7a9d093b8610ba1ef4128e3">
-        <dex dex="/Users/iem/Documents/AndroidProject/Apprenti-Sage/app/build/intermediates/pre-dexed/debug/classes-657cff0839b5919e2404dffc6ec6282e55f45c62.jar" />
+        <dex dex="/Users/iem/AndroidStudioProjects/apprenti-sage/app/build/intermediates/pre-dexed/debug/classes-6e0797a45a7d816017c3491f89fe304434487daa.jar" />
     </item>
 
 </items>

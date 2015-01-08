@@ -1,5 +1,7 @@
-/Users/iem/Documents/AndroidProject/Apprenti-Sage/app/build/intermediates/classes/debug
-/Users/iem/Documents/AndroidProject/Apprenti-Sage/app/build/intermediates/pre-dexed/debug/support-annotations-21.0.2-039ce9034fa18382dbb1bbbf9c3a4ec31ea7df2b.jar
-/Users/iem/Documents/AndroidProject/Apprenti-Sage/app/build/intermediates/pre-dexed/debug/internal_impl-21.0.2-0a74fb5475f25bcbde77fab267019fc1c1466a09.jar
-/Users/iem/Documents/AndroidProject/Apprenti-Sage/app/build/intermediates/pre-dexed/debug/classes-a839d22202c9bb8a22f6690c286dcef17542af88.jar
-/Users/iem/Documents/AndroidProject/Apprenti-Sage/app/build/intermediates/pre-dexed/debug/classes-657cff0839b5919e2404dffc6ec6282e55f45c62.jar
+/Users/iem/AndroidStudioProjects/apprenti-sage/app/build/intermediates/classes/debug
+/Users/iem/AndroidStudioProjects/apprenti-sage/app/build/intermediates/pre-dexed/debug/support-annotations-21.0.3-58dbccf427664d9fe0654ffbf3dd75adfd10da58.jar
+/Users/iem/AndroidStudioProjects/apprenti-sage/app/build/intermediates/pre-dexed/debug/bolts-android-1.1.4-7093bd6598cc410a2ce598d672b4ea58327429e9.jar
+/Users/iem/AndroidStudioProjects/apprenti-sage/app/build/intermediates/pre-dexed/debug/internal_impl-21.0.3-5a1f576d1a6d8a93cbebcdb7130ba4dc4a68f624.jar
+/Users/iem/AndroidStudioProjects/apprenti-sage/app/build/intermediates/pre-dexed/debug/classes-6e0797a45a7d816017c3491f89fe304434487daa.jar
+/Users/iem/AndroidStudioProjects/apprenti-sage/app/build/intermediates/pre-dexed/debug/Parse-1.8.0-ddad161f13371045f47f4ddbe870ed651e40013c.jar
+/Users/iem/AndroidStudioProjects/apprenti-sage/app/build/intermediates/pre-dexed/debug/classes-8481c1e347b8304bd3228574e0cfc707aa261bf0.jar

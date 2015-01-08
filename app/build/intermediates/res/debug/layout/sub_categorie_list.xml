@@ -1,28 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
     android:orientation="horizontal"
     android:background="@color/app_backgroung"
     android:weightSum="100" >
 
-    <ImageView
-        android:id="@+id/sub_categorie_img_aide"
-        android:layout_width="0dp"
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="30dp"
-        android:layout_weight="40"
-        android:contentDescription="@string/content_description"
-        android:src="@drawable/mascotte" />
+        android:layout_gravity="center_vertical"
+        android:layout_weight="50">
 
-    <ListView
-        android:id="@+id/sub_categorie_list"
-        android:layout_width="0dp"
+        <ImageView
+            android:id="@+id/sub_categorie_img_aide"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="30dp"
+            android:contentDescription="@string/content_description"
+            android:src="@drawable/mascotte" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="20dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="20dp"
-        android:layout_weight="60"/>
+        android:layout_gravity="center_vertical"
+        android:layout_weight="50">
 
-</LinearLayout><!-- From: file:/Users/iem/Documents/AndroidProject/Apprenti-Sage/app/src/main/res/layout/sub_categorie_list.xml -->
+        <ListView
+            android:id="@+id/sub_categorie_list"
+            android:layout_width="854dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="20dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="20dp"
+            android:layout_weight="10" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Retour"
+            android:id="@+id/button2"
+            android:layout_gravity="center"
+            android:layout_weight="90"
+            android:textColor="@color/white"
+            android:textSize="50sp"/>
+    </LinearLayout>
+
+</LinearLayout><!-- From: file:/Users/iem/AndroidStudioProjects/apprenti-sage/app/src/main/res/layout/sub_categorie_list.xml -->
