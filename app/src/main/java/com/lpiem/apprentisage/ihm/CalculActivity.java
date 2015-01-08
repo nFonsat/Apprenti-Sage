@@ -4,7 +4,7 @@
 *
 * CalculActivity.java
 * 
-* Michael Breton - Clément Bretin
+* Michael Breton - Clement Bretin
 * LP IEM - 2014
 *
 *******************************************************************************************************************/
@@ -121,7 +121,7 @@ public class CalculActivity extends SherlockActivity
 				// Reponse fausse //
 				else
 				{
-					showMessageBox("Tu as fait une erreur, la réponse était : " + currentReponse);
+					showMessageBox("Tu as fait une erreur, la rï¿½ponse ï¿½tait : " + currentReponse);
 				}
 
 				currentPhraseIndex++;

@@ -4,7 +4,7 @@
 *
 * CompterActivity.java
 * 
-* Michael Breton - Clément Bretin
+* Michael Breton - Clement Bretin
 * LP IEM - 2014
 *
 *******************************************************************************************************************/
@@ -103,7 +103,7 @@ public class CompterActivity extends SherlockActivity{
 						nbrBonneReponse++;
 						showMessageBox("Bravo! Ton score est de " + nbrBonneReponse + "/" + nbrReponse);
 					}else{
-						showMessageBox( "Tu as trouvé " + reponseEditTxt.getText().toString() + " alors qu'il y avait " + nbrJetons + " jetons. Ton score est de " + nbrBonneReponse + "/" + nbrReponse);
+						showMessageBox( "Tu as trouvï¿½ " + reponseEditTxt.getText().toString() + " alors qu'il y avait " + nbrJetons + " jetons. Ton score est de " + nbrBonneReponse + "/" + nbrReponse);
 					}
 					
 					countLineLayout.removeAllViews();
