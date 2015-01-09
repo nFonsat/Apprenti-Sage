@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "com.lpiem.apprentisage"
-        compileOptions.encoding 'UTF-8'
+        compileOptions.encoding = 'windows-1251'
         minSdkVersion 16
         targetSdkVersion 21
     }
