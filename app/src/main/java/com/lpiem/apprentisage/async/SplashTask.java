@@ -24,7 +24,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class SplashTask extends AsyncTask<Void, Void, String>{
+public class SplashTask extends AsyncTask<Void, Void, String[]>{
     private DataBaseAccess dbAccess;
     private Activity mActity;
 
@@ -43,33 +43,38 @@ public class SplashTask extends AsyncTask<Void, Void, String>{
     }
 
     @Override
-    protected String doInBackground(Void... params) {
-        RestApiCall api = new RestApiCall("http://ptut.eklerni/app.php/api/enseignants");
+    protected String[] doInBackground(Void... params) {
+        RestApiCall api = new RestApiCall("http://ptut.eklerni.iem/api/enseignants");
 
         api.executeRequest(RestApiCall.RestApiCallMethod.GET);
+        String[] responses = new String[2];
 
-        if (api.getResponseCode() != 200){
-            return String.valueOf(api.getResponseCode());
-        }
+        responses[0] = String.valueOf(api.getResponseCode());
+        responses[1] = api.getResponse();
 
-        return api.getResponse();
+        return responses;
     }
 
     @Override
-    protected void onPostExecute(String response) {
-        super.onPostExecute(response);
-        Log.d(Consts.TAG_APPLICATION + " : API Call Response", response);
+    protected void onPostExecute(String[] responses) {
+        super.onPostExecute(responses);
+
+        Log.d(Consts.TAG_APPLICATION + " : API Call Response", responses[0]);
+
+        if(Integer.valueOf(responses[0]) != 200){
+            return;
+        }
 
         try {
-            JSONArray enseignantList = new JSONArray(response);
+            JSONArray enseignantList = new JSONArray(responses[1]);
             Log.d(Consts.TAG_APPLICATION + " : Api Call JSON Array : List Enseignants", enseignantList.toString());
 
             for (int i = 0; i < enseignantList.length(); i++) {
                 JSONObject unEnseignantJson = enseignantList.getJSONObject(i);
-                Log.d(Consts.TAG_APPLICATION + " : Api Call JSON Object : EnseigantJson " + i, unEnseignantJson.toString());
+                //Log.d(Consts.TAG_APPLICATION + " : Api Call JSON Object : EnseigantJson " + i, unEnseignantJson.toString());
 
                 Enseignant enseignant = JsonUtils.jsonToEnseignant(unEnseignantJson);
-                Log.d(Consts.TAG_APPLICATION + " : Api Call Enseigant : username " + i, enseignant.getNom() + " " + enseignant.getPrenom());
+                //Log.d(Consts.TAG_APPLICATION + " : Api Call Enseigant : username " + i, enseignant.getNom() + " " + enseignant.getPrenom());
 
 
                 long idEnseignant = dbAccess.insertEnseignant(enseignant);
@@ -77,19 +82,20 @@ public class SplashTask extends AsyncTask<Void, Void, String>{
 
                 ArrayList<Classe> classes = enseignant.getClasses();
                 for (Classe c : classes){
+                    //Log.d(Consts.TAG_APPLICATION + " : Api Call Classe : Classe ", c.toString());
                     long idClasse = dbAccess.insertClasse(c, enseignant);
                     Log.d(Consts.TAG_APPLICATION + " : Api Call Classe : idClasse ", String.valueOf(idClasse));
                 }
 
                 JSONArray serieList = unEnseignantJson.getJSONArray("series");
-                Log.d(Consts.TAG_APPLICATION + " : Api Call JSON Array : List Series", serieList.toString());
+                //Log.d(Consts.TAG_APPLICATION + " : Api Call JSON Array : List Series", serieList.toString());
 
                 for (int j = 0; j < serieList.length(); j++){
                     JSONObject uneSerieJson = serieList.getJSONObject(j);
-                    Log.d(Consts.TAG_APPLICATION + " : Api Call JSON Object : SerieJson " + j, uneSerieJson.toString());
+                    //Log.d(Consts.TAG_APPLICATION + " : Api Call JSON Object : SerieJson " + j, uneSerieJson.toString());
 
                     Serie serie = JsonUtils.jsonToSerie(uneSerieJson);
-                    Log.d(Consts.TAG_APPLICATION + " : Api Call Serie " + j, serie.getNom());
+                    //Log.d(Consts.TAG_APPLICATION + " : Api Call Serie " + j, serie.getNom());
                 }
             }
         } catch (JSONException t) {
