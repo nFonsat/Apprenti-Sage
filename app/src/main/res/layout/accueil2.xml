@@ -18,7 +18,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Apprenti-sage"
-            android:id="@+id/textView"
+            android:id="@+id/title_txt"
             android:layout_margin="20dp"
             android:textColor="@color/white"
             android:textSize="50sp"/>
@@ -43,7 +43,7 @@
             <Spinner
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/spinner"
+                android:id="@+id/listeEnseignant"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginLeft="50dp"
                 android:layout_marginTop="25dp"
@@ -55,7 +55,7 @@
             <Spinner
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/spinner2"
+                android:id="@+id/listeClasse"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginLeft="50dp"
                 android:layout_marginRight="50dp"
@@ -88,13 +88,14 @@
             <ListView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/listView"
+                android:id="@+id/listViewEleve"
                 android:layout_gravity="center_horizontal"
                 android:background="@drawable/rounded_corner_shape"
                 android:layout_marginLeft="50dp"
                 android:layout_marginTop="25dp"
                 android:layout_marginRight="50dp"
-                android:layout_marginBottom="25dp" />
+                android:layout_marginBottom="25dp"
+                android:choiceMode="singleChoice" />
         </LinearLayout>
 
     </LinearLayout>

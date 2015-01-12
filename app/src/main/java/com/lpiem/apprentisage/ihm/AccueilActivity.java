@@ -16,52 +16,54 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockActivity;
 import com.lpiem.apprentisage.R;
 import com.lpiem.apprentisage.Shared;
+import com.lpiem.apprentisage.adapter.ListeClasseAdapter;
+import com.lpiem.apprentisage.adapter.ListeEnseignantAdapter;
 import com.lpiem.apprentisage.adapter.ProfilAdapter;
 
 public class AccueilActivity extends SherlockActivity{
 
-	private Button creerProfilBtn;
 	private Context context;
-	private ProfilAdapter adapter;
-	private ListView listView;
+	private ProfilAdapter adapterEleve;
+    private ListeClasseAdapter adapterClasse;
+    private ListeEnseignantAdapter adapterEneignant;
+	private ListView listViewEleve;
 	private TextView txtTitre;
-	
+    private Spinner listeEnseignant;
+    private Spinner listeClasse;
+
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_accueil);
+		setContentView(R.layout.accueil2);
 
         context = this;
 		
 		txtTitre = (TextView) findViewById(R.id.title_txt);
 		txtTitre.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/Craie.ttf"));
-		
-		creerProfilBtn = (Button) findViewById(R.id.creer_profil_btn);
-		listView = (ListView) findViewById(R.id.list);
-		
-		adapter = new ProfilAdapter(Shared.getInstance().getListProfils(), context);
-		listView.setAdapter(adapter);
-		
-		creerProfilBtn.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				Intent i = new Intent(context, CreerProfilActivity.class);
-				startActivity(i);
-			}
-		});
-		
-		listView.setOnItemClickListener(new OnItemClickListener() {
+
+        listViewEleve = (ListView) findViewById(R.id.listViewEleve);
+        listeEnseignant = (Spinner) findViewById(R.id.listeEnseignant);
+        listeClasse = (Spinner) findViewById(R.id.listeClasse);
+
+        adapterEneignant = new ListeEnseignantAdapter();
+
+        adapterClasse = new ListeClasseAdapter();
+
+        adapterEleve = new ProfilAdapter(Shared.getInstance().getListProfils(), context);
+        listViewEleve.setAdapter(adapterEleve);
+
+
+        listViewEleve.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View view, int position, long arg3) {
@@ -73,12 +75,14 @@ public class AccueilActivity extends SherlockActivity{
 				Shared.getInstance().loadStats(Shared.getInstance().getListProfils().get(position));
 			}
 		});
+
+
 	}
 	
 	@Override
 	protected void onResume()
 	{
 		super.onResume();
-		adapter.notifyDataSetChanged();
+		adapterEleve.notifyDataSetChanged();
 	}
 }
