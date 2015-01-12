@@ -13,6 +13,7 @@ import com.lpiem.apprentisage.Consts;
 import com.lpiem.apprentisage.Utils.JsonUtils;
 import com.lpiem.apprentisage.database.DataBaseAccess;
 import com.lpiem.apprentisage.ihm.AccueilActivity;
+import com.lpiem.apprentisage.jsonObject.Classe;
 import com.lpiem.apprentisage.jsonObject.Enseignant;
 import com.lpiem.apprentisage.jsonObject.Serie;
 import com.lpiem.apprentisage.network.RestApiCall;
@@ -69,10 +70,16 @@ public class SplashTask extends AsyncTask<Void, Void, String>{
 
                 Enseignant enseignant = JsonUtils.jsonToEnseignant(unEnseignantJson);
                 Log.d(Consts.TAG_APPLICATION + " : Api Call Enseigant : username " + i, enseignant.getNom() + " " + enseignant.getPrenom());
-                dbAccess.insertEnseignant(enseignant);
 
-                ArrayList<Enseignant> enseignantInDb = dbAccess.getEnseignant();
-                Log.d(Consts.TAG_APPLICATION + " : dbAccess : list Enseignant ", enseignantInDb.toString());
+
+                long idEnseignant = dbAccess.insertEnseignant(enseignant);
+                Log.d(Consts.TAG_APPLICATION + " : Api Call Enseigant : idEnseignant " + i, String.valueOf(idEnseignant));
+
+                ArrayList<Classe> classes = enseignant.getClasses();
+                for (Classe c : classes){
+                    long idClasse = dbAccess.insertClasse(c, enseignant);
+                    Log.d(Consts.TAG_APPLICATION + " : Api Call Classe : idClasse ", String.valueOf(idClasse));
+                }
 
                 JSONArray serieList = unEnseignantJson.getJSONArray("series");
                 Log.d(Consts.TAG_APPLICATION + " : Api Call JSON Array : List Series", serieList.toString());
