@@ -12,7 +12,7 @@ public class Classe {
     private ArrayList<Eleve> mEleves;
 
     public Classe() {
-
+        mEleves = new ArrayList<>();
     }
 
     public String getNom() {
