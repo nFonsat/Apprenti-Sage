@@ -36,12 +36,13 @@ public class DataBaseAccess {
         id = mDataBase.insert(ConfigDB.TABLE_ENSEIGNANT, null, contentValues);
         mDataBase.close();
 
+
         Log.d(Consts.TAG_APPLICATION + " : DatabaseAccess : element id ", String.valueOf(id));
 
         return id;
     }
 
-    public ArrayList<Enseignant> getEnseignant() {
+    public ArrayList<Enseignant> getEnseignants() {
         mDataBase = mDBHelper.getReadableDatabase();
         ArrayList<Enseignant> enseignants = new ArrayList<>();
 
