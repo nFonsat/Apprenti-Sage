@@ -24,6 +24,8 @@ public class JsonUtils {
 
         enseignant.setNom(object.getString("nom"));
 
+        enseignant.setUsername(object.getString("username"));
+
         //enseignant.setEmail(object.getString("email"));
 
         ArrayList<Classe> classes = new ArrayList<>();
