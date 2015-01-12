@@ -4,7 +4,7 @@
 *
 * SplashScreenActivity.java
 * 
-* Michael Breton - Clément Bretin
+* Michael Breton - Clï¿½ment Bretin
 * LP IEM - 2014
 *
 *******************************************************************************************************************/
@@ -21,6 +21,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.media.AudioManager;
@@ -31,15 +32,17 @@ import android.widget.TextView;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.lpiem.apprentisage.R;
 import com.lpiem.apprentisage.Shared;
+import com.lpiem.apprentisage.async.SplashTask;
 import com.lpiem.apprentisage.model.Categorie;
 import com.lpiem.apprentisage.model.Serie;
 
 public class SplashScreenActivity extends SherlockActivity{
+    Activity currentActivity = this;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
 		setContentView(R.layout.activity_splashscreen);
 
 		TextView txtTitre = (TextView) findViewById(R.id.splash_txt_titre);
@@ -50,24 +53,18 @@ public class SplashScreenActivity extends SherlockActivity{
 		
 		loadJson("cp.json");
 		loadJson("ce1.json");
-		
+
 		Shared.getInstance().loadProfilList();
 		
 		new Handler().postDelayed(new Runnable() {
 
 			@Override
 			public void run() {
-					gotToHome();
+                new SplashTask(currentActivity).execute();
 			}
 		}, 3000);
 		
 		setVolumeControlStream(AudioManager.STREAM_MUSIC);
-	}
-	
-	private void gotToHome(){
-		Intent i = new Intent(this, AccueilActivity.class);
-		startActivity(i);
-		finish();
 	}
 	
 	private String getFileContent(String fileName){
