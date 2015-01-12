@@ -2,16 +2,16 @@
  * Created by iem on 07/01/15.
  */
 
-package com.lpiem.apprentisage.parseObject;
-
-import com.parse.ParseClassName;
-import com.parse.ParseObject;
+package com.lpiem.apprentisage.jsonObject;
 
 import java.util.ArrayList;
 
-@ParseClassName("Eleve")
-public class Eleve  extends ParseObject {
+public class Eleve {
     private int mAvatar;
+    private String mNom;
+    private String mPrenom;
+    private String mUsername;
+    private ArrayList<Resultat> mResultats;
 
     public Eleve(){ }
 
@@ -20,35 +20,35 @@ public class Eleve  extends ParseObject {
     }
 
     public String getNom() {
-        return getString("nom");
+        return mNom;
     }
 
     public void setNom(String nom) {
-        put("nom", nom);
+        mNom = nom;
     }
 
     public String getPrenom() {
-        return getString("prenom");
+        return mPrenom;
     }
 
     public void setPrenom(String prenom) {
-        put("prenom", prenom);
+        mPrenom = prenom;
     }
 
     public String getUsername() {
-        return getString("username");
+        return mUsername;
     }
 
     public void setUsername(String username) {
-        put("username", username);
+        mUsername = username;
     }
 
     public ArrayList<Resultat> getResultats() {
-        return (ArrayList<Resultat>) get("resultats");
+        return mResultats;
     }
 
     public void setResultats(ArrayList<Resultat> resultats) {
-        put("resultats", resultats);
+        mResultats =  resultats;
     }
 
     public int getAvatar(){
