@@ -51,7 +51,7 @@ public class ConfigDB {
             "FOREIGN KEY(" + TABLE_ENSEIGNANT_CLASSE_COL_ID_CLASSE + ") REFERENCES " + TABLE_CLASSE + "(" + TABLE_ENSEIGNANT_CLASSE_COL_ID_CLASSE + ") ON DELETE CASCADE)";
 
 
-    public static final String TABLE_ELEVE_COL_ID = "id_enseignant";
+    public static final String TABLE_ELEVE_COL_ID = "id_eleve";
     public static final String TABLE_ELEVE_COL_NAME = "nom";
     public static final String TABLE_ELEVE_COL_PRENOM = "prenom";
     public static final String TABLE_ELEVE_COL_AVATAR = "avatar";

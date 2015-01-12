@@ -11,6 +11,7 @@ import android.util.Log;
 
 import com.lpiem.apprentisage.Consts;
 import com.lpiem.apprentisage.jsonObject.Classe;
+import com.lpiem.apprentisage.jsonObject.Eleve;
 import com.lpiem.apprentisage.jsonObject.Enseignant;
 
 import java.util.ArrayList;
@@ -24,13 +25,9 @@ public class DataBaseAccess {
     }
 
     public long insertEnseignant(Enseignant enseignant) {
-        openDbWrite();
-        long id;
-
         long idComparaison = enseignantIsDataBase(enseignant);
-
         if(idComparaison != -1 ){
-            Log.d(Consts.TAG_APPLICATION + " : Enseignant : idComparaion ", String.valueOf(idComparaison));
+            Log.d(Consts.TAG_APPLICATION + " : insertEnseignant : Enseignant : idComparaion ", String.valueOf(idComparaison));
             return idComparaison;
         }
 
@@ -41,18 +38,14 @@ public class DataBaseAccess {
         contentValues.put(ConfigDB.TABLE_ENSEIGNANT_COL_EMAIL, enseignant.getEmail());
         contentValues.put(ConfigDB.TABLE_ENSEIGNANT_COL_AVATAR, enseignant.getAvatar());
 
-        id = mDataBase.insert(ConfigDB.TABLE_ENSEIGNANT, null, contentValues);
-        closeDataBase();
-
-        return id;
+        openDbWrite();
+        return mDataBase.insert(ConfigDB.TABLE_ENSEIGNANT, null, contentValues);
     }
 
     public long insertClasse(Classe classe, Enseignant enseignant) {
-        openDbWrite();
-
         long idComparaison = classeIsDataBase(classe);
         if(idComparaison != -1 ){
-            Log.d(Consts.TAG_APPLICATION + " : Classe : idComparaion ", String.valueOf(idComparaison));
+            Log.d(Consts.TAG_APPLICATION + " : insertClasse : Classe : idComparaion ", String.valueOf(idComparaison));
             return idComparaison;
         }
 
@@ -61,6 +54,7 @@ public class DataBaseAccess {
         classeValues.put(ConfigDB.TABLE_CLASSE_COL_LEVEL, classe.getNiveau());
         classeValues.put(ConfigDB.TABLE_CLASSE_COL_YEAR, classe.getAnnee());
 
+        openDbWrite();
         long idClasse = mDataBase.insert(ConfigDB.TABLE_CLASSE, null, classeValues);
 
         long idEnseignant = enseignantIsDataBase(enseignant);
@@ -71,14 +65,36 @@ public class DataBaseAccess {
     }
 
     private long createManyToManyEnseignantClasse(long idClasse, long idEnseignant){
-        openDbWrite();
-
         ContentValues manyToMany = new ContentValues();
         manyToMany.put(ConfigDB.TABLE_ENSEIGNANT_CLASSE_COL_ID_CLASSE, idClasse);
         manyToMany.put(ConfigDB.TABLE_ENSEIGNANT_CLASSE_COL_ID_ENSEIGNANT, idEnseignant);
 
-
+        openDbWrite();
         return mDataBase.insert(ConfigDB.TABLE_ENSEIGNANT_CLASSE, null, manyToMany);
+    }
+
+    public long insertEleve(Eleve eleve, Classe classe){
+        long idComparaisonEleve = eleveIsDataBase(eleve);
+        if(idComparaisonEleve != -1 ){
+            Log.d(Consts.TAG_APPLICATION + " : insertEleve : Eleve : idComparaisonEleve ", String.valueOf(idComparaisonEleve));
+            return idComparaisonEleve;
+        }
+
+        long idClasse = classeIsDataBase(classe);
+        if(idClasse <= 0){
+            Log.d(Consts.TAG_APPLICATION + " : insertEleve : Classe : idClasse ", String.valueOf(idClasse));
+            return idClasse;
+        }
+
+        ContentValues eleveValue = new ContentValues();
+        eleveValue.put(ConfigDB.TABLE_ELEVE_COL_NAME, eleve.getNom());
+        eleveValue.put(ConfigDB.TABLE_ELEVE_COL_PRENOM, eleve.getPrenom());
+        eleveValue.put(ConfigDB.TABLE_ELEVE_COL_USERNAME, eleve.getUsername());
+        eleveValue.put(ConfigDB.TABLE_ELEVE_COL_AVATAR, eleve.getAvatar());
+        eleveValue.put(ConfigDB.TABLE_ELEVE_COL_ID_CLASSE, idClasse);
+
+        openDbWrite();
+        return mDataBase.insert(ConfigDB.TABLE_ELEVE, null, eleveValue);
     }
 
     public ArrayList<Enseignant> getEnseignants() {
@@ -209,6 +225,28 @@ public class DataBaseAccess {
 
         if((cursor.getCount() > 0) && (cursor.moveToFirst())){
             trouver = cursor.getLong(cursor.getColumnIndex(ConfigDB.TABLE_CLASSE_COL_ID));
+        }
+
+        closeDataBase();
+        return trouver;
+    }
+
+    public long eleveIsDataBase(Eleve eleve) {
+        openDbRead();
+
+        long trouver = -1;
+
+        String sqlQuery =
+                "SELECT * FROM " + ConfigDB.TABLE_ELEVE +
+                        " WHERE " + ConfigDB.TABLE_ELEVE_COL_USERNAME + " = '" + eleve.getUsername() + "'" +
+                        " AND " + ConfigDB.TABLE_ELEVE_COL_NAME + " = '" + eleve.getNom()  + "'" +
+                        " AND " + ConfigDB.TABLE_ELEVE_COL_PRENOM + " = '" + eleve.getPrenom() + "'";
+
+        Cursor cursor = mDataBase.rawQuery(sqlQuery, null);
+
+
+        if((cursor.getCount() > 0) && (cursor.moveToFirst())){
+            trouver = cursor.getLong(cursor.getColumnIndex(ConfigDB.TABLE_ELEVE_COL_ID));
         }
 
         closeDataBase();
