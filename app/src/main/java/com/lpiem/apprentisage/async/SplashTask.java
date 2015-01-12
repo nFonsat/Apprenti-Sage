@@ -102,6 +102,10 @@ public class SplashTask extends AsyncTask<Void, Void, String[]>{
             Log.e(Consts.TAG_APPLICATION + " : Api Call JSON Error ", t.getMessage());
         }
 
+        ArrayList<Enseignant> enseignantsTest = dbAccess.getEnseignants();
+        Log.d(Consts.TAG_APPLICATION + " : enseignantsTest ", enseignantsTest.toString());
+        Log.d(Consts.TAG_APPLICATION + " : enseignantsTest ", enseignantsTest.get(0).getClasses().toString());
+
         Intent i = new Intent(mActity, AccueilActivity.class);
         mActity.startActivity(i);
         mActity.finish();

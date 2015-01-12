@@ -98,19 +98,18 @@ public class DataBaseAccess {
     }
 
     public ArrayList<Enseignant> getEnseignants() {
-        openDbRead();
-        ArrayList<Enseignant> enseignants = new ArrayList<>();
-
         String sqlQuery = "SELECT * FROM " + ConfigDB.TABLE_ENSEIGNANT;
 
+        openDbRead();
         Cursor cursor = mDataBase.rawQuery(sqlQuery, null);
 
+        ArrayList<Enseignant> enseignants = new ArrayList<>();
         if((cursor.getCount() > 0) && (cursor.moveToFirst())){
             do {
                 Enseignant enseignant = Cursor2Enseignant(cursor);
                 enseignant.setClasses(getClassesByProf(enseignant));
                 enseignants.add(enseignant);
-            }while (!cursor.isAfterLast());
+            }while (cursor.isAfterLast());
         }
 
         closeDataBase();
@@ -118,22 +117,22 @@ public class DataBaseAccess {
     }
 
     public Enseignant getEnseignantByUsername(String username) {
-        openDbRead();
-        Enseignant enseignant = new Enseignant();
-
         String sqlQuery =
                 "SELECT * FROM " + ConfigDB.TABLE_ENSEIGNANT +
                         " WHERE " + ConfigDB.TABLE_ENSEIGNANT_COL_USERNAME + " = " + username;
 
+        openDbRead();
         Cursor cursor = mDataBase.rawQuery(sqlQuery, null);
 
         if(cursor.getCount() > 1){
             return null;
         }
 
+        Enseignant enseignant = new Enseignant();
         if((cursor.getCount() == 1) && (cursor.moveToFirst())){
             while (cursor.isAfterLast()){
                 enseignant = Cursor2Enseignant(cursor);
+                enseignant.setClasses(getClassesByProf(enseignant));
             }
         }
 
@@ -142,28 +141,48 @@ public class DataBaseAccess {
     }
 
     public ArrayList<Classe> getClassesByProf(Enseignant enseignant){
-        openDbRead();
-        ArrayList<Classe> classes = new ArrayList<>();
-
         long idEnseignant = enseignantIsDataBase(enseignant);
-
         String sqlQuery =
                 "SELECT * FROM " + ConfigDB.TABLE_CLASSE  +
                         " JOIN " + ConfigDB.TABLE_ENSEIGNANT_CLASSE +
                         " ON " + ConfigDB.TABLE_ENSEIGNANT_CLASSE + "." + ConfigDB.TABLE_ENSEIGNANT_CLASSE_COL_ID_ENSEIGNANT + " = '" + idEnseignant + "'";
 
 
+        openDbRead();
         Cursor cursor = mDataBase.rawQuery(sqlQuery, null);
 
-
+        ArrayList<Classe> classes = new ArrayList<>();
         if((cursor.getCount() > 0) && (cursor.moveToFirst())){
             do {
                 Classe classe = Cursor2Classe(cursor);
+                classe.setEleves(getElevesByClasse(classe));
                 classes.add(classe);
             }while (cursor.isAfterLast());
         }
+
         closeDataBase();
         return classes;
+    }
+
+    public ArrayList<Eleve> getElevesByClasse(Classe classe){
+        long idClasse = classeIsDataBase(classe);
+        String sqlQuery =
+                "SELECT * FROM " + ConfigDB.TABLE_ELEVE  +
+                        " WHERE " + ConfigDB.TABLE_ELEVE + "." + ConfigDB.TABLE_ELEVE_COL_ID_CLASSE + " = '" + idClasse + "'";
+
+        openDbRead();
+        Cursor cursor = mDataBase.rawQuery(sqlQuery, null);
+
+        ArrayList<Eleve> eleves = new ArrayList<>();
+        if((cursor.getCount() > 0) && (cursor.moveToFirst())){
+            do {
+                Eleve eleve = Cursor2Eleve(cursor);
+                eleves.add(eleve);
+            }while (cursor.isAfterLast());
+        }
+
+        closeDataBase();
+        return eleves;
     }
 
     private Enseignant Cursor2Enseignant(Cursor cursor) {
@@ -186,6 +205,17 @@ public class DataBaseAccess {
         classe.setAnnee(cursor.getInt(cursor.getColumnIndex(ConfigDB.TABLE_CLASSE_COL_YEAR)));
 
         return classe;
+    }
+
+    private Eleve Cursor2Eleve(Cursor cursor) {
+        Eleve eleve = new Eleve();
+
+        eleve.setNom(cursor.getString(cursor.getColumnIndex(ConfigDB.TABLE_ELEVE_COL_NAME)));
+        eleve.setPrenom(cursor.getString(cursor.getColumnIndex(ConfigDB.TABLE_ELEVE_COL_PRENOM)));
+        eleve.setUsername(cursor.getString(cursor.getColumnIndex(ConfigDB.TABLE_ELEVE_COL_USERNAME)));
+        eleve.setAvatar(cursor.getString(cursor.getColumnIndex(ConfigDB.TABLE_ELEVE_COL_AVATAR)));
+
+        return eleve;
     }
 
     public long enseignantIsDataBase(Enseignant enseignant){
