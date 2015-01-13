@@ -23,17 +23,19 @@ public class EleveDAO extends DataBaseAccess {
     }
 
     public long ajouter(Eleve eleve, Classe classe){
-        ClasseDAO mClasseDAO = new ClasseDAO(mContext);
-        long idComparaisonEleve = eleveIsDataBase(eleve);
-        if(idComparaisonEleve != -1 ){
-            Log.d(Consts.TAG_APPLICATION + " : insertEleve : Eleve : idComparaisonEleve ", String.valueOf(idComparaisonEleve));
-            return idComparaisonEleve;
+        long idClasse = classe.getId();
+        if(idClasse < 1){
+            ClasseDAO mClasseDAO = new ClasseDAO(mContext);
+            idClasse = mClasseDAO.classeIsDataBase(classe);
+            if(idClasse < 1){
+                return -1;
+            }
         }
 
-        long idClasse = mClasseDAO.classeIsDataBase(classe);
-        if(idClasse <= 0){
-            Log.d(Consts.TAG_APPLICATION + " : insertEleve : Classe : idClasse ", String.valueOf(idClasse));
-            return idClasse;
+        long idComparaisonEleve = eleveIsDataBase(eleve);
+        if(idComparaisonEleve != -1 ){
+            Log.d(Consts.TAG_APPLICATION + " : idComparaisonEleve ", String.valueOf(idComparaisonEleve));
+            return idComparaisonEleve;
         }
 
         ContentValues eleveValue = new ContentValues();

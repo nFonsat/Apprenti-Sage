@@ -6,9 +6,6 @@ package com.lpiem.apprentisage.database.DAO;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.util.Log;
-
-import com.lpiem.apprentisage.Consts;
 
 import com.lpiem.apprentisage.database.ConfigDB;
 import com.lpiem.apprentisage.database.DataBaseAccess;
@@ -26,9 +23,16 @@ public class ClasseDAO extends DataBaseAccess {
 
     public long ajouter(Classe classe, Enseignant enseignant) {
         long idComparaison = classeIsDataBase(classe);
-        if(idComparaison != -1 ){
-            Log.d(Consts.TAG_APPLICATION + " : insertClasse : Classe : idComparaion ", String.valueOf(idComparaison));
+        if(idIsConforme(idComparaison)){
             return idComparaison;
+        }
+
+        long idEnseignant = enseignant.getId();
+        if(!idIsConforme(idEnseignant)){
+            EnseignantDAO mEnseignantDAO = new EnseignantDAO(mContext);
+            idEnseignant = mEnseignantDAO.enseignantIsDataBase(enseignant);
+            if (!idIsConforme(idEnseignant))
+                return -1;
         }
 
         ContentValues classeValue = new ContentValues();
@@ -38,9 +42,6 @@ public class ClasseDAO extends DataBaseAccess {
         classeValue.put(ConfigDB.TABLE_CLASSE_COL_YEAR, classe.getAnnee());
 
         long idClasse = savingDataInDatabase(ConfigDB.TABLE_CLASSE, classeValue);
-
-        EnseignantDAO mEnseignantDAO = new EnseignantDAO(mContext);
-        long idEnseignant = mEnseignantDAO.enseignantIsDataBase(enseignant);
         createManyToManyEnseignantClasse(idClasse, idEnseignant);
 
         return idClasse;
@@ -56,12 +57,20 @@ public class ClasseDAO extends DataBaseAccess {
     }
 
     public ArrayList<Classe> getClassesByProf(Enseignant enseignant){
-        EnseignantDAO mEnseignantDAO = new EnseignantDAO(mContext);
-        long idEnseignant = mEnseignantDAO.enseignantIsDataBase(enseignant);
+        long idEnseignant = enseignant.getId();
+
+        if(!idIsConforme(idEnseignant)){
+            EnseignantDAO mEnseignantDAO = new EnseignantDAO(mContext);
+            idEnseignant = mEnseignantDAO.enseignantIsDataBase(enseignant);
+            if(!idIsConforme(idEnseignant))
+                return null;
+        }
+
         String sqlQuery =
-                "SELECT * FROM " + ConfigDB.TABLE_CLASSE  +
+                "SELECT DISTINCT * FROM " + ConfigDB.TABLE_CLASSE  +
                         " JOIN " + ConfigDB.TABLE_ENSEIGNANT_CLASSE +
-                        " ON " + ConfigDB.TABLE_ENSEIGNANT_CLASSE + "." + ConfigDB.TABLE_ENSEIGNANT_CLASSE_COL_ID_ENSEIGNANT + " = '" + idEnseignant + "'";
+                        " ON " + ConfigDB.TABLE_ENSEIGNANT_CLASSE + "." + ConfigDB.TABLE_ENSEIGNANT_CLASSE_COL_ID_ENSEIGNANT + " = '" + idEnseignant + "'" +
+                        " GROUP BY " + ConfigDB.TABLE_ENSEIGNANT_CLASSE_COL_ID_CLASSE;
 
         Cursor cursor = sqlRequest(sqlQuery);
 
@@ -82,6 +91,7 @@ public class ClasseDAO extends DataBaseAccess {
     private Classe Cursor2Classe(Cursor cursor) {
         Classe classe = new Classe();
 
+        classe.setId(cursor.getInt(cursor.getColumnIndex(ConfigDB.TABLE_CLASSE_COL_ID)));
         classe.setNom(cursor.getString(cursor.getColumnIndex(ConfigDB.TABLE_CLASSE_COL_NAME)));
         classe.setNiveau(cursor.getString(cursor.getColumnIndex(ConfigDB.TABLE_CLASSE_COL_LEVEL)));
         classe.setAnnee(cursor.getInt(cursor.getColumnIndex(ConfigDB.TABLE_CLASSE_COL_YEAR)));

@@ -4,6 +4,7 @@
 package com.lpiem.apprentisage.async;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -51,10 +52,11 @@ public class SplashTask extends AsyncTask<Void, Void, String[]>{
     protected void onPreExecute() {
         super.onPreExecute();
 
-        mEnseignantDAO = new EnseignantDAO(mActity.getApplicationContext());
-        mClasseDAO = new ClasseDAO(mActity.getApplicationContext());
-        mEleveDAO = new EleveDAO(mActity.getApplicationContext());
-        mSerieDAO = new SerieDAO(mActity.getApplicationContext());
+        Context context = mActity.getApplicationContext();
+        mEnseignantDAO = new EnseignantDAO(context);
+        mClasseDAO = new ClasseDAO(context);
+        mEleveDAO = new EleveDAO(context);
+        mSerieDAO = new SerieDAO(context);
     }
 
     @Override
@@ -82,26 +84,20 @@ public class SplashTask extends AsyncTask<Void, Void, String[]>{
 
         try {
             JSONArray enseignantList = new JSONArray(responses[1]);
-            Log.d(Consts.TAG_APPLICATION + " : Api Call JSON Array : List Enseignants", enseignantList.toString());
 
             for (int i = 0; i < enseignantList.length(); i++) {
                 JSONObject unEnseignantJson = enseignantList.getJSONObject(i);
 
                 Enseignant enseignant = JsonUtils.jsonToEnseignant(unEnseignantJson);
-
-
-                long idEnseignant = mEnseignantDAO.ajouter(enseignant);
-                Log.d(Consts.TAG_APPLICATION + " : Api Call Enseigant : idEnseignant " + i, String.valueOf(idEnseignant));
+                mEnseignantDAO.ajouter(enseignant);
 
                 ArrayList<Classe> classes = enseignant.getClasses();
-                for (Classe c : classes){
-                    long idClasse = mClasseDAO.ajouter(c, enseignant);
-                    Log.d(Consts.TAG_APPLICATION + " : Api Call Classe : idClasse ", String.valueOf(idClasse));
+                for (Classe classe : classes){
+                    mClasseDAO.ajouter(classe, enseignant);
 
-                    ArrayList<Eleve> eleves = c.getEleves();
-                    for (Eleve e : eleves){
-                        long idEleve = mEleveDAO.ajouter(e, c);
-                        Log.d(Consts.TAG_APPLICATION + " : Api Call Eleve : idEleve ", String.valueOf(idEleve));
+                    ArrayList<Eleve> eleves = classe.getEleves();
+                    for (Eleve eleve : eleves){
+                        mEleveDAO.ajouter(eleve, classe);
                     }
                 }
 
@@ -111,12 +107,8 @@ public class SplashTask extends AsyncTask<Void, Void, String[]>{
                     JSONObject uneSerieJson = serieList.getJSONObject(j);
 
                     Serie serie = JsonUtils.jsonToSerie(uneSerieJson);
-                    long idSerie = mSerieDAO.ajouter(serie, enseignant);
-                    Log.d(Consts.TAG_APPLICATION + " : idSerie " + String.valueOf(j), String.valueOf(idSerie));
+                    mSerieDAO.ajouter(serie, enseignant);
                 }
-
-                ArrayList<Serie> seriesByProf = mSerieDAO.getSeriesByProf(enseignant);
-                Log.d(Consts.TAG_APPLICATION + " : SerieByprof ", seriesByProf.toString());
             }
         } catch (JSONException t) {
             Log.e(Consts.TAG_APPLICATION + " : Api Call JSON Error ", t.getMessage());
@@ -124,7 +116,11 @@ public class SplashTask extends AsyncTask<Void, Void, String[]>{
 
         ArrayList<Enseignant> enseignantsTest = mEnseignantDAO.getEnseignants();
         Log.d(Consts.TAG_APPLICATION + " : enseignantsTest ", enseignantsTest.toString());
-        Log.d(Consts.TAG_APPLICATION + " : enseignantsTest ", enseignantsTest.get(0).getClasses().toString());
+
+        for(Enseignant enseignant : enseignantsTest){
+            ArrayList<Serie> seriesByProf = mSerieDAO.getSeriesByProf(enseignant);
+            Log.d(Consts.TAG_APPLICATION + " : SerieByprof ", seriesByProf.toString());
+        }
 
         Intent i = new Intent(mActity, AccueilActivity.class);
         mActity.startActivity(i);

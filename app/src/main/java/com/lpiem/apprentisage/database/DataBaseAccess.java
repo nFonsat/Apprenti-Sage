@@ -75,4 +75,8 @@ public class DataBaseAccess {
         closeDataBase();
         return value;
     }
+
+    public boolean idIsConforme(long id){
+        return (id > 0) ? true : false;
+    }
 }
