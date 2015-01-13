@@ -24,6 +24,7 @@ public class ClasseDAO extends DataBaseAccess {
     public long ajouter(Classe classe, Enseignant enseignant) {
         long idComparaison = classeIsDataBase(classe);
         if(idIsConforme(idComparaison)){
+            classe.setId(idComparaison);
             return idComparaison;
         }
 

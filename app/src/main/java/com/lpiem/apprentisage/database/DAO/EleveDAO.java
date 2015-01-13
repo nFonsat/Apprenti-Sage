@@ -6,9 +6,7 @@ package com.lpiem.apprentisage.database.DAO;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.util.Log;
 
-import com.lpiem.apprentisage.Consts;
 import com.lpiem.apprentisage.database.ConfigDB;
 import com.lpiem.apprentisage.database.DataBaseAccess;
 import com.lpiem.apprentisage.metier.Classe;
@@ -24,17 +22,17 @@ public class EleveDAO extends DataBaseAccess {
 
     public long ajouter(Eleve eleve, Classe classe){
         long idClasse = classe.getId();
-        if(idClasse < 1){
+        if(!idIsConforme(idClasse)){
             ClasseDAO mClasseDAO = new ClasseDAO(mContext);
             idClasse = mClasseDAO.classeIsDataBase(classe);
-            if(idClasse < 1){
+            if(!idIsConforme(idClasse)){
                 return -1;
             }
         }
 
         long idComparaisonEleve = eleveIsDataBase(eleve);
-        if(idComparaisonEleve != -1 ){
-            Log.d(Consts.TAG_APPLICATION + " : idComparaisonEleve ", String.valueOf(idComparaisonEleve));
+        if(idIsConforme(idComparaisonEleve)){
+            eleve.setId(idComparaisonEleve);
             return idComparaisonEleve;
         }
 

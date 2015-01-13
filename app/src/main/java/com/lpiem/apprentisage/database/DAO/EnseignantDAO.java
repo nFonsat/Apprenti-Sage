@@ -6,7 +6,6 @@ package com.lpiem.apprentisage.database.DAO;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.util.Log;
 
 import com.lpiem.apprentisage.database.ConfigDB;
 import com.lpiem.apprentisage.database.DataBaseAccess;
@@ -22,8 +21,8 @@ public class EnseignantDAO extends DataBaseAccess {
 
     public long ajouter(Enseignant enseignant) {
         long idComparaison = enseignantIsDataBase(enseignant);
-        Log.d("Test", String.valueOf(idComparaison));
         if(idIsConforme(idComparaison) ){
+            enseignant.setId(idComparaison);
             return idComparaison;
         }
 
@@ -55,30 +54,6 @@ public class EnseignantDAO extends DataBaseAccess {
 
         closeDataBase();
         return enseignants;
-    }
-
-    public Enseignant getEnseignantByUsername(String username) {
-        String sqlQuery =
-                "SELECT * FROM " + ConfigDB.TABLE_ENSEIGNANT +
-                        " WHERE " + ConfigDB.TABLE_ENSEIGNANT_COL_USERNAME + " = " + username;
-
-        Cursor cursor = sqlRequest(sqlQuery);
-
-        if(cursor.getCount() > 1){
-            return null;
-        }
-
-        Enseignant enseignant = new Enseignant();
-        if((cursor.getCount() == 1) && (cursor.moveToFirst())){
-            ClasseDAO mClasseDAO = new ClasseDAO(mContext);
-            do {
-                enseignant = Cursor2Enseignant(cursor);
-                enseignant.setClasses(mClasseDAO.getClassesByProf(enseignant));
-            }while (cursor.isAfterLast());
-        }
-
-        mDataBase.close();
-        return enseignant;
     }
 
     private Enseignant Cursor2Enseignant(Cursor cursor) {

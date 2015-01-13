@@ -9,7 +9,7 @@ import org.json.JSONObject;
 import java.util.Date;
 
 public class BaseEntity {
-    protected int mId;
+    protected long mId;
     protected Date mLastUsed;
 
     public BaseEntity() {
@@ -22,7 +22,7 @@ public class BaseEntity {
         mLastUsed = date;
     }
 
-    public int getId(){
+    public long getId(){
         return mId;
     }
 
@@ -30,7 +30,7 @@ public class BaseEntity {
         return mLastUsed;
     }
 
-    public void setId(int id){
+    public void setId(long id){
         mId = id;
     }
 

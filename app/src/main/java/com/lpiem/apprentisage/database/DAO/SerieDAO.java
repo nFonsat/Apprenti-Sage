@@ -6,9 +6,7 @@ package com.lpiem.apprentisage.database.DAO;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.util.Log;
 
-import com.lpiem.apprentisage.Consts;
 import com.lpiem.apprentisage.database.ConfigDB;
 import com.lpiem.apprentisage.database.DataBaseAccess;
 import com.lpiem.apprentisage.metier.Classe;
@@ -25,10 +23,13 @@ public class SerieDAO extends DataBaseAccess {
     public long ajouter(Serie serie, Enseignant enseignant){
         EnseignantDAO mEnseignantDAO = new EnseignantDAO(mContext);
         long idEnseignant = mEnseignantDAO.enseignantIsDataBase(enseignant);
+        if(idIsConforme(idEnseignant)){
+            return -1;
+        }
 
         long idComparaison = serieIsDataBase(serie, idEnseignant);
-        if(idComparaison != -1 ){
-            Log.d(Consts.TAG_APPLICATION + " : Serie : idComparaion ", String.valueOf(idComparaison));
+        if(idIsConforme(idComparaison) ){
+            serie.setId(idComparaison);
             return idComparaison;
         }
 

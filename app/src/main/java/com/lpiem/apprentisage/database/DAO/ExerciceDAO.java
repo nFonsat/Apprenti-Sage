@@ -6,9 +6,7 @@ package com.lpiem.apprentisage.database.DAO;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.util.Log;
 
-import com.lpiem.apprentisage.Consts;
 import com.lpiem.apprentisage.database.ConfigDB;
 import com.lpiem.apprentisage.database.DataBaseAccess;
 import com.lpiem.apprentisage.metier.Enseignant;
@@ -26,21 +24,19 @@ public class ExerciceDAO extends DataBaseAccess {
     public long ajouter(Exercice exercice, Serie serie, Enseignant enseignant){
         EnseignantDAO mEnseignantDAO = new EnseignantDAO(mContext);
         long idEnseignant = mEnseignantDAO.enseignantIsDataBase(enseignant);
-        if(idEnseignant <= 0){
-            Log.d(Consts.TAG_APPLICATION + " : idEnseignant ", String.valueOf(idEnseignant));
+        if(!idIsConforme(idEnseignant)){
             return -1;
         }
 
         SerieDAO mSerieDAO = new SerieDAO(mContext);
         long idSerie = mSerieDAO.serieIsDataBase(serie, idEnseignant);
-        if(idSerie <= 0){
-            Log.d(Consts.TAG_APPLICATION + " : idSerie ", String.valueOf(idSerie));
+        if(!idIsConforme(idSerie)){
             return -1;
         }
 
         long idComparaison = exerciceIsDataBase(exercice, idEnseignant);
-        if(idComparaison != -1 ){
-            Log.d(Consts.TAG_APPLICATION + " : Exercice : idComparaison ", String.valueOf(idComparaison));
+        if(idIsConforme(idComparaison)){
+            exercice.setId(idComparaison);
             return idComparaison;
         }
 
@@ -58,10 +54,6 @@ public class ExerciceDAO extends DataBaseAccess {
     public ArrayList<Exercice> getExercicesBySeries(Serie serie, Enseignant enseignant){
         EnseignantDAO mEnseignantDAO = new EnseignantDAO(mContext);
         long idEnseignant = mEnseignantDAO.enseignantIsDataBase(enseignant);
-        if(idEnseignant <= 0){
-            Log.d(Consts.TAG_APPLICATION + " : idEnseignant ", String.valueOf(idEnseignant));
-            return null;
-        }
 
         SerieDAO mSerieDAO = new SerieDAO(mContext);
         long idSerie = mSerieDAO.serieIsDataBase(serie, idEnseignant);
