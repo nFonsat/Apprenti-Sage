@@ -15,13 +15,14 @@ import com.lpiem.apprentisage.Utils.JsonUtils;
 import com.lpiem.apprentisage.database.DAO.ClasseDAO;
 import com.lpiem.apprentisage.database.DAO.EleveDAO;
 import com.lpiem.apprentisage.database.DAO.EnseignantDAO;
+import com.lpiem.apprentisage.database.DAO.SerieDAO;
 
 import com.lpiem.apprentisage.ihm.AccueilActivity;
 
-import com.lpiem.apprentisage.jsonObject.Classe;
-import com.lpiem.apprentisage.jsonObject.Eleve;
-import com.lpiem.apprentisage.jsonObject.Enseignant;
-import com.lpiem.apprentisage.jsonObject.Serie;
+import com.lpiem.apprentisage.metier.Classe;
+import com.lpiem.apprentisage.metier.Eleve;
+import com.lpiem.apprentisage.metier.Enseignant;
+import com.lpiem.apprentisage.metier.Serie;
 
 import com.lpiem.apprentisage.network.ConfigNetwork;
 import com.lpiem.apprentisage.network.RestApiCall;
@@ -38,6 +39,7 @@ public class SplashTask extends AsyncTask<Void, Void, String[]>{
     private EnseignantDAO mEnseignantDAO;
     private ClasseDAO mClasseDAO;
     private EleveDAO mEleveDAO;
+    private SerieDAO mSerieDAO;
 
 
     public SplashTask(Activity activity) {
@@ -52,6 +54,7 @@ public class SplashTask extends AsyncTask<Void, Void, String[]>{
         mEnseignantDAO = new EnseignantDAO(mActity.getApplicationContext());
         mClasseDAO = new ClasseDAO(mActity.getApplicationContext());
         mEleveDAO = new EleveDAO(mActity.getApplicationContext());
+        mSerieDAO = new SerieDAO(mActity.getApplicationContext());
     }
 
     @Override
@@ -108,7 +111,12 @@ public class SplashTask extends AsyncTask<Void, Void, String[]>{
                     JSONObject uneSerieJson = serieList.getJSONObject(j);
 
                     Serie serie = JsonUtils.jsonToSerie(uneSerieJson);
+                    long idSerie = mSerieDAO.ajouter(serie, enseignant);
+                    Log.d(Consts.TAG_APPLICATION + " : idSerie " + String.valueOf(j), String.valueOf(idSerie));
                 }
+
+                ArrayList<Serie> seriesByProf = mSerieDAO.getSeriesByProf(enseignant);
+                Log.d(Consts.TAG_APPLICATION + " : SerieByprof ", seriesByProf.toString());
             }
         } catch (JSONException t) {
             Log.e(Consts.TAG_APPLICATION + " : Api Call JSON Error ", t.getMessage());

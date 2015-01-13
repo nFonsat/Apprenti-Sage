@@ -1,3 +1,6 @@
+/**
+ * Created by iem on 13/01/15.
+ */
 package com.lpiem.apprentisage.database.DAO;
 
 import android.content.ContentValues;
@@ -8,15 +11,12 @@ import android.util.Log;
 import com.lpiem.apprentisage.Consts;
 import com.lpiem.apprentisage.database.ConfigDB;
 import com.lpiem.apprentisage.database.DataBaseAccess;
-import com.lpiem.apprentisage.jsonObject.Classe;
-import com.lpiem.apprentisage.jsonObject.Enseignant;
-import com.lpiem.apprentisage.jsonObject.Serie;
+import com.lpiem.apprentisage.metier.Classe;
+import com.lpiem.apprentisage.metier.Enseignant;
+import com.lpiem.apprentisage.metier.Serie;
 
 import java.util.ArrayList;
 
-/**
- * Created by iem on 13/01/15.
- */
 public class SerieDAO extends DataBaseAccess {
     public SerieDAO(Context context){
         super(context);
@@ -28,7 +28,7 @@ public class SerieDAO extends DataBaseAccess {
 
         long idComparaison = serieIsDataBase(serie, idEnseignant);
         if(idComparaison != -1 ){
-            Log.d(Consts.TAG_APPLICATION + " : insertEnseignant : Serie : idComparaion ", String.valueOf(idComparaison));
+            Log.d(Consts.TAG_APPLICATION + " : Serie : idComparaion ", String.valueOf(idComparaison));
             return idComparaison;
         }
 
@@ -42,8 +42,7 @@ public class SerieDAO extends DataBaseAccess {
         serieValue.put(ConfigDB.TABLE_SERIE_COL_IS_PUBLIC, serie.isPublic());
         serieValue.put(ConfigDB.TABLE_SERIE_COL_ID_ENSEIGNANT, idEnseignant);
 
-        openDbWrite();
-        return mDataBase.insert(ConfigDB.TABLE_SERIE, null, serieValue);
+        return savingDataInDatabase(ConfigDB.TABLE_SERIE, serieValue);
     }
 
     public ArrayList<Serie> getSeriesByProf(Enseignant enseignant){
@@ -53,16 +52,15 @@ public class SerieDAO extends DataBaseAccess {
                 "SELECT * FROM " + ConfigDB.TABLE_SERIE  +
                         " WHERE " + ConfigDB.TABLE_SERIE + "." + ConfigDB.TABLE_SERIE_COL_ID_ENSEIGNANT + " = '" + idEnseignant + "'";
 
-
-        openDbRead();
-        Cursor cursor = mDataBase.rawQuery(sqlQuery, null);
+        Cursor cursor = sqlRequest(sqlQuery);
 
         ArrayList<Serie> series = new ArrayList<>();
         if((cursor.getCount() > 0) && (cursor.moveToFirst())){
-            do {
+            do{
                 Serie serie = Cursor2Serie(cursor);
                 series.add(serie);
-            }while (cursor.isAfterLast());
+            }
+            while(cursor.moveToNext());
         }
 
         closeDataBase();
@@ -74,8 +72,7 @@ public class SerieDAO extends DataBaseAccess {
                 "SELECT * FROM " + ConfigDB.TABLE_SERIE  +
                         " WHERE " + ConfigDB.TABLE_SERIE + "." + ConfigDB.TABLE_SERIE_COL_LEVEL + " = '" + classe.getNiveau() + "'";
 
-        openDbRead();
-        Cursor cursor = mDataBase.rawQuery(sqlQuery, null);
+        Cursor cursor = sqlRequest(sqlQuery);
 
         ArrayList<Serie> series = new ArrayList<>();
         if((cursor.getCount() > 0) && (cursor.moveToFirst())){
@@ -84,7 +81,7 @@ public class SerieDAO extends DataBaseAccess {
                 if(serie.isPublic()){
                     series.add(serie);
                 }
-            }while (cursor.isAfterLast());
+            }while (cursor.moveToNext());
         }
 
         closeDataBase();
@@ -106,10 +103,6 @@ public class SerieDAO extends DataBaseAccess {
     }
 
     public long serieIsDataBase(Serie serie, long idEnseignant) {
-        openDbRead();
-
-        long trouver = -1;
-
         String sqlQuery =
                 "SELECT * FROM " + ConfigDB.TABLE_SERIE +
                         " WHERE " + ConfigDB.TABLE_SERIE_COL_NAME + " = '" + serie.getNom() + "'" +
@@ -119,11 +112,6 @@ public class SerieDAO extends DataBaseAccess {
                         " AND " + ConfigDB.TABLE_SERIE_COL_MATIERE + " = '" + serie.getMatiere()  + "'" +
                         " AND " + ConfigDB.TABLE_SERIE_COL_ID_ENSEIGNANT + " = '" + idEnseignant + "'";
 
-        Cursor cursor = mDataBase.rawQuery(sqlQuery, null);
-        if((cursor.getCount() > 0) && (cursor.moveToFirst())){
-            trouver = cursor.getLong(cursor.getColumnIndex(ConfigDB.TABLE_SERIE_COL_ID));
-        }
-
-        return trouver;
+        return idInDataBase(sqlQuery, ConfigDB.TABLE_SERIE_COL_ID);
     }
 }

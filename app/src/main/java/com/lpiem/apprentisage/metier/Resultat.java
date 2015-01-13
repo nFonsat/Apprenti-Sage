@@ -1,7 +1,7 @@
 /**
  * Created by iem on 07/01/15.
  */
-package com.lpiem.apprentisage.jsonObject;
+package com.lpiem.apprentisage.metier;
 
 public class Resultat {
     private String mType;

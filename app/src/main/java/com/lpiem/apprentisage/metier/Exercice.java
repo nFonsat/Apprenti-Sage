@@ -1,7 +1,7 @@
 /**
  * Created by iem on 07/01/15.
  */
-package com.lpiem.apprentisage.jsonObject;
+package com.lpiem.apprentisage.metier;
 
 
 import java.util.ArrayList;
@@ -47,8 +47,12 @@ public class Exercice {
         mMedia = media;
     }
 
-    public ArrayList<String> getResponses() {
-        return mResponses;
+    public String getResponses() {
+        String response = "";
+        for (String uneResponse : mResponses){
+            response += uneResponse + ";";
+        }
+        return response;
     }
 
     public void setResponses(ArrayList<String> responses) {
