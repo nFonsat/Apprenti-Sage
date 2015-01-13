@@ -16,11 +16,9 @@ import com.lpiem.apprentisage.jsonObject.Enseignant;
 import java.util.ArrayList;
 
 public class EnseignantDAO extends DataBaseAccess {
-    private ClasseDAO mClasseDAO;
 
     public EnseignantDAO(Context context) {
         super(context);
-        mClasseDAO = new ClasseDAO(context);
     }
 
     public long ajouter(Enseignant enseignant) {
@@ -48,6 +46,7 @@ public class EnseignantDAO extends DataBaseAccess {
         Cursor cursor = mDataBase.rawQuery(sqlQuery, null);
 
         ArrayList<Enseignant> enseignants = new ArrayList<>();
+        ClasseDAO mClasseDAO = new ClasseDAO(mContext);
         if((cursor.getCount() > 0) && (cursor.moveToFirst())){
             do {
                 Enseignant enseignant = Cursor2Enseignant(cursor);
@@ -73,7 +72,9 @@ public class EnseignantDAO extends DataBaseAccess {
         }
 
         Enseignant enseignant = new Enseignant();
+
         if((cursor.getCount() == 1) && (cursor.moveToFirst())){
+            ClasseDAO mClasseDAO = new ClasseDAO(mContext);
             while (cursor.isAfterLast()){
                 enseignant = Cursor2Enseignant(cursor);
                 enseignant.setClasses(mClasseDAO.getClassesByProf(enseignant));

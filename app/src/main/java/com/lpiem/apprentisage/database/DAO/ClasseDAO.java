@@ -23,7 +23,6 @@ public class ClasseDAO extends DataBaseAccess {
     }
 
     public long ajouter(Classe classe, Enseignant enseignant) {
-        EnseignantDAO mEnseignantDAO = new EnseignantDAO(mContext);
         long idComparaison = classeIsDataBase(classe);
         if(idComparaison != -1 ){
             Log.d(Consts.TAG_APPLICATION + " : insertClasse : Classe : idComparaion ", String.valueOf(idComparaison));
@@ -38,6 +37,7 @@ public class ClasseDAO extends DataBaseAccess {
         openDbWrite();
         long idClasse = mDataBase.insert(ConfigDB.TABLE_CLASSE, null, classeValues);
 
+        EnseignantDAO mEnseignantDAO = new EnseignantDAO(mContext);
         long idEnseignant = mEnseignantDAO.enseignantIsDataBase(enseignant);
         createManyToManyEnseignantClasse(idClasse, idEnseignant);
 
