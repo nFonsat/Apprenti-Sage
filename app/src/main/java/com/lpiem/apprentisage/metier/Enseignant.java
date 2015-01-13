@@ -2,7 +2,7 @@
  * Created by iem on 07/01/15.
  */
 
-package com.lpiem.apprentisage.jsonObject;
+package com.lpiem.apprentisage.metier;
 
 import java.util.ArrayList;
 

@@ -11,9 +11,8 @@ import android.util.Log;
 import com.lpiem.apprentisage.Consts;
 import com.lpiem.apprentisage.database.ConfigDB;
 import com.lpiem.apprentisage.database.DataBaseAccess;
-import com.lpiem.apprentisage.jsonObject.Eleve;
-import com.lpiem.apprentisage.jsonObject.Enseignant;
-import com.lpiem.apprentisage.jsonObject.Resultat;
+import com.lpiem.apprentisage.metier.Eleve;
+import com.lpiem.apprentisage.metier.Resultat;
 
 import java.util.ArrayList;
 

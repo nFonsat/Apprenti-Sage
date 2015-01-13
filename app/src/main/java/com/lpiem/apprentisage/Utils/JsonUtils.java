@@ -3,12 +3,12 @@
  */
 package com.lpiem.apprentisage.Utils;
 
-import com.lpiem.apprentisage.jsonObject.Classe;
-import com.lpiem.apprentisage.jsonObject.Eleve;
-import com.lpiem.apprentisage.jsonObject.Enseignant;
-import com.lpiem.apprentisage.jsonObject.Exercice;
-import com.lpiem.apprentisage.jsonObject.Resultat;
-import com.lpiem.apprentisage.jsonObject.Serie;
+import com.lpiem.apprentisage.metier.Classe;
+import com.lpiem.apprentisage.metier.Eleve;
+import com.lpiem.apprentisage.metier.Enseignant;
+import com.lpiem.apprentisage.metier.Exercice;
+import com.lpiem.apprentisage.metier.Resultat;
+import com.lpiem.apprentisage.metier.Serie;
 
 import org.json.JSONArray;
 import org.json.JSONException;
