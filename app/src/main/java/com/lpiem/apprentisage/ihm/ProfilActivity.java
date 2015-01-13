@@ -14,6 +14,7 @@ package com.lpiem.apprentisage.ihm;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
@@ -30,28 +31,41 @@ import com.lpiem.apprentisage.R;
 import com.lpiem.apprentisage.Shared;
 import com.lpiem.apprentisage.UIService;
 import com.lpiem.apprentisage.adapter.StatsAdapter;
+import com.lpiem.apprentisage.data.App;
+import com.lpiem.apprentisage.metier.Classe;
 import com.lpiem.apprentisage.metier.Eleve;
 import com.lpiem.apprentisage.model.Categorie;
 
 public class ProfilActivity extends SherlockActivity{
 
+    private App mApplication;
+
 	private TextView nomTxt;
 	private TextView prenomTxt;
+    private TextView classeTxt;
+
+
 	private TextView pourcentageTxt;
 	private ImageView avatarView;
 	private LinearLayout categoriesLayout;
+
     private Eleve eleve ;
+    private Classe classe;
 	
 	private ListView listStats;
 	
 	private StatsAdapter adapter;
 
+
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_profil);
 
-        eleve = (Eleve)getIntent().getSerializableExtra("eleveCurrent");
-		setContentView(R.layout.activity_profil);
+        mApplication = App.getInstance();
+        eleve = mApplication.getCurrentEleve();
+        classe = mApplication.getCurrentClasse();
 
 		listStats = (ListView) findViewById(R.id.profil_list_stats);
 		adapter = new StatsAdapter(this);
@@ -59,34 +73,32 @@ public class ProfilActivity extends SherlockActivity{
 
 		nomTxt = (TextView) findViewById(R.id.nom_txt);
 		prenomTxt = (TextView) findViewById(R.id.prenom_txt);
+        classeTxt = (TextView) findViewById(R.id.classe_txt);
+
 		pourcentageTxt = (TextView) findViewById(R.id.pourcentage_txt);
 		avatarView = (ImageView) findViewById(R.id.avatar_view);
 		categoriesLayout = (LinearLayout) findViewById(R.id.categorie_layout);
 		
 		nomTxt.setText("Nom: " + eleve.getNom());
-		prenomTxt.setText("Pr�nom: " + eleve.getPrenom());
+		prenomTxt.setText("Prenom: " + eleve.getPrenom());
+        classeTxt.setText("Classe: " + classe.getNom());
 		
 		nomTxt.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/ComicRelief.ttf"));
 		prenomTxt.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/ComicRelief.ttf"));
+        classeTxt.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/ComicRelief.ttf"));
 		pourcentageTxt.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/ComicRelief.ttf"));
-		
-		switch(Shared.getInstance().getCurrentProfil().getAvatar()){
-			case 0:
-				avatarView.setImageResource(R.drawable.avatar_1);
-				break;
-			case 1:
-				avatarView.setImageResource(R.drawable.avatar_2);
-				break;
-			case 2:
-				avatarView.setImageResource(R.drawable.avatar_3);
-				break;
-		}
-		
-		if(Shared.getInstance().getCurrentProfil().getClasse().equals(Consts.CLASSE_CP)){
-			Shared.getInstance().setCurrentCategorieList(Shared.getInstance().getCategorieListCp());
-		}else if (Shared.getInstance().getCurrentProfil().getClasse().equals(Consts.CLASSE_CE1)){
-			Shared.getInstance().setCurrentCategorieList(Shared.getInstance().getCategorieListCe1());
-		}
+
+        avatarView.setImageResource(R.drawable.avatar_3);
+
+        Log.d("mApplication.getCurrentClasse().getNiveau()", mApplication.getCurrentClasse().getNiveau());
+        Log.d("mApplication.getCurrentClasse().getNiveau().equals(Consts.CLASSE_CP)", String.valueOf(mApplication.getCurrentClasse().getNiveau().equals(Consts.CLASSE_CP)));
+        Log.d("mApplication.getCurrentClasse().getNiveau().equals(Consts.CLASSE_CE1)", String.valueOf(mApplication.getCurrentClasse().getNiveau().equals(Consts.CLASSE_CE1)));
+
+        if(mApplication.getCurrentClasse().getNiveau().equals(Consts.CLASSE_CP)){
+            Shared.getInstance().setCurrentCategorieList(Shared.getInstance().getCategorieListCp());
+        }else if (mApplication.getCurrentClasse().getNiveau().equals(Consts.CLASSE_CE1)){
+            Shared.getInstance().setCurrentCategorieList(Shared.getInstance().getCategorieListCe1());
+        }
 		
 		initCategorieList();
 		
@@ -96,12 +108,12 @@ public class ProfilActivity extends SherlockActivity{
 	@Override
 	protected void onResume() {
 		super.onResume();
-		
 		adapter.notifyDataSetChanged();
 	}
 	
 	private void initCategorieList()
 	{
+        Log.d("Shared.getInstance().getCurrentCategorieList()", Shared.getInstance().getCurrentCategorieList().toString());
 		for(final Categorie categorie : Shared.getInstance().getCurrentCategorieList())
 		{
 			View view = getLayoutInflater().inflate(R.layout.categorie_item,null);
