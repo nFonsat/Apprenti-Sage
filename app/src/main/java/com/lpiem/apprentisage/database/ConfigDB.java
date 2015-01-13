@@ -69,14 +69,14 @@ public class ConfigDB {
 
     public static final String TABLE_RESULTAT_COL_ID = "id_resultat";
     public static final String TABLE_RESULTAT_COL_NAME = "nom";
-    public static final String TABLE_RESULTAT_COL_PRENOM = "type";
-    public static final String TABLE_RESULTAT_COL_AVATAR = "note";
+    public static final String TABLE_RESULTAT_COL_TYPE = "type";
+    public static final String TABLE_RESULTAT_COL_NOTE = "note";
     public static final String TABLE_RESULTAT_COL_ID_ELEVE = "id_eleve";
     public static final String CREATE_SCHEMA_RESULTAT = "CREATE TABLE " + TABLE_RESULTAT + "(" +
             TABLE_RESULTAT_COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE, " +
             TABLE_RESULTAT_COL_NAME + " TEXT, " +
-            TABLE_RESULTAT_COL_PRENOM + " TEXT, " +
-            TABLE_RESULTAT_COL_AVATAR + " TEXT, " +
+            TABLE_RESULTAT_COL_TYPE + " TEXT, " +
+            TABLE_RESULTAT_COL_NOTE + " TEXT, " +
             TABLE_RESULTAT_COL_ID_ELEVE + " TEXT NOT NULL  UNIQUE, " +
             "FOREIGN KEY(" + TABLE_RESULTAT_COL_ID_ELEVE + ") REFERENCES " + TABLE_ELEVE + "(" + TABLE_RESULTAT_COL_ID_ELEVE + ") ON DELETE CASCADE)";
 
