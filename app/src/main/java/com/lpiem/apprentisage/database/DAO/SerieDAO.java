@@ -1,3 +1,6 @@
+/**
+ * Created by iem on 13/01/15.
+ */
 package com.lpiem.apprentisage.database.DAO;
 
 import android.content.ContentValues;
@@ -14,9 +17,6 @@ import com.lpiem.apprentisage.jsonObject.Serie;
 
 import java.util.ArrayList;
 
-/**
- * Created by iem on 13/01/15.
- */
 public class SerieDAO extends DataBaseAccess {
     public SerieDAO(Context context){
         super(context);
