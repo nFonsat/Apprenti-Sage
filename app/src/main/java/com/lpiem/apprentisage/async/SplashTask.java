@@ -6,6 +6,7 @@ package com.lpiem.apprentisage.async;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteException;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -16,6 +17,8 @@ import com.lpiem.apprentisage.Utils.JsonUtils;
 import com.lpiem.apprentisage.database.DAO.ClasseDAO;
 import com.lpiem.apprentisage.database.DAO.EleveDAO;
 import com.lpiem.apprentisage.database.DAO.EnseignantDAO;
+import com.lpiem.apprentisage.database.DAO.ExerciceDAO;
+import com.lpiem.apprentisage.database.DAO.ResultatDAO;
 import com.lpiem.apprentisage.database.DAO.SerieDAO;
 
 import com.lpiem.apprentisage.ihm.AccueilActivity;
@@ -23,6 +26,8 @@ import com.lpiem.apprentisage.ihm.AccueilActivity;
 import com.lpiem.apprentisage.metier.Classe;
 import com.lpiem.apprentisage.metier.Eleve;
 import com.lpiem.apprentisage.metier.Enseignant;
+import com.lpiem.apprentisage.metier.Exercice;
+import com.lpiem.apprentisage.metier.Resultat;
 import com.lpiem.apprentisage.metier.Serie;
 
 import com.lpiem.apprentisage.network.ConfigNetwork;
@@ -40,7 +45,11 @@ public class SplashTask extends AsyncTask<Void, Void, String[]>{
     private EnseignantDAO mEnseignantDAO;
     private ClasseDAO mClasseDAO;
     private EleveDAO mEleveDAO;
+    private ResultatDAO mResultatDAO;
     private SerieDAO mSerieDAO;
+    private ExerciceDAO mExerciceDAO;
+
+    private static final String CLASS_TAG = Consts.TAG_APPLICATION +  " : SplashTask";
 
 
     public SplashTask(Activity activity) {
@@ -57,6 +66,8 @@ public class SplashTask extends AsyncTask<Void, Void, String[]>{
         mClasseDAO = new ClasseDAO(context);
         mEleveDAO = new EleveDAO(context);
         mSerieDAO = new SerieDAO(context);
+        mResultatDAO = new ResultatDAO(context);
+        mExerciceDAO = new ExerciceDAO(context);
     }
 
     @Override
@@ -79,49 +90,52 @@ public class SplashTask extends AsyncTask<Void, Void, String[]>{
         Log.d(Consts.TAG_APPLICATION + " : API Call Response", responses[0]);
 
         if(Integer.valueOf(responses[0]) != 200){
+            goToHome();
             return;
         }
 
         try {
-            JSONArray enseignantList = new JSONArray(responses[1]);
+            JSONArray enseignantsJson = new JSONArray(responses[1]);
+            for (int i = 0; i < enseignantsJson.length(); i++) {
+                JSONObject unEnseignantJson = enseignantsJson.getJSONObject(i);
 
-            for (int i = 0; i < enseignantList.length(); i++) {
-                JSONObject unEnseignantJson = enseignantList.getJSONObject(i);
+                Enseignant unEnseignant = JsonUtils.jsonToEnseignant(unEnseignantJson);
+                mEnseignantDAO.ajouter(unEnseignant);
 
-                Enseignant enseignant = JsonUtils.jsonToEnseignant(unEnseignantJson);
-                mEnseignantDAO.ajouter(enseignant);
+                for (Classe uneClasse : unEnseignant.getClasses()){
+                    mClasseDAO.ajouter(uneClasse, unEnseignant);
 
-                ArrayList<Classe> classes = enseignant.getClasses();
-                for (Classe classe : classes){
-                    mClasseDAO.ajouter(classe, enseignant);
-
-                    ArrayList<Eleve> eleves = classe.getEleves();
-                    for (Eleve eleve : eleves){
-                        mEleveDAO.ajouter(eleve, classe);
+                    for (Eleve unEleve : uneClasse.getEleves()){
+                        mEleveDAO.ajouter(unEleve, uneClasse);
+                        for (Resultat unResultat : unEleve.getResultats()){
+                            mResultatDAO.ajouter(unResultat, unEleve);
+                        }
                     }
                 }
 
-                JSONArray serieList = unEnseignantJson.getJSONArray("series");
+                JSONArray seriesJson = unEnseignantJson.getJSONArray("series");
+                for (int j = 0; j < seriesJson.length(); j++){
+                    JSONObject uneSerieJson = seriesJson.getJSONObject(j);
 
-                for (int j = 0; j < serieList.length(); j++){
-                    JSONObject uneSerieJson = serieList.getJSONObject(j);
-
-                    Serie serie = JsonUtils.jsonToSerie(uneSerieJson);
-                    mSerieDAO.ajouter(serie, enseignant);
+                    Serie uneSerie = JsonUtils.jsonToSerie(uneSerieJson);
+                    mSerieDAO.ajouter(uneSerie, unEnseignant);
+                    for (Exercice unExercice : uneSerie.getExercices()){
+                        mExerciceDAO.ajouter(unExercice,uneSerie, unEnseignant);
+                    }
                 }
             }
-        } catch (JSONException t) {
-            Log.e(Consts.TAG_APPLICATION + " : Api Call JSON Error ", t.getMessage());
+        } catch (JSONException jsonException) {
+            Log.e(CLASS_TAG + " : Error JSon", jsonException.getMessage());
+        } catch (SQLiteException sqliteException) {
+            Log.e(CLASS_TAG + " : Error SqLite", sqliteException.getMessage());
+        } catch (Exception exception) {
+            Log.e(CLASS_TAG + " : Error General", exception.getMessage());
         }
 
-        ArrayList<Enseignant> enseignantsTest = mEnseignantDAO.getEnseignants();
-        Log.d(Consts.TAG_APPLICATION + " : enseignantsTest ", enseignantsTest.toString());
+        goToHome();
+    }
 
-        for(Enseignant enseignant : enseignantsTest){
-            ArrayList<Serie> seriesByProf = mSerieDAO.getSeriesByProf(enseignant);
-            Log.d(Consts.TAG_APPLICATION + " : SerieByprof ", seriesByProf.toString());
-        }
-
+    public void goToHome(){
         Intent i = new Intent(mActity, AccueilActivity.class);
         mActity.startActivity(i);
         mActity.finish();
