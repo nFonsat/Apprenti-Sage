@@ -5,7 +5,7 @@ package com.lpiem.apprentisage.metier;
 
 import java.util.ArrayList;
 
-public class Serie {
+public class Serie extends BaseEntity {
     private String mNom;
     private String mDescription;
     private int mDifficulte;
@@ -16,7 +16,7 @@ public class Serie {
     private ArrayList<Exercice> mExercices;
 
     public Serie() {
-
+        super();
     }
 
     public String getNom(){

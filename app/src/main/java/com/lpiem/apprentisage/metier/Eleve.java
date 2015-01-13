@@ -7,14 +7,16 @@ package com.lpiem.apprentisage.metier;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Eleve implements Serializable {
+public class Eleve extends BaseEntity implements Serializable {
     private String mAvatar;
     private String mNom;
     private String mPrenom;
     private String mUsername;
     private ArrayList<Resultat> mResultats;
 
-    public Eleve(){ }
+    public Eleve(){
+        super();
+    }
 
     public String getNom() {
         return mNom;

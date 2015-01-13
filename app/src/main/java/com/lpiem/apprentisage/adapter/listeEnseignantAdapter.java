@@ -9,11 +9,8 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.lpiem.apprentisage.R;
-import com.lpiem.apprentisage.database.DataBaseAccess;
-import com.lpiem.apprentisage.jsonObject.Enseignant;
-import com.lpiem.apprentisage.model.Profil;
+import com.lpiem.apprentisage.metier.Enseignant;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

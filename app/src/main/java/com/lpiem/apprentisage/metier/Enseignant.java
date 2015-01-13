@@ -7,7 +7,7 @@ package com.lpiem.apprentisage.metier;
 import java.util.ArrayList;
 
 
-public class Enseignant {
+public class Enseignant extends BaseEntity {
     private String mAvatar;
     private String mNom;
     private String mPrenom;
@@ -16,6 +16,7 @@ public class Enseignant {
     private ArrayList<Classe> mClasses;
 
     public Enseignant() {
+        super();
         mClasses = new ArrayList<>();
     }
 

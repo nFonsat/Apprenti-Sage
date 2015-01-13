@@ -5,13 +5,14 @@ package com.lpiem.apprentisage.metier;
 
 import java.util.ArrayList;
 
-public class Classe {
+public class Classe extends BaseEntity {
     private String mNom;
     private String mNiveau;
     private int mAnnee;
     private ArrayList<Eleve> mEleves;
 
     public Classe() {
+        super();
         mEleves = new ArrayList<>();
     }
 

@@ -50,7 +50,7 @@ public class EnseignantDAO extends DataBaseAccess {
                 Enseignant enseignant = Cursor2Enseignant(cursor);
                 enseignant.setClasses(mClasseDAO.getClassesByProf(enseignant));
                 enseignants.add(enseignant);
-            }while (cursor.isAfterLast());
+            }while (cursor.moveToNext());
         }
 
         closeDataBase();

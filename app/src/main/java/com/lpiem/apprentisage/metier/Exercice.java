@@ -6,21 +6,14 @@ package com.lpiem.apprentisage.metier;
 
 import java.util.ArrayList;
 
-public class Exercice {
+public class Exercice extends BaseEntity {
     private String mEnonce;
     private String mType;
     private String mMedia;
     private ArrayList<String> mResponses;
 
-    public Exercice(String enonce, String type, String media, ArrayList<String> responses){
-        mEnonce = enonce;
-        mType = type;
-        mMedia = media;
-        mResponses = responses;
-    }
-
     public Exercice() {
-
+        super();
     }
 
     public String getEnonce(){

@@ -3,12 +3,14 @@
  */
 package com.lpiem.apprentisage.metier;
 
-public class Resultat {
+public class Resultat extends BaseEntity {
     private String mType;
     private String mNom;
     private int mNote;
 
-    public Resultat(){ }
+    public Resultat(){
+        super();
+    }
 
     public String getNom() {
         return mNom;

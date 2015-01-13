@@ -11,7 +11,6 @@
 
 package com.lpiem.apprentisage.ihm;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -31,7 +30,7 @@ import com.lpiem.apprentisage.R;
 import com.lpiem.apprentisage.Shared;
 import com.lpiem.apprentisage.UIService;
 import com.lpiem.apprentisage.adapter.StatsAdapter;
-import com.lpiem.apprentisage.jsonObject.Eleve;
+import com.lpiem.apprentisage.metier.Eleve;
 import com.lpiem.apprentisage.model.Categorie;
 
 public class ProfilActivity extends SherlockActivity{
