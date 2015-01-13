@@ -15,6 +15,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -24,16 +25,13 @@ import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockActivity;
 import com.lpiem.apprentisage.R;
-import com.lpiem.apprentisage.Shared;
 import com.lpiem.apprentisage.adapter.ListeClasseAdapter;
 import com.lpiem.apprentisage.adapter.ListeEleveAdapter;
 import com.lpiem.apprentisage.adapter.ListeEnseignantAdapter;
-import com.lpiem.apprentisage.adapter.ProfilAdapter;
 import com.lpiem.apprentisage.database.DAO.EnseignantDAO;
-import com.lpiem.apprentisage.database.DataBaseAccess;
-import com.lpiem.apprentisage.jsonObject.Classe;
-import com.lpiem.apprentisage.jsonObject.Eleve;
-import com.lpiem.apprentisage.jsonObject.Enseignant;
+import com.lpiem.apprentisage.metier.Classe;
+import com.lpiem.apprentisage.metier.Eleve;
+import com.lpiem.apprentisage.metier.Enseignant;
 
 import java.util.ArrayList;
 import java.util.List;
