@@ -14,8 +14,10 @@ import com.lpiem.apprentisage.Utils.JsonUtils;
 import com.lpiem.apprentisage.database.DataBaseAccess;
 import com.lpiem.apprentisage.ihm.AccueilActivity;
 import com.lpiem.apprentisage.jsonObject.Classe;
+import com.lpiem.apprentisage.jsonObject.Eleve;
 import com.lpiem.apprentisage.jsonObject.Enseignant;
 import com.lpiem.apprentisage.jsonObject.Serie;
+import com.lpiem.apprentisage.network.ConfigNetwork;
 import com.lpiem.apprentisage.network.RestApiCall;
 
 import org.json.JSONArray;
@@ -38,13 +40,11 @@ public class SplashTask extends AsyncTask<Void, Void, String[]>{
     protected void onPreExecute() {
         super.onPreExecute();
         dbAccess = new DataBaseAccess(mActity.getApplicationContext());
-        Log.d(Consts.TAG_APPLICATION + " : dbAccess ", dbAccess.toString());
-
     }
 
     @Override
     protected String[] doInBackground(Void... params) {
-        RestApiCall api = new RestApiCall("http://ptut.eklerni.iem/api/enseignants");
+        RestApiCall api = new RestApiCall(ConfigNetwork.URL_LOCALHOST_NICOLAS_LIST_ENSEIGNANT);
 
         api.executeRequest(RestApiCall.RestApiCallMethod.GET);
         String[] responses = new String[2];
@@ -71,10 +71,8 @@ public class SplashTask extends AsyncTask<Void, Void, String[]>{
 
             for (int i = 0; i < enseignantList.length(); i++) {
                 JSONObject unEnseignantJson = enseignantList.getJSONObject(i);
-                //Log.d(Consts.TAG_APPLICATION + " : Api Call JSON Object : EnseigantJson " + i, unEnseignantJson.toString());
 
                 Enseignant enseignant = JsonUtils.jsonToEnseignant(unEnseignantJson);
-                //Log.d(Consts.TAG_APPLICATION + " : Api Call Enseigant : username " + i, enseignant.getNom() + " " + enseignant.getPrenom());
 
 
                 long idEnseignant = dbAccess.insertEnseignant(enseignant);
@@ -82,25 +80,31 @@ public class SplashTask extends AsyncTask<Void, Void, String[]>{
 
                 ArrayList<Classe> classes = enseignant.getClasses();
                 for (Classe c : classes){
-                    //Log.d(Consts.TAG_APPLICATION + " : Api Call Classe : Classe ", c.toString());
                     long idClasse = dbAccess.insertClasse(c, enseignant);
                     Log.d(Consts.TAG_APPLICATION + " : Api Call Classe : idClasse ", String.valueOf(idClasse));
+
+                    ArrayList<Eleve> eleves = c.getEleves();
+                    for (Eleve e : eleves){
+                        long idEleve = dbAccess.insertEleve(e, c);
+                        Log.d(Consts.TAG_APPLICATION + " : Api Call Eleve : idEleve ", String.valueOf(idEleve));
+                    }
                 }
 
                 JSONArray serieList = unEnseignantJson.getJSONArray("series");
-                //Log.d(Consts.TAG_APPLICATION + " : Api Call JSON Array : List Series", serieList.toString());
 
                 for (int j = 0; j < serieList.length(); j++){
                     JSONObject uneSerieJson = serieList.getJSONObject(j);
-                    //Log.d(Consts.TAG_APPLICATION + " : Api Call JSON Object : SerieJson " + j, uneSerieJson.toString());
 
                     Serie serie = JsonUtils.jsonToSerie(uneSerieJson);
-                    //Log.d(Consts.TAG_APPLICATION + " : Api Call Serie " + j, serie.getNom());
                 }
             }
         } catch (JSONException t) {
             Log.e(Consts.TAG_APPLICATION + " : Api Call JSON Error ", t.getMessage());
         }
+
+        ArrayList<Enseignant> enseignantsTest = dbAccess.getEnseignants();
+        Log.d(Consts.TAG_APPLICATION + " : enseignantsTest ", enseignantsTest.toString());
+        Log.d(Consts.TAG_APPLICATION + " : enseignantsTest ", enseignantsTest.get(0).getClasses().toString());
 
         Intent i = new Intent(mActity, AccueilActivity.class);
         mActity.startActivity(i);

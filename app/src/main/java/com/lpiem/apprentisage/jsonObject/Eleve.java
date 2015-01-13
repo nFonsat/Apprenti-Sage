@@ -7,17 +7,13 @@ package com.lpiem.apprentisage.jsonObject;
 import java.util.ArrayList;
 
 public class Eleve {
-    private int mAvatar;
+    private String mAvatar;
     private String mNom;
     private String mPrenom;
     private String mUsername;
     private ArrayList<Resultat> mResultats;
 
     public Eleve(){ }
-
-    public Eleve(int avatar){
-        mAvatar = avatar;
-    }
 
     public String getNom() {
         return mNom;
@@ -51,11 +47,11 @@ public class Eleve {
         mResultats =  resultats;
     }
 
-    public int getAvatar(){
+    public String getAvatar(){
         return mAvatar;
     }
 
-    public void setAvatar(int avatar){
+    public void setAvatar(String avatar){
         mAvatar = avatar;
     }
 }
