@@ -12,7 +12,10 @@ import com.lpiem.apprentisage.Consts;
 import com.lpiem.apprentisage.database.ConfigDB;
 import com.lpiem.apprentisage.database.DataBaseAccess;
 import com.lpiem.apprentisage.jsonObject.Eleve;
+import com.lpiem.apprentisage.jsonObject.Enseignant;
 import com.lpiem.apprentisage.jsonObject.Resultat;
+
+import java.util.ArrayList;
 
 public class ResultatDAO extends DataBaseAccess {
     public ResultatDAO(Context context){
@@ -42,6 +45,38 @@ public class ResultatDAO extends DataBaseAccess {
 
         openDbWrite();
         return mDataBase.insert(ConfigDB.TABLE_RESULTAT, null, resultatValue);
+    }
+
+    public ArrayList<Resultat> getResultatsByEleve(Eleve eleve) {
+        EleveDAO eleveDAO = new EleveDAO(mContext);
+        long idEleve = eleveDAO.eleveIsDataBase(eleve);
+        String sqlQuery =
+                "SELECT * FROM " + ConfigDB.TABLE_RESULTAT  +
+                        " WHERE " + ConfigDB.TABLE_RESULTAT + "." + ConfigDB.TABLE_RESULTAT_COL_ID_ELEVE + " = '" + idEleve + "'";
+
+        openDbRead();
+        Cursor cursor = mDataBase.rawQuery(sqlQuery, null);
+
+        ArrayList<Resultat> resultats = new ArrayList<>();
+        if((cursor.getCount() > 0) && (cursor.moveToFirst())){
+            do {
+                Resultat resultat = Cursor2Resultat(cursor);
+                resultats.add(resultat);
+            }while (cursor.isAfterLast());
+        }
+
+        closeDataBase();
+        return resultats;
+    }
+
+    public Resultat Cursor2Resultat(Cursor cursor) {
+        Resultat resultat = new Resultat();
+
+        resultat.setNom(cursor.getString(cursor.getColumnIndex(ConfigDB.TABLE_RESULTAT_COL_NAME)));
+        resultat.setType(cursor.getString(cursor.getColumnIndex(ConfigDB.TABLE_RESULTAT_COL_TYPE)));
+        resultat.setNote(cursor.getInt(cursor.getColumnIndex(ConfigDB.TABLE_RESULTAT_COL_NOTE)));
+
+        return resultat;
     }
 
     public long resultatIsDataBase(Resultat resultat, long idEleve) {
