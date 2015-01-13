@@ -9,8 +9,10 @@ import android.database.Cursor;
 import android.util.Log;
 
 import com.lpiem.apprentisage.Consts;
+
 import com.lpiem.apprentisage.database.ConfigDB;
 import com.lpiem.apprentisage.database.DataBaseAccess;
+
 import com.lpiem.apprentisage.metier.Classe;
 import com.lpiem.apprentisage.metier.Enseignant;
 
@@ -29,51 +31,48 @@ public class ClasseDAO extends DataBaseAccess {
             return idComparaison;
         }
 
-        ContentValues classeValues = new ContentValues();
-        classeValues.put(ConfigDB.TABLE_CLASSE_COL_NAME, classe.getNom());
-        classeValues.put(ConfigDB.TABLE_CLASSE_COL_LEVEL, classe.getNiveau());
-        classeValues.put(ConfigDB.TABLE_CLASSE_COL_YEAR, classe.getAnnee());
+        ContentValues classeValue = new ContentValues();
 
-        openDbWrite();
-        long idClasse = mDataBase.insert(ConfigDB.TABLE_CLASSE, null, classeValues);
+        classeValue.put(ConfigDB.TABLE_CLASSE_COL_NAME, classe.getNom());
+        classeValue.put(ConfigDB.TABLE_CLASSE_COL_LEVEL, classe.getNiveau());
+        classeValue.put(ConfigDB.TABLE_CLASSE_COL_YEAR, classe.getAnnee());
+
+        long idClasse = savingDataInDatabase(ConfigDB.TABLE_CLASSE, classeValue);
 
         EnseignantDAO mEnseignantDAO = new EnseignantDAO(mContext);
         long idEnseignant = mEnseignantDAO.enseignantIsDataBase(enseignant);
         createManyToManyEnseignantClasse(idClasse, idEnseignant);
-
 
         return idClasse;
     }
 
     private long createManyToManyEnseignantClasse(long idClasse, long idEnseignant){
         ContentValues manyToMany = new ContentValues();
+
         manyToMany.put(ConfigDB.TABLE_ENSEIGNANT_CLASSE_COL_ID_CLASSE, idClasse);
         manyToMany.put(ConfigDB.TABLE_ENSEIGNANT_CLASSE_COL_ID_ENSEIGNANT, idEnseignant);
 
-        openDbWrite();
-        return mDataBase.insert(ConfigDB.TABLE_ENSEIGNANT_CLASSE, null, manyToMany);
+        return savingDataInDatabase(ConfigDB.TABLE_ENSEIGNANT_CLASSE, manyToMany);
     }
 
     public ArrayList<Classe> getClassesByProf(Enseignant enseignant){
         EnseignantDAO mEnseignantDAO = new EnseignantDAO(mContext);
-        EleveDAO mEleveDAO = new EleveDAO(mContext);
         long idEnseignant = mEnseignantDAO.enseignantIsDataBase(enseignant);
         String sqlQuery =
                 "SELECT * FROM " + ConfigDB.TABLE_CLASSE  +
                         " JOIN " + ConfigDB.TABLE_ENSEIGNANT_CLASSE +
                         " ON " + ConfigDB.TABLE_ENSEIGNANT_CLASSE + "." + ConfigDB.TABLE_ENSEIGNANT_CLASSE_COL_ID_ENSEIGNANT + " = '" + idEnseignant + "'";
 
-
-        openDbRead();
-        Cursor cursor = mDataBase.rawQuery(sqlQuery, null);
+        Cursor cursor = sqlRequest(sqlQuery);
 
         ArrayList<Classe> classes = new ArrayList<>();
         if((cursor.getCount() > 0) && (cursor.moveToFirst())){
+            EleveDAO mEleveDAO = new EleveDAO(mContext);
             do {
                 Classe classe = Cursor2Classe(cursor);
                 classe.setEleves(mEleveDAO.getElevesByClasse(classe));
                 classes.add(classe);
-            }while (cursor.isAfterLast());
+            }while (cursor.moveToNext());
         }
 
         closeDataBase();
@@ -91,24 +90,12 @@ public class ClasseDAO extends DataBaseAccess {
     }
 
     public long classeIsDataBase(Classe classe){
-        openDbRead();
-
-        long trouver = -1;
-
         String sqlQuery =
                 "SELECT * FROM " + ConfigDB.TABLE_CLASSE +
                         " WHERE " + ConfigDB.TABLE_CLASSE_COL_NAME + " = '" + classe.getNom() + "'" +
                         " AND " + ConfigDB.TABLE_CLASSE_COL_LEVEL + " = '" + classe.getNiveau()  + "'" +
                         " AND " + ConfigDB.TABLE_CLASSE_COL_YEAR + " = '" + classe.getAnnee() + "'";
 
-        Cursor cursor = mDataBase.rawQuery(sqlQuery, null);
-
-
-        if((cursor.getCount() > 0) && (cursor.moveToFirst())){
-            trouver = cursor.getLong(cursor.getColumnIndex(ConfigDB.TABLE_CLASSE_COL_ID));
-        }
-
-        closeDataBase();
-        return trouver;
+        return idInDataBase(sqlQuery, ConfigDB.TABLE_CLASSE_COL_ID);
     }
 }

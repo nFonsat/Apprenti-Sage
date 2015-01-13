@@ -19,7 +19,6 @@ import java.util.ArrayList;
 public class ResultatDAO extends DataBaseAccess {
     public ResultatDAO(Context context){
         super(context);
-
     }
 
     public long ajouter(Resultat resultat, Eleve eleve){
@@ -31,6 +30,7 @@ public class ResultatDAO extends DataBaseAccess {
         }
 
         ContentValues resultatValue = new ContentValues();
+
         resultatValue.put(ConfigDB.TABLE_RESULTAT_COL_NAME, resultat.getNom());
         resultatValue.put(ConfigDB.TABLE_RESULTAT_COL_TYPE, resultat.getType());
         resultatValue.put(ConfigDB.TABLE_RESULTAT_COL_NOTE, resultat.getNote());
@@ -39,11 +39,10 @@ public class ResultatDAO extends DataBaseAccess {
         long idComparaisonResultat = resultatIsDataBase(resultat, idEleve);
         if(idComparaisonResultat != -1 ) {
             Log.d(Consts.TAG_APPLICATION + " : insertResultat : Resulat : idComparaisonResultat ", String.valueOf(idComparaisonResultat));
-            return mDataBase.update(ConfigDB.TABLE_RESULTAT, resultatValue, ConfigDB.TABLE_RESULTAT_COL_ID  + " LIKE ?", new String[] {String.valueOf(idComparaisonResultat)});
+            return updateDataInDatabase(ConfigDB.TABLE_RESULTAT, resultatValue, ConfigDB.TABLE_RESULTAT_COL_ID  + " LIKE ?", new String[] {String.valueOf(idComparaisonResultat)});
         }
 
-        openDbWrite();
-        return mDataBase.insert(ConfigDB.TABLE_RESULTAT, null, resultatValue);
+        return savingDataInDatabase(ConfigDB.TABLE_RESULTAT, resultatValue);
     }
 
     public ArrayList<Resultat> getResultatsByEleve(Eleve eleve) {
@@ -53,15 +52,14 @@ public class ResultatDAO extends DataBaseAccess {
                 "SELECT * FROM " + ConfigDB.TABLE_RESULTAT  +
                         " WHERE " + ConfigDB.TABLE_RESULTAT + "." + ConfigDB.TABLE_RESULTAT_COL_ID_ELEVE + " = '" + idEleve + "'";
 
-        openDbRead();
-        Cursor cursor = mDataBase.rawQuery(sqlQuery, null);
+        Cursor cursor = sqlRequest(sqlQuery);
 
         ArrayList<Resultat> resultats = new ArrayList<>();
         if((cursor.getCount() > 0) && (cursor.moveToFirst())){
             do {
                 Resultat resultat = Cursor2Resultat(cursor);
                 resultats.add(resultat);
-            }while (cursor.isAfterLast());
+            }while (cursor.moveToNext());
         }
 
         closeDataBase();
@@ -79,23 +77,12 @@ public class ResultatDAO extends DataBaseAccess {
     }
 
     public long resultatIsDataBase(Resultat resultat, long idEleve) {
-        long trouver = -1;
-
         String sqlQuery =
                 "SELECT * FROM " + ConfigDB.TABLE_RESULTAT +
                         " WHERE " + ConfigDB.TABLE_RESULTAT_COL_NAME + " = '" + resultat.getNom() + "'" +
                         " AND " + ConfigDB.TABLE_RESULTAT_COL_TYPE + " = '" + resultat.getType()  + "'" +
                         " AND " + ConfigDB.TABLE_RESULTAT_COL_ID_ELEVE + " = '" + idEleve + "'";
 
-        openDbRead();
-        Cursor cursor = mDataBase.rawQuery(sqlQuery, null);
-
-
-        if((cursor.getCount() > 0) && (cursor.moveToFirst())){
-            trouver = cursor.getLong(cursor.getColumnIndex(ConfigDB.TABLE_RESULTAT_COL_ID));
-        }
-
-        closeDataBase();
-        return trouver;
+        return idInDataBase(sqlQuery, ConfigDB.TABLE_RESULTAT_COL_ID);
     }
 }

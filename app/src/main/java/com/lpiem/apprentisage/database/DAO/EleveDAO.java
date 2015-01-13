@@ -37,14 +37,14 @@ public class EleveDAO extends DataBaseAccess {
         }
 
         ContentValues eleveValue = new ContentValues();
+
         eleveValue.put(ConfigDB.TABLE_ELEVE_COL_NAME, eleve.getNom());
         eleveValue.put(ConfigDB.TABLE_ELEVE_COL_PRENOM, eleve.getPrenom());
         eleveValue.put(ConfigDB.TABLE_ELEVE_COL_USERNAME, eleve.getUsername());
         eleveValue.put(ConfigDB.TABLE_ELEVE_COL_AVATAR, eleve.getAvatar());
         eleveValue.put(ConfigDB.TABLE_ELEVE_COL_ID_CLASSE, idClasse);
 
-        openDbWrite();
-        return mDataBase.insert(ConfigDB.TABLE_ELEVE, null, eleveValue);
+        return savingDataInDatabase(ConfigDB.TABLE_ELEVE, eleveValue);
     }
 
     public ArrayList<Eleve> getElevesByClasse(Classe classe){
@@ -54,15 +54,15 @@ public class EleveDAO extends DataBaseAccess {
                 "SELECT * FROM " + ConfigDB.TABLE_ELEVE  +
                         " WHERE " + ConfigDB.TABLE_ELEVE + "." + ConfigDB.TABLE_ELEVE_COL_ID_CLASSE + " = '" + idClasse + "'";
 
-        openDbRead();
-        Cursor cursor = mDataBase.rawQuery(sqlQuery, null);
+
+        Cursor cursor = sqlRequest(sqlQuery);
 
         ArrayList<Eleve> eleves = new ArrayList<>();
         if((cursor.getCount() > 0) && (cursor.moveToFirst())){
             do {
                 Eleve eleve = Cursor2Eleve(cursor);
                 eleves.add(eleve);
-            }while (cursor.isAfterLast());
+            }while (cursor.moveToNext());
         }
 
         closeDataBase();
@@ -81,23 +81,12 @@ public class EleveDAO extends DataBaseAccess {
     }
 
     public long eleveIsDataBase(Eleve eleve) {
-        long trouver = -1;
-
         String sqlQuery =
                 "SELECT * FROM " + ConfigDB.TABLE_ELEVE +
                         " WHERE " + ConfigDB.TABLE_ELEVE_COL_USERNAME + " = '" + eleve.getUsername() + "'" +
                         " AND " + ConfigDB.TABLE_ELEVE_COL_NAME + " = '" + eleve.getNom()  + "'" +
                         " AND " + ConfigDB.TABLE_ELEVE_COL_PRENOM + " = '" + eleve.getPrenom() + "'";
 
-        openDbRead();
-        Cursor cursor = mDataBase.rawQuery(sqlQuery, null);
-
-
-        if((cursor.getCount() > 0) && (cursor.moveToFirst())){
-            trouver = cursor.getLong(cursor.getColumnIndex(ConfigDB.TABLE_ELEVE_COL_ID));
-        }
-
-        closeDataBase();
-        return trouver;
+        return idInDataBase(sqlQuery, ConfigDB.TABLE_ELEVE_COL_ID);
     }
 }
