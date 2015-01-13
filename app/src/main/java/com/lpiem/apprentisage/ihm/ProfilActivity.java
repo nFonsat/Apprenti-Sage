@@ -4,7 +4,7 @@
 *
 * ProfilActivity.java
 * 
-* Michael Breton - Clément Bretin
+* Michael Breton - Clï¿½ment Bretin
 * LP IEM - 2014
 *
 *******************************************************************************************************************/
@@ -31,16 +31,17 @@ import com.lpiem.apprentisage.R;
 import com.lpiem.apprentisage.Shared;
 import com.lpiem.apprentisage.UIService;
 import com.lpiem.apprentisage.adapter.StatsAdapter;
+import com.lpiem.apprentisage.jsonObject.Eleve;
 import com.lpiem.apprentisage.model.Categorie;
 
 public class ProfilActivity extends SherlockActivity{
 
 	private TextView nomTxt;
 	private TextView prenomTxt;
-	private TextView classeTxt;
 	private TextView pourcentageTxt;
 	private ImageView avatarView;
 	private LinearLayout categoriesLayout;
+    private Eleve eleve ;
 	
 	private ListView listStats;
 	
@@ -49,7 +50,8 @@ public class ProfilActivity extends SherlockActivity{
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
+        eleve = (Eleve)getIntent().getSerializableExtra("eleveCurrent");
 		setContentView(R.layout.activity_profil);
 
 		listStats = (ListView) findViewById(R.id.profil_list_stats);
@@ -58,18 +60,15 @@ public class ProfilActivity extends SherlockActivity{
 
 		nomTxt = (TextView) findViewById(R.id.nom_txt);
 		prenomTxt = (TextView) findViewById(R.id.prenom_txt);
-		classeTxt = (TextView) findViewById(R.id.classe_txt);
 		pourcentageTxt = (TextView) findViewById(R.id.pourcentage_txt);
 		avatarView = (ImageView) findViewById(R.id.avatar_view);
 		categoriesLayout = (LinearLayout) findViewById(R.id.categorie_layout);
 		
-		nomTxt.setText("Nom: " + Shared.getInstance().getCurrentProfil().getNom());
-		prenomTxt.setText("Prénom: " + Shared.getInstance().getCurrentProfil().getPrenom());
-		classeTxt.setText("Classe: " + Shared.getInstance().getCurrentProfil().getClasse());
+		nomTxt.setText("Nom: " + eleve.getNom());
+		prenomTxt.setText("Prï¿½nom: " + eleve.getPrenom());
 		
 		nomTxt.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/ComicRelief.ttf"));
 		prenomTxt.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/ComicRelief.ttf"));
-		classeTxt.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/ComicRelief.ttf"));
 		pourcentageTxt.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/ComicRelief.ttf"));
 		
 		switch(Shared.getInstance().getCurrentProfil().getAvatar()){

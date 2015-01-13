@@ -4,9 +4,10 @@
 
 package com.lpiem.apprentisage.jsonObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Eleve {
+public class Eleve implements Serializable {
     private String mAvatar;
     private String mNom;
     private String mPrenom;
