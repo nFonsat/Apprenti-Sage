@@ -4,19 +4,25 @@
 package com.lpiem.apprentisage.async;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
 
 import com.lpiem.apprentisage.Consts;
+
 import com.lpiem.apprentisage.Utils.JsonUtils;
-import com.lpiem.apprentisage.database.DataBaseAccess;
+
+import com.lpiem.apprentisage.database.DAO.ClasseDAO;
+import com.lpiem.apprentisage.database.DAO.EleveDAO;
+import com.lpiem.apprentisage.database.DAO.EnseignantDAO;
+
 import com.lpiem.apprentisage.ihm.AccueilActivity;
+
 import com.lpiem.apprentisage.jsonObject.Classe;
 import com.lpiem.apprentisage.jsonObject.Eleve;
 import com.lpiem.apprentisage.jsonObject.Enseignant;
 import com.lpiem.apprentisage.jsonObject.Serie;
+
 import com.lpiem.apprentisage.network.ConfigNetwork;
 import com.lpiem.apprentisage.network.RestApiCall;
 
@@ -27,8 +33,11 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class SplashTask extends AsyncTask<Void, Void, String[]>{
-    private DataBaseAccess dbAccess;
     private Activity mActity;
+
+    private EnseignantDAO mEnseignantDAO;
+    private ClasseDAO mClasseDAO;
+    private EleveDAO mEleveDAO;
 
 
     public SplashTask(Activity activity) {
@@ -39,7 +48,10 @@ public class SplashTask extends AsyncTask<Void, Void, String[]>{
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        dbAccess = new DataBaseAccess(mActity.getApplicationContext());
+
+        mEnseignantDAO = new EnseignantDAO(mActity.getApplicationContext());
+        mClasseDAO = new ClasseDAO(mActity.getApplicationContext());
+        mEleveDAO = new EleveDAO(mActity.getApplicationContext());
     }
 
     @Override
@@ -75,17 +87,17 @@ public class SplashTask extends AsyncTask<Void, Void, String[]>{
                 Enseignant enseignant = JsonUtils.jsonToEnseignant(unEnseignantJson);
 
 
-                long idEnseignant = dbAccess.insertEnseignant(enseignant);
+                long idEnseignant = mEnseignantDAO.ajouter(enseignant);
                 Log.d(Consts.TAG_APPLICATION + " : Api Call Enseigant : idEnseignant " + i, String.valueOf(idEnseignant));
 
                 ArrayList<Classe> classes = enseignant.getClasses();
                 for (Classe c : classes){
-                    long idClasse = dbAccess.insertClasse(c, enseignant);
+                    long idClasse = mClasseDAO.ajouter(c, enseignant);
                     Log.d(Consts.TAG_APPLICATION + " : Api Call Classe : idClasse ", String.valueOf(idClasse));
 
                     ArrayList<Eleve> eleves = c.getEleves();
                     for (Eleve e : eleves){
-                        long idEleve = dbAccess.insertEleve(e, c);
+                        long idEleve = mEleveDAO.ajouter(e, c);
                         Log.d(Consts.TAG_APPLICATION + " : Api Call Eleve : idEleve ", String.valueOf(idEleve));
                     }
                 }
@@ -102,7 +114,7 @@ public class SplashTask extends AsyncTask<Void, Void, String[]>{
             Log.e(Consts.TAG_APPLICATION + " : Api Call JSON Error ", t.getMessage());
         }
 
-        ArrayList<Enseignant> enseignantsTest = dbAccess.getEnseignants();
+        ArrayList<Enseignant> enseignantsTest = mEnseignantDAO.getEnseignants();
         Log.d(Consts.TAG_APPLICATION + " : enseignantsTest ", enseignantsTest.toString());
         Log.d(Consts.TAG_APPLICATION + " : enseignantsTest ", enseignantsTest.get(0).getClasses().toString());
 
