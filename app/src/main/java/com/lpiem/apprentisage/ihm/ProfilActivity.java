@@ -14,7 +14,6 @@ package com.lpiem.apprentisage.ihm;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
@@ -26,7 +25,6 @@ import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockActivity;
 import com.lpiem.apprentisage.ActionBarService;
-import com.lpiem.apprentisage.Consts;
 import com.lpiem.apprentisage.R;
 import com.lpiem.apprentisage.Shared;
 import com.lpiem.apprentisage.UIService;
@@ -89,18 +87,8 @@ public class ProfilActivity extends SherlockActivity{
 		pourcentageTxt.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/ComicRelief.ttf"));
 
         avatarView.setImageResource(R.drawable.avatar_3);
-
-        Log.d("mApplication.getCurrentClasse().getNiveau()", mApplication.getCurrentClasse().getNiveau());
-        Log.d("mApplication.getCurrentClasse().getNiveau().equals(Consts.CLASSE_CP)", String.valueOf(mApplication.getCurrentClasse().getNiveau().equals(Consts.CLASSE_CP)));
-        Log.d("mApplication.getCurrentClasse().getNiveau().equals(Consts.CLASSE_CE1)", String.valueOf(mApplication.getCurrentClasse().getNiveau().equals(Consts.CLASSE_CE1)));
-
-        if(mApplication.getCurrentClasse().getNiveau().equals(Consts.CLASSE_CP)){
-            Shared.getInstance().setCurrentCategorieList(Shared.getInstance().getCategorieListCp());
-        }else if (mApplication.getCurrentClasse().getNiveau().equals(Consts.CLASSE_CE1)){
-            Shared.getInstance().setCurrentCategorieList(Shared.getInstance().getCategorieListCe1());
-        }
-		
-		initCategorieList();
+        initMatiere();
+		//initCategorieList();
 		
 		ActionBarService.initActionBar(this, this.getSupportActionBar(), getString(R.string.profil_titre));
 	}
@@ -110,10 +98,37 @@ public class ProfilActivity extends SherlockActivity{
 		super.onResume();
 		adapter.notifyDataSetChanged();
 	}
+
+    private void initMatiere(){
+        for(final String matiere : mApplication.getMatieres(this))
+        {
+            View view = getLayoutInflater().inflate(R.layout.categorie_item,null);
+
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT,0,1);
+            params.setMargins(0, 0, 0, UIService.getPx(this, 5));
+            view.setLayoutParams(params);
+
+            TextView txtNom = (TextView) view.findViewById(R.id.categorie_item_txt_nom);
+            //txtNom.setBackgroundColor(categorie.getColor());
+            txtNom.setText(matiere);
+
+            Button btnCat = (Button) view.findViewById(R.id.categorie_item_btn_cat);
+            btnCat.setOnClickListener(new OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    Intent intent = new Intent(ProfilActivity.this,SousCategorieActivity.class);
+                    startActivity(intent);
+                }
+            });
+
+            categoriesLayout.addView(view);
+        }
+    }
 	
 	private void initCategorieList()
 	{
-        Log.d("Shared.getInstance().getCurrentCategorieList()", Shared.getInstance().getCurrentCategorieList().toString());
 		for(final Categorie categorie : Shared.getInstance().getCurrentCategorieList())
 		{
 			View view = getLayoutInflater().inflate(R.layout.categorie_item,null);
@@ -132,7 +147,7 @@ public class ProfilActivity extends SherlockActivity{
 				@Override
 				public void onClick(View v)
 				{
-					Shared.getInstance().setCurrentCategorie(categorie);
+					//Shared.getInstance().setCurrentCategorie(categorie);
 					Intent intent = new Intent(ProfilActivity.this,SousCategorieActivity.class);
 					startActivity(intent);
 				}
