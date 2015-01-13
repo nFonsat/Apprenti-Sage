@@ -25,7 +25,7 @@ public class ListeEnseignantAdapter extends BaseAdapter {
     private List<Enseignant> enseignantsList;
     private LayoutInflater inflater;
 
-    public ListeEnseignantAdapter(ArrayList<Enseignant> enseignants, Context context) {
+    public ListeEnseignantAdapter(List<Enseignant> enseignants, Context context) {
 
         this.context = context;
         this.enseignantsList = enseignants ;

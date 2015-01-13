@@ -15,25 +15,25 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.os.PersistableBundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockActivity;
-import com.lpiem.apprentisage.Consts;
 import com.lpiem.apprentisage.R;
 import com.lpiem.apprentisage.Shared;
 import com.lpiem.apprentisage.adapter.ListeClasseAdapter;
 import com.lpiem.apprentisage.adapter.ListeEnseignantAdapter;
 import com.lpiem.apprentisage.adapter.ProfilAdapter;
 import com.lpiem.apprentisage.database.DataBaseAccess;
+import com.lpiem.apprentisage.jsonObject.Classe;
+import com.lpiem.apprentisage.jsonObject.Enseignant;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class AccueilActivity extends SherlockActivity{
 
@@ -43,8 +43,10 @@ public class AccueilActivity extends SherlockActivity{
     private ListeEnseignantAdapter adapterEneignant;
 	private ListView listViewEleve;
 	private TextView txtTitre;
-    private Spinner listeEnseignant;
-    private Spinner listeClasse;
+    private Spinner listeEnseignantSpinner;
+    private List<Enseignant> listeEnseignant;
+    private Spinner listeClasseSpinner;
+    private List<Classe> listeClasse;
 
 
     private DataBaseAccess dataBaseAccess;
@@ -63,11 +65,33 @@ public class AccueilActivity extends SherlockActivity{
 		txtTitre.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/Craie.ttf"));
 
         listViewEleve = (ListView) findViewById(R.id.listViewEleve);
-        listeEnseignant = (Spinner) findViewById(R.id.listeEnseignant);
-        listeClasse = (Spinner) findViewById(R.id.listeClasse);
+        listeEnseignantSpinner = (Spinner) findViewById(R.id.listeEnseignant);
+        listeEnseignant = new ArrayList<Enseignant>(dataBaseAccess.getEnseignants());
+        listeClasseSpinner = (Spinner) findViewById(R.id.listeClasse);
 
-        adapterEneignant = new ListeEnseignantAdapter(dataBaseAccess.getEnseignants(), context);
-        listeEnseignant.setAdapter(adapterEneignant);
+        adapterEneignant = new ListeEnseignantAdapter(listeEnseignant, context);
+        listeEnseignantSpinner.setAdapter(adapterEneignant);
+
+        listeEnseignantSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+        {
+
+
+            @Override
+            public void onItemSelected(AdapterView<?> arg0, View view, int position, long id) {
+                // recup le prof clické
+                listeClasse = new ArrayList<Classe>(listeEnseignant.get(position).getClasses());
+                // lancer l'adapter pour la classe
+                adapterClasse = new ListeClasseAdapter(listeClasse, context);
+                listeClasseSpinner.setAdapter(adapterClasse);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+
+
+        });
 
 //        adapterClasse = new ListeClasseAdapter(dataBaseAccess.getClass(), context);
 
