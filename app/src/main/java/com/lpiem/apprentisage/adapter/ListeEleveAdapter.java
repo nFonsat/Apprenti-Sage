@@ -9,8 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.lpiem.apprentisage.R;
-import com.lpiem.apprentisage.jsonObject.Classe;
-import com.lpiem.apprentisage.jsonObject.Eleve;
+import com.lpiem.apprentisage.metier.Eleve;
 
 import java.util.List;
 
