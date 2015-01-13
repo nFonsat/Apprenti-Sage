@@ -15,7 +15,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -41,7 +40,7 @@ public class AccueilActivity extends SherlockActivity{
 	private Context context;
 	private ListeEleveAdapter adapterEleve;
     private ListeClasseAdapter adapterClasse;
-    private ListeEnseignantAdapter adapterEneignant;
+    private ListeEnseignantAdapter adapterEnseignant;
 	private TextView txtTitre;
     private Spinner listeEnseignantSpinner;
     private List<Enseignant> listeEnseignant;
@@ -61,9 +60,10 @@ public class AccueilActivity extends SherlockActivity{
 
         context = this;
 
-        enseignantDAO = new EnseignantDAO(this);
+        listeEleve = new ArrayList<>();
+        listeClasse = new ArrayList<>();
+        listeEnseignant = new ArrayList<>();
 
-		
 		txtTitre = (TextView) findViewById(R.id.title_txt);
 		txtTitre.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/Craie.ttf"));
 
@@ -71,16 +71,18 @@ public class AccueilActivity extends SherlockActivity{
         listeEnseignantSpinner = (Spinner) findViewById(R.id.listeEnseignant);
         listeClasseSpinner = (Spinner) findViewById(R.id.listeClasse);
 
-        listeEnseignant = new ArrayList<Enseignant>(enseignantDAO.getEnseignants());
-        adapterEneignant = new ListeEnseignantAdapter(listeEnseignant, context);
-        listeEnseignantSpinner.setAdapter(adapterEneignant);
+        enseignantDAO = new EnseignantDAO(this);
+        listeEnseignant = enseignantDAO.getEnseignants();
+        adapterEnseignant = new ListeEnseignantAdapter(listeEnseignant, context);
+        listeEnseignantSpinner.setAdapter(adapterEnseignant);
 
         listeEnseignantSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> arg0, View view, int position, long id) {
 
-                listeClasse = new ArrayList<Classe>(listeEnseignant.get(position).getClasses());
+                listeClasse = listeEnseignant.get(position).getClasses();
                 adapterClasse = new ListeClasseAdapter(listeClasse, context);
+                listViewEleve.setAdapter(null);
                 listeClasseSpinner.setAdapter(adapterClasse);
             }
 
@@ -94,7 +96,7 @@ public class AccueilActivity extends SherlockActivity{
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-                listeEleve = new ArrayList<Eleve>(listeClasse.get(position).getEleves());
+                listeEleve = listeClasse.get(position).getEleves();
                 adapterEleve = new ListeEleveAdapter(listeEleve, context);
                 listViewEleve.setAdapter(adapterEleve);
             }
@@ -119,5 +121,4 @@ public class AccueilActivity extends SherlockActivity{
         });
 
 	}
-
 }
