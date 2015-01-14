@@ -7,27 +7,30 @@
     android:weightSum="100" >
 
     <LinearLayout
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
-        android:layout_weight="90"
+        android:layout_weight="85"
         android:weightSum="1">
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="New Text"
             android:id="@+id/titreMatiere"
-            android:layout_gravity="center_horizontal"
-            android:layout_weight="90" />
+            android:layout_gravity="center"
+            android:textColor="@color/white"
+            android:textSize="50sp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp" />
     </LinearLayout>
 
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_weight="10">
+        android:layout_weight="15">
 
         <LinearLayout
             android:orientation="vertical"
@@ -53,7 +56,8 @@
                 android:text="Pourcentages de réussite:"
                 android:textColor="@color/white"
                 android:textSize="30sp"
-                android:layout_weight="17" />
+                android:layout_weight="17"
+                android:layout_marginLeft="10dp" />
 
             <ListView
                 android:id="@+id/profil_list_stats"
@@ -87,9 +91,10 @@
                 android:text="Retour"
                 android:id="@+id/retour"
                 android:layout_gravity="center"
-                android:layout_weight="90"
+                android:layout_weight="60"
                 android:textColor="@color/white"
-                android:textSize="50sp"/>
+                android:textSize="50sp"
+                android:layout_marginBottom="10dp" />
         </LinearLayout>
     </LinearLayout>
 
