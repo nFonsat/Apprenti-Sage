@@ -14,6 +14,7 @@ package com.lpiem.apprentisage.ihm;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
@@ -25,7 +26,9 @@ import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockActivity;
 import com.lpiem.apprentisage.ActionBarService;
+import com.lpiem.apprentisage.Consts;
 import com.lpiem.apprentisage.R;
+import com.lpiem.apprentisage.Shared;
 import com.lpiem.apprentisage.UIService;
 import com.lpiem.apprentisage.adapter.StatsAdapter;
 import com.lpiem.apprentisage.data.App;
@@ -40,7 +43,7 @@ public class ProfilActivity extends SherlockActivity{
 	private TextView nomTxt;
 	private TextView prenomTxt;
     private TextView classeTxt;
-
+    private Button deco;
 
 	private TextView pourcentageTxt;
 	private ImageView avatarView;
@@ -52,8 +55,6 @@ public class ProfilActivity extends SherlockActivity{
 	private ListView listStats;
 	
 	private StatsAdapter adapter;
-
-
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +72,7 @@ public class ProfilActivity extends SherlockActivity{
 		nomTxt = (TextView) findViewById(R.id.nom_txt);
 		prenomTxt = (TextView) findViewById(R.id.prenom_txt);
         classeTxt = (TextView) findViewById(R.id.classe_txt);
+        deco = (Button) findViewById(R.id.deco);
 
 		pourcentageTxt = (TextView) findViewById(R.id.pourcentage_txt);
 		avatarView = (ImageView) findViewById(R.id.avatar_view);
@@ -86,7 +88,22 @@ public class ProfilActivity extends SherlockActivity{
 		pourcentageTxt.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/ComicRelief.ttf"));
 
         avatarView.setImageResource(R.drawable.avatar_3);
-        initMatiere();
+
+        if(mApplication.getCurrentClasse().getNiveau().equals(Consts.CLASSE_CP)){
+            Shared.getInstance().setCurrentCategorieList(Shared.getInstance().getCategorieListCp());
+        }else if (mApplication.getCurrentClasse().getNiveau().equals(Consts.CLASSE_CE1)){
+            Shared.getInstance().setCurrentCategorieList(Shared.getInstance().getCategorieListCe1());
+        }
+
+        deco.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+
+		initCategorieList();
 		
 		ActionBarService.initActionBar(this, this.getSupportActionBar(), getString(R.string.profil_titre));
 	}
@@ -96,34 +113,35 @@ public class ProfilActivity extends SherlockActivity{
 		super.onResume();
 		adapter.notifyDataSetChanged();
 	}
-
-    private void initMatiere(){
-        for(final Categorie categorie : mApplication.generateCategorie(this))
-        {
-            View view = getLayoutInflater().inflate(R.layout.categorie_item,null);
-
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT,0,1);
-            params.setMargins(0, 0, 0, UIService.getPx(this, 5));
-            view.setLayoutParams(params);
-
-            TextView txtNom = (TextView) view.findViewById(R.id.categorie_item_txt_nom);
-            txtNom.setBackgroundColor(categorie.getColor());
-            txtNom.setText(categorie.getNom());
-
-            Button btnCat = (Button) view.findViewById(R.id.categorie_item_btn_cat);
-            btnCat.setOnClickListener(new OnClickListener()
-            {
-                @Override
-                public void onClick(View v)
-                {
-                    mApplication.setCurrentCategorie(categorie);
-
-                    Intent intent = new Intent(ProfilActivity.this,SousCategorieActivity.class);
-                    startActivity(intent);
-                }
-            });
-
-            categoriesLayout.addView(view);
-        }
-    }
+	
+	private void initCategorieList()
+	{
+        Log.d("Shared.getInstance().getCurrentCategorieList()", Shared.getInstance().getCurrentCategorieList().toString());
+		for(final Categorie categorie : Shared.getInstance().getCurrentCategorieList())
+		{
+			View view = getLayoutInflater().inflate(R.layout.categorie_item,null);
+			
+			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT,0,1);
+			params.setMargins(0, 0, 0, UIService.getPx(this, 5));
+			view.setLayoutParams(params);
+			
+			TextView txtNom = (TextView) view.findViewById(R.id.categorie_item_txt_nom);
+			txtNom.setBackgroundColor(categorie.getColor());
+			txtNom.setText(categorie.getNom());
+			
+			Button btnCat = (Button) view.findViewById(R.id.categorie_item_btn_cat);
+			btnCat.setOnClickListener(new OnClickListener()
+			{
+				@Override
+				public void onClick(View v)
+				{
+					Shared.getInstance().setCurrentCategorie(categorie);
+					Intent intent = new Intent(ProfilActivity.this,SousCategorieActivity.class);
+					startActivity(intent);
+				}
+			});
+			
+			categoriesLayout.addView(view);
+		}
+	}
 }
