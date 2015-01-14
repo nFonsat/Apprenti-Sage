@@ -46,15 +46,21 @@ public class DataBaseAccess {
         return rowId;
     }
 
-    public long updateDataInDatabase(String table, ContentValues value, String selection, String[] selectionArgs){
+    public long updateDataInDatabase(String table, ContentValues value, long idValue){
         openDbWrite();
+        String selection = table + "_COL_ID  LIKE ?";
+        String[] selectionArgs = new String[] {String.valueOf(idValue)};
         long rowId = mDataBase.update(table, value, selection, selectionArgs);
         closeDataBase();
         return rowId;
     }
 
-    public long deleteDataInDatabase(String table, String selection, String[] selectionArgs){
+    public long deleteDataInDatabase(String table, long id){
         openDbWrite();
+
+        String selection = table + "_COL_ID  LIKE ?";
+        String[] selectionArgs = { String.valueOf(id) };
+
         long rowId = mDataBase.delete(table, selection, selectionArgs);
         closeDataBase();
         return rowId;
@@ -74,5 +80,9 @@ public class DataBaseAccess {
         }
         closeDataBase();
         return value;
+    }
+
+    public boolean idIsConforme(long id){
+        return (id > 0) ? true : false;
     }
 }

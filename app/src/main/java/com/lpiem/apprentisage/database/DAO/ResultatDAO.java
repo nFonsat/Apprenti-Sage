@@ -6,9 +6,7 @@ package com.lpiem.apprentisage.database.DAO;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.util.Log;
 
-import com.lpiem.apprentisage.Consts;
 import com.lpiem.apprentisage.database.ConfigDB;
 import com.lpiem.apprentisage.database.DataBaseAccess;
 import com.lpiem.apprentisage.metier.Eleve;
@@ -24,8 +22,7 @@ public class ResultatDAO extends DataBaseAccess {
     public long ajouter(Resultat resultat, Eleve eleve){
         EleveDAO mEleveDAO = new EleveDAO(mContext);
         long idEleve = mEleveDAO.eleveIsDataBase(eleve);
-        if(idEleve <= 0){
-            Log.d(Consts.TAG_APPLICATION + " : insertResultat : Eleve : idEleve ", String.valueOf(idEleve));
+        if(!idIsConforme(idEleve)){
             return idEleve;
         }
 
@@ -37,9 +34,9 @@ public class ResultatDAO extends DataBaseAccess {
         resultatValue.put(ConfigDB.TABLE_RESULTAT_COL_ID_ELEVE, idEleve);
 
         long idComparaisonResultat = resultatIsDataBase(resultat, idEleve);
-        if(idComparaisonResultat != -1 ) {
-            Log.d(Consts.TAG_APPLICATION + " : insertResultat : Resulat : idComparaisonResultat ", String.valueOf(idComparaisonResultat));
-            return updateDataInDatabase(ConfigDB.TABLE_RESULTAT, resultatValue, ConfigDB.TABLE_RESULTAT_COL_ID  + " LIKE ?", new String[] {String.valueOf(idComparaisonResultat)});
+        if(idIsConforme(idComparaisonResultat)) {
+            resultat.setId(idComparaisonResultat);
+            return updateDataInDatabase(ConfigDB.TABLE_RESULTAT, resultatValue, idComparaisonResultat);
         }
 
         return savingDataInDatabase(ConfigDB.TABLE_RESULTAT, resultatValue);
@@ -48,6 +45,7 @@ public class ResultatDAO extends DataBaseAccess {
     public ArrayList<Resultat> getResultatsByEleve(Eleve eleve) {
         EleveDAO eleveDAO = new EleveDAO(mContext);
         long idEleve = eleveDAO.eleveIsDataBase(eleve);
+        eleve.setId(idEleve);
         String sqlQuery =
                 "SELECT * FROM " + ConfigDB.TABLE_RESULTAT  +
                         " WHERE " + ConfigDB.TABLE_RESULTAT + "." + ConfigDB.TABLE_RESULTAT_COL_ID_ELEVE + " = '" + idEleve + "'";

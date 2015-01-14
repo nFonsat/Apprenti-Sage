@@ -6,9 +6,7 @@ package com.lpiem.apprentisage.database.DAO;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.util.Log;
 
-import com.lpiem.apprentisage.Consts;
 import com.lpiem.apprentisage.database.ConfigDB;
 import com.lpiem.apprentisage.database.DataBaseAccess;
 import com.lpiem.apprentisage.metier.Enseignant;
@@ -23,19 +21,20 @@ public class EnseignantDAO extends DataBaseAccess {
 
     public long ajouter(Enseignant enseignant) {
         long idComparaison = enseignantIsDataBase(enseignant);
-        if(idComparaison != -1 ){
-            Log.d(Consts.TAG_APPLICATION + " : insertEnseignant : Enseignant : idComparaion ", String.valueOf(idComparaison));
+        if(idIsConforme(idComparaison) ){
+            enseignant.setId(idComparaison);
             return idComparaison;
         }
 
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(ConfigDB.TABLE_ENSEIGNANT_COL_NAME, enseignant.getNom());
-        contentValues.put(ConfigDB.TABLE_ENSEIGNANT_COL_PRENOM, enseignant.getPrenom());
-        contentValues.put(ConfigDB.TABLE_ENSEIGNANT_COL_USERNAME, enseignant.getUsername());
-        contentValues.put(ConfigDB.TABLE_ENSEIGNANT_COL_EMAIL, enseignant.getEmail());
-        contentValues.put(ConfigDB.TABLE_ENSEIGNANT_COL_AVATAR, enseignant.getAvatar());
+        ContentValues enseignantValues = new ContentValues();
 
-        return savingDataInDatabase(ConfigDB.TABLE_ENSEIGNANT, contentValues);
+        enseignantValues.put(ConfigDB.TABLE_ENSEIGNANT_COL_NAME, enseignant.getNom());
+        enseignantValues.put(ConfigDB.TABLE_ENSEIGNANT_COL_PRENOM, enseignant.getPrenom());
+        enseignantValues.put(ConfigDB.TABLE_ENSEIGNANT_COL_USERNAME, enseignant.getUsername());
+        enseignantValues.put(ConfigDB.TABLE_ENSEIGNANT_COL_EMAIL, enseignant.getEmail());
+        enseignantValues.put(ConfigDB.TABLE_ENSEIGNANT_COL_AVATAR, enseignant.getAvatar());
+
+        return savingDataInDatabase(ConfigDB.TABLE_ENSEIGNANT, enseignantValues);
     }
 
     public ArrayList<Enseignant> getEnseignants() {
@@ -57,33 +56,10 @@ public class EnseignantDAO extends DataBaseAccess {
         return enseignants;
     }
 
-    public Enseignant getEnseignantByUsername(String username) {
-        String sqlQuery =
-                "SELECT * FROM " + ConfigDB.TABLE_ENSEIGNANT +
-                        " WHERE " + ConfigDB.TABLE_ENSEIGNANT_COL_USERNAME + " = " + username;
-
-        Cursor cursor = sqlRequest(sqlQuery);
-
-        if(cursor.getCount() > 1){
-            return null;
-        }
-
-        Enseignant enseignant = new Enseignant();
-        if((cursor.getCount() == 1) && (cursor.moveToFirst())){
-            ClasseDAO mClasseDAO = new ClasseDAO(mContext);
-            do {
-                enseignant = Cursor2Enseignant(cursor);
-                enseignant.setClasses(mClasseDAO.getClassesByProf(enseignant));
-            }while (cursor.isAfterLast());
-        }
-
-        mDataBase.close();
-        return enseignant;
-    }
-
     private Enseignant Cursor2Enseignant(Cursor cursor) {
         Enseignant enseignant = new Enseignant();
 
+        enseignant.setId(cursor.getInt(cursor.getColumnIndex(ConfigDB.TABLE_ENSEIGNANT_COL_ID)));
         enseignant.setNom(cursor.getString(cursor.getColumnIndex(ConfigDB.TABLE_ENSEIGNANT_COL_NAME)));
         enseignant.setPrenom(cursor.getString(cursor.getColumnIndex(ConfigDB.TABLE_ENSEIGNANT_COL_PRENOM)));
         enseignant.setUsername(cursor.getString(cursor.getColumnIndex(ConfigDB.TABLE_ENSEIGNANT_COL_USERNAME)));
