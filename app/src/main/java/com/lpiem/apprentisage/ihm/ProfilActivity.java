@@ -125,9 +125,9 @@ public class ProfilActivity extends SherlockActivity{
 				@Override
 				public void onClick(View v)
 				{
-					Shared.getInstance().setCurrentCategorie(categorie);
-					Intent intent = new Intent(ProfilActivity.this,SousCategorieActivity.class);
-					startActivity(intent);
+					mApplication.setCurrentCategorie(categorie);
+                    Intent intent = new Intent(ProfilActivity.this, SousCategorieActivity.class);
+                    startActivity(intent);
 				}
 			});
 			
