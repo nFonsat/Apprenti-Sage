@@ -73,9 +73,14 @@ public class AccueilActivity extends SherlockActivity{
         listeEnseignantSpinner = (Spinner) findViewById(R.id.listeEnseignant);
         listeClasseSpinner = (Spinner) findViewById(R.id.listeClasse);
 
+        listeEnseignantSpinner.setAdapter(null);
+        listeClasseSpinner.setAdapter(null);
+        listViewEleve.setAdapter(null);
+
         listeEnseignant = new ArrayList<>(enseignantDAO.getEnseignants());
         adapterEnseignant = new ListeEnseignantAdapter(listeEnseignant, mContext);
         listeEnseignantSpinner.setAdapter(adapterEnseignant);
+
 
         listeEnseignantSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
