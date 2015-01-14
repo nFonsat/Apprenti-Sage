@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 
 import com.actionbarsherlock.app.SherlockActivity;
@@ -22,6 +23,7 @@ public class SerieActivity extends SherlockActivity {
     private SerieAdapter mSerieAdapter;
     private ListView mListSeries;
 
+    private Serie mSerie;
 
     private App mApplication;
 
@@ -33,7 +35,6 @@ public class SerieActivity extends SherlockActivity {
         mApplication = App.getInstance();
         Categorie activite = mApplication.getCurrentActivite();
 
-
         mSerieAdapter = new SerieAdapter(this);
         mListSeries = (ListView)findViewById(R.id.list_series);
         mListSeries.setAdapter(mSerieAdapter);
@@ -43,9 +44,8 @@ public class SerieActivity extends SherlockActivity {
             @Override
             public void onItemClick(AdapterView<?> arg0, View view, int position, long arg3)
             {
-                Serie serie = mApplication.getCurrentActivite().getSerieList().get(position);
-                Log.d("Nom de la serie", serie.getNom());
-                for(Exercice exercice : serie.getExercices()){
+                mSerie = mApplication.getCurrentActivite().getSerieList().get(position);
+                for(Exercice exercice : mSerie.getExercices()){
                     Log.d("Enoncé de l'exercice", exercice.getEnonce());
                 }
             }
@@ -57,5 +57,11 @@ public class SerieActivity extends SherlockActivity {
 
     public void back(View view){
         finish();
+    }
+
+    public void validerReponse(View view){
+        if(mSerie == null){
+            return;
+        }
     }
 }
