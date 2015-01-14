@@ -101,9 +101,11 @@ public class ProfilActivity extends SherlockActivity{
         deco.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                
+                finish();
             }
         });
+
+
 		initCategorieList();
 		
 		ActionBarService.initActionBar(this, this.getSupportActionBar(), getString(R.string.profil_titre));
