@@ -2,71 +2,95 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     android:background="@color/app_backgroung"
     android:weightSum="100" >
 
     <LinearLayout
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="center_vertical"
-        android:layout_weight="50">
-
-        <ImageView
-            android:id="@+id/sub_categorie_img_aide"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="30dp"
-            android:contentDescription="@string/content_description"
-            android:src="@drawable/mascotte"
-            android:layout_weight="10" />
+        android:layout_gravity="center"
+        android:layout_weight="90"
+        android:weightSum="1">
 
         <TextView
-            android:id="@+id/pourcentage_txt"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="15dp"
-            android:text="Pourcentages de réussite:"
-            android:textColor="@color/white"
-            android:textSize="30sp"
-            android:layout_weight="17" />
-
-        <ListView
-            android:id="@+id/profil_list_stats"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="15dp"
-            android:layout_weight="10" />
+            android:text="New Text"
+            android:id="@+id/titreMatiere"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="90" />
     </LinearLayout>
 
     <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center_vertical"
-        android:layout_weight="50">
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="10">
 
-        <ListView
-            android:id="@+id/sub_categorie_list"
-            android:layout_width="854dp"
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="20dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="20dp"
-            android:layout_weight="10" />
+            android:layout_gravity="center_vertical"
+            android:layout_weight="50">
 
-        <Button
-            android:layout_width="wrap_content"
+            <ImageView
+                android:id="@+id/sub_categorie_img_aide"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="30dp"
+                android:contentDescription="@string/content_description"
+                android:src="@drawable/mascotte"
+                android:layout_weight="10" />
+
+            <TextView
+                android:id="@+id/pourcentage_txt"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="15dp"
+                android:text="Pourcentages de réussite:"
+                android:textColor="@color/white"
+                android:textSize="30sp"
+                android:layout_weight="17" />
+
+            <ListView
+                android:id="@+id/profil_list_stats"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="15dp"
+                android:layout_weight="10" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="Retour"
-            android:id="@+id/retour"
-            android:layout_gravity="center"
-            android:layout_weight="90"
-            android:textColor="@color/white"
-            android:textSize="50sp"/>
+            android:layout_gravity="center_vertical"
+            android:layout_weight="50">
+
+            <ListView
+                android:id="@+id/sub_categorie_list"
+                android:layout_width="854dp"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="20dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="20dp"
+                android:layout_weight="10" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="Retour"
+                android:id="@+id/retour"
+                android:layout_gravity="center"
+                android:layout_weight="90"
+                android:textColor="@color/white"
+                android:textSize="50sp"/>
+        </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>
