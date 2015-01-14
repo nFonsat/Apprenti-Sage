@@ -21,21 +21,25 @@ import android.widget.TextView;
 
 import com.lpiem.apprentisage.R;
 import com.lpiem.apprentisage.Shared;
+import com.lpiem.apprentisage.data.App;
 import com.lpiem.apprentisage.model.Categorie;
 
 public class StatsAdapter extends BaseAdapter
 {
 	private Activity context;
+    private App mApplication;
 	
 	public StatsAdapter(Activity context)
 	{
 		this.context = context;
+        mApplication = App.getInstance();
 	}
 	
 	@Override
 	public int getCount()
 	{
-		return Shared.getInstance().getCurrentCategorieList().size();
+		//return Shared.getInstance().getCurrentCategorieList().size();
+        return mApplication.getCurrentCategories().size();
 	}
 
 	@Override
@@ -53,7 +57,7 @@ public class StatsAdapter extends BaseAdapter
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent)
 	{
-		Categorie categorie = Shared.getInstance().getCurrentCategorieList().get(position);
+		Categorie categorie = mApplication.getCurrentCategories().get(position);
 		
 		if(convertView == null)
 		{

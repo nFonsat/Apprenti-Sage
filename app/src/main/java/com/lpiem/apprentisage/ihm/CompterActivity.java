@@ -147,7 +147,7 @@ public class CompterActivity extends SherlockActivity{
 		adapter = new SerieAdapter((Activity) context);
 		serieListView.setAdapter(adapter);
 		
-		maxJetons = Integer.valueOf(Shared.getInstance().getCurrentSubCategorie().getSerieList().get(0).getReponses().get(0));
+		//maxJetons = Integer.valueOf(Shared.getInstance().getCurrentSubCategorie().getSerieList().get(0).getReponses().get(0));
 		
 		serieListView.setOnItemClickListener(new OnItemClickListener() {
 
@@ -157,8 +157,8 @@ public class CompterActivity extends SherlockActivity{
 				reponseEditTxt.setVisibility(View.VISIBLE);
 				infoTxt.setVisibility(View.GONE);
 				
-				currentSerie = Shared.getInstance().getCurrentSubCategorie().getSerieList().get(position);
-				maxJetons = Integer.valueOf(Shared.getInstance().getCurrentSubCategorie().getSerieList().get(position).getReponses().get(0));
+				//currentSerie = Shared.getInstance().getCurrentSubCategorie().getSerieList().get(position);
+				//maxJetons = Integer.valueOf(Shared.getInstance().getCurrentSubCategorie().getSerieList().get(position).getReponses().get(0));
 				
 				adapter.setCurrentIndex(position);
 				adapter.notifyDataSetChanged();

@@ -96,7 +96,7 @@ public class JsonReaderFile {
                         listSerie.add(serie);
                     }
 
-                    subCat.setSerieList(listSerie);
+                    //subCat.setSerieList(listSerie);
                     cat.getSubCategorie().add(subCat);
                 }
 

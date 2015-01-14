@@ -4,7 +4,7 @@
 *
 * Categorie.java
 * 
-* Michael Breton - Clément Bretin
+* Michael Breton - Clï¿½ment Bretin
 * LP IEM - 2014
 *
 *******************************************************************************************************************/
@@ -14,8 +14,11 @@ package com.lpiem.apprentisage.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.lpiem.apprentisage.metier.Serie;
 
 import android.graphics.Color;
+
+import com.lpiem.apprentisage.Utils.ColorApp;
 
 public class Categorie
 {
@@ -31,17 +34,24 @@ public class Categorie
 	public Categorie()
 	{
 		nom = "";
-		color = Color.BLUE;
-		subCategorie = new ArrayList<Categorie>();
-		serieList = new ArrayList<Serie>();
+		color = ColorApp.generateColor();
+		subCategorie = new ArrayList<>();
+		serieList = new ArrayList<>();
 	}
+
+    public Categorie(String nom){
+        this.nom = nom;
+        this.color = ColorApp.generateColor();
+        subCategorie = new ArrayList<>();
+        serieList = new ArrayList<>();
+    }
 	
 	public Categorie(String nom, int color)
 	{
 		this.nom = nom;
 		this.color = color;
-		subCategorie = new ArrayList<Categorie>();
-		serieList = new ArrayList<Serie>();
+		subCategorie = new ArrayList<>();
+		serieList = new ArrayList<>();
 	}
 
 	public String getNom()

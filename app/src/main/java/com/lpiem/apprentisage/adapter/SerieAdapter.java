@@ -53,11 +53,11 @@ public class SerieAdapter extends BaseAdapter
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent)
 	{
-		Serie serie = Shared.getInstance().getCurrentSubCategorie().getSerieList().get(position);
+		//Serie serie = Shared.getInstance().getCurrentSubCategorie().getSerieList().get(position);
 		View view = context.getLayoutInflater().inflate(R.layout.serie_item, null);
 
 		TextView txtNom = (TextView) view.findViewById(R.id.serie_txt_nom);
-		txtNom.setText(serie.getNom());
+		//txtNom.setText(serie.getNom());
 		txtNom.setTypeface(Typeface.createFromAsset(context.getAssets(), "fonts/ComicRelief.ttf"));
 		
 		TextView txtNote = (TextView) view.findViewById(R.id.serie_txt_note);
@@ -66,8 +66,8 @@ public class SerieAdapter extends BaseAdapter
 		if(selectedIndex == position)
 			view.setBackgroundColor(Shared.getInstance().getCurrentCategorie().getColor());
 		
-		if(serie.isFinished())
-			txtNote.setText(serie.getNote() + "/10");
+		//if(serie.isFinished())
+		//	txtNote.setText(serie.getNote() + "/10");
 		
 		return view;
 	}

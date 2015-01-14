@@ -4,7 +4,7 @@
 *
 * RangerActivity.java
 * 
-* Michael Breton - Clément Bretin
+* Michael Breton - Clï¿½ment Bretin
 * LP IEM - 2014
 *
 *******************************************************************************************************************/
@@ -83,7 +83,7 @@ public class RangerActivity extends SherlockActivity
 				
 				btnValider.setVisibility(View.VISIBLE);
 				
-				currentSerie = Shared.getInstance().getCurrentSubCategorie().getSerieList().get(position);
+				//currentSerie = Shared.getInstance().getCurrentSubCategorie().getSerieList().get(position);
 				
 				if(currentSerie.getReponses().size() == 1)
 				{
@@ -133,7 +133,7 @@ public class RangerActivity extends SherlockActivity
 					// Reponse fausse //
 					else
 					{
-						showMessageBox("Tu as fait une erreur, la réponse était : "+listExercice.get(currentPhraseIndex));
+						showMessageBox("Tu as fait une erreur, la rï¿½ponse ï¿½tait : "+listExercice.get(currentPhraseIndex));
 					}
 
 					currentPhraseIndex++;

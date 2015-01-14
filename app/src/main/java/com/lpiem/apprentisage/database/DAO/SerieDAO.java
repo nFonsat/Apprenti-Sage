@@ -6,6 +6,7 @@ package com.lpiem.apprentisage.database.DAO;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.util.Log;
 
 import com.lpiem.apprentisage.database.ConfigDB;
 import com.lpiem.apprentisage.database.DataBaseAccess;
@@ -14,6 +15,7 @@ import com.lpiem.apprentisage.metier.Enseignant;
 import com.lpiem.apprentisage.metier.Serie;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 public class SerieDAO extends DataBaseAccess {
     public SerieDAO(Context context){
@@ -23,7 +25,7 @@ public class SerieDAO extends DataBaseAccess {
     public long ajouter(Serie serie, Enseignant enseignant){
         EnseignantDAO mEnseignantDAO = new EnseignantDAO(mContext);
         long idEnseignant = mEnseignantDAO.enseignantIsDataBase(enseignant);
-        if(idIsConforme(idEnseignant)){
+        if(!idIsConforme(idEnseignant)){
             return -1;
         }
 
@@ -71,7 +73,8 @@ public class SerieDAO extends DataBaseAccess {
     public ArrayList<Serie> getSeriesByClasse(Classe classe, Enseignant enseignant){
         String sqlQuery =
                 "SELECT * FROM " + ConfigDB.TABLE_SERIE  +
-                        " WHERE " + ConfigDB.TABLE_SERIE + "." + ConfigDB.TABLE_SERIE_COL_LEVEL + " = '" + classe.getNiveau() + "'";
+                        " WHERE " + ConfigDB.TABLE_SERIE_COL_LEVEL + " = '" + classe.getNiveau() + "'" +
+                        " AND " + ConfigDB.TABLE_SERIE_COL_ID_ENSEIGNANT  + " = '" + enseignant.getId() + "'";
 
         Cursor cursor = sqlRequest(sqlQuery);
 
@@ -79,9 +82,7 @@ public class SerieDAO extends DataBaseAccess {
         if((cursor.getCount() > 0) && (cursor.moveToFirst())){
             do {
                 Serie serie = Cursor2Serie(cursor);
-                if(serie.isPublic()){
-                    series.add(serie);
-                }
+                series.add(serie);
             }while (cursor.moveToNext());
         }
 
