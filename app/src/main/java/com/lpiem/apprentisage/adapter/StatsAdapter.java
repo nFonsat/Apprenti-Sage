@@ -20,7 +20,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.lpiem.apprentisage.R;
-import com.lpiem.apprentisage.Shared;
 import com.lpiem.apprentisage.data.App;
 import com.lpiem.apprentisage.model.Categorie;
 
@@ -39,7 +38,7 @@ public class StatsAdapter extends BaseAdapter
 	public int getCount()
 	{
 		//return Shared.getInstance().getCurrentCategorieList().size();
-        return mApplication.getCurrentCategories().size();
+        return mApplication.getCurrentMatieres(context).size();
 	}
 
 	@Override
@@ -57,7 +56,7 @@ public class StatsAdapter extends BaseAdapter
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent)
 	{
-		Categorie categorie = mApplication.getCurrentCategories().get(position);
+		Categorie categorie = mApplication.getCurrentMatieres(context).get(position);
 		
 		if(convertView == null)
 		{

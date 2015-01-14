@@ -22,6 +22,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.lpiem.apprentisage.R;
+import com.lpiem.apprentisage.ihm.SerieActivity;
 import com.lpiem.apprentisage.data.App;
 import com.lpiem.apprentisage.ihm.SousCategorieActivity;
 import com.lpiem.apprentisage.model.Categorie;
@@ -36,7 +37,7 @@ public class SubCatAdapter extends BaseAdapter
 	{
 		this.context = context;
         mApplication = App.getInstance();
-        mCurrentCategorie = mApplication.getCurrentCategorie();
+        mCurrentCategorie = mApplication.getCurrentMatiere();
 	}
 	
 	@Override
@@ -65,7 +66,6 @@ public class SubCatAdapter extends BaseAdapter
 	{
 		Categorie categorie = mCurrentCategorie.getSubCategorie().get(position);
 
-
 		View view = context.getLayoutInflater().inflate(R.layout.sub_categorie_item, null);
 		
 		TextView txtTitre = (TextView) view.findViewById(R.id.sub_categorie_item_txt_nom);
@@ -90,14 +90,15 @@ public class SubCatAdapter extends BaseAdapter
 			@Override
 			public void onClick(View v)
 			{
-                mApplication.setCurrentCategorie(mApplication.getCurrentCategorie().getSubCategorie().get(position));
+                Categorie activite = mApplication.getCurrentMatiere().getSubCategorie().get(position);
+                mApplication.setCurrentActivite(activite);
 
-                if(mApplication.getCurrentCategorie().getSubCategorie().size() > 0){
-                    Intent intent = new Intent(context, SousCategorieActivity.class);
-                    context.startActivity(intent);
+                Intent intent = new Intent(context, SerieActivity.class);
+                if(activite.getSubCategorie().size() > 0){
+                     intent = new Intent(context, SousCategorieActivity.class);
                 }
 
-                return;
+                context.startActivity(intent);
 			}
 		});
 		
