@@ -7,7 +7,7 @@ package com.lpiem.apprentisage.metier;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Eleve extends BaseEntity implements Serializable {
+public class Eleve extends BaseEntity {
     private String mAvatar;
     private String mNom;
     private String mPrenom;
