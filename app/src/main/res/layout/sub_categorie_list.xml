@@ -77,7 +77,7 @@
 
             <ListView
                 android:id="@+id/sub_categorie_list"
-                android:layout_width="854dp"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginBottom="20dp"
                 android:layout_marginLeft="10dp"

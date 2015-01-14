@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.lpiem.apprentisage"
     android:versionCode="1"
@@ -5,25 +6,24 @@
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    
+
     <application
+        android:name=".Apprentissage"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/Theme.Sherlock.Light"
-        android:name="com.lpiem.apprentisage.Apprentissage">
+        android:theme="@style/Theme.Sherlock.Light" >
         <activity
-            android:name="com.lpiem.apprentisage.ihm.CategorieActivity"
+            android:name=".ihm.CategorieActivity"
             android:screenOrientation="landscape" />
         <activity
-            android:name="com.lpiem.apprentisage.ihm.SousCategorieActivity"
+            android:name=".ihm.SousCategorieActivity"
             android:screenOrientation="landscape" >
         </activity>
         <activity
-            android:name="com.lpiem.apprentisage.ihm.SplashScreenActivity"
+            android:name=".ihm.SplashScreenActivity"
             android:label="@string/app_name"
             android:screenOrientation="landscape"
             android:theme="@style/Theme.Sherlock.Light.NoActionBar" >
@@ -34,47 +34,51 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.lpiem.apprentisage.ihm.AccueilActivity"
+            android:name=".ihm.AccueilActivity"
             android:label="@string/app_name"
             android:screenOrientation="landscape"
             android:theme="@style/Theme.Sherlock.Light.NoActionBar" >
-
         </activity>
         <activity
-            android:name="com.lpiem.apprentisage.ihm.CreerProfilActivity"
-            android:windowSoftInputMode="adjustPan"
-            android:screenOrientation="landscape" >
+            android:name=".ihm.CreerProfilActivity"
+            android:screenOrientation="landscape"
+            android:windowSoftInputMode="adjustPan" >
         </activity>
         <activity
-            android:name="com.lpiem.apprentisage.ihm.ProfilActivity"
+            android:name=".ihm.ProfilActivity"
             android:screenOrientation="landscape" />
         <activity
-            android:name="com.lpiem.apprentisage.ihm.RangerActivity"
+            android:name=".ihm.RangerActivity"
             android:screenOrientation="landscape" >
         </activity>
         <activity
-            android:name="com.lpiem.apprentisage.ihm.CompterActivity"
-            android:windowSoftInputMode="adjustPan"
+            android:name=".ihm.CompterActivity"
+            android:screenOrientation="landscape"
+            android:windowSoftInputMode="adjustPan" >
+        </activity>
+        <activity
+            android:name=".ihm.LectureActivity"
             android:screenOrientation="landscape" >
         </activity>
         <activity
-            android:name="com.lpiem.apprentisage.ihm.LectureActivity"
-            android:screenOrientation="landscape" >
+            android:name=".ihm.CalculActivity"
+            android:screenOrientation="landscape"
+            android:windowSoftInputMode="adjustPan" >
         </activity>
         <activity
-            android:name="com.lpiem.apprentisage.ihm.CalculActivity"
-            android:windowSoftInputMode="adjustPan"
-            android:screenOrientation="landscape" >
+            android:name=".ihm.ConjugaisonActivity"
+            android:screenOrientation="landscape"
+            android:windowSoftInputMode="adjustPan" >
         </activity>
         <activity
-            android:name="com.lpiem.apprentisage.ihm.ConjugaisonActivity"
-            android:windowSoftInputMode="adjustPan"
-            android:screenOrientation="landscape" >
+            android:name=".ihm.DicteeActivity"
+            android:screenOrientation="landscape"
+            android:windowSoftInputMode="adjustPan" >
         </activity>
         <activity
-            android:name="com.lpiem.apprentisage.ihm.DicteeActivity"
-            android:windowSoftInputMode="adjustPan"
-            android:screenOrientation="landscape" >
+            android:name=".ihm.PrefActivity"
+            android:screenOrientation="landscape"
+            android:windowSoftInputMode="adjustPan" >
         </activity>
     </application>
 
