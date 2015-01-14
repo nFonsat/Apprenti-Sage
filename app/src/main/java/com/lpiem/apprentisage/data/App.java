@@ -18,30 +18,20 @@ import java.util.HashSet;
 public class App {
     private static App mApplication;
 
-    private Enseignant mCurrentEnseignant = new Enseignant();
-    private Classe mCurrentClasse = new Classe();
-    private Eleve mCurrentEleve = new Eleve();
+    private Enseignant mCurrentEnseignant = null;
+    private Classe mCurrentClasse = null;
+    private Eleve mCurrentEleve = null;
+    private Categorie mCurrentCategorie = null;
 
     private ArrayList<Categorie> mCurrentCategories = new ArrayList<>();
     private ArrayList<Serie> mCurrentSeries = new ArrayList<>();
 
-    private Categorie mCurrentCategorie;
 
     public static App getInstance(){
         if(mApplication == null){
             mApplication = new App();
         }
         return mApplication;
-    }
-
-    public void clear(){
-        mCurrentEnseignant = null;
-        mCurrentClasse = null;
-        mCurrentEleve = null;
-        mCurrentCategorie = null;
-
-        mCurrentSeries = new ArrayList<>();
-        mCurrentCategories = new ArrayList<>();
     }
 
     public Enseignant getCurrentEnseignant(){
@@ -62,6 +52,7 @@ public class App {
 
     public void setCurrentClasse(Classe classe){
         mCurrentClasse = classe;
+        mCurrentSeries = new ArrayList<>();
     }
 
     public void setCurrentEleve(Eleve eleve){
@@ -120,14 +111,15 @@ public class App {
     }
 
     public ArrayList<Categorie> generateCategorie(Context context){
-        mCurrentSeries = getSeries(context);
+        ArrayList<Serie> series = getSeries(context);
+        mCurrentCategories = new ArrayList();
 
         for (String matiere : getMatieres(context)){
             Categorie matiereCategorie = new Categorie(matiere);
             for(String activite : getActiviteByMatiere(context, matiere)){
                 Categorie activiteCategorie = new Categorie(activite);
 
-                for (Serie serie : mCurrentSeries){
+                for (Serie serie : series){
                     if(serie.getActivite().equalsIgnoreCase(activite)){
                         activiteCategorie.getSerieList().add(serie);
                     }
