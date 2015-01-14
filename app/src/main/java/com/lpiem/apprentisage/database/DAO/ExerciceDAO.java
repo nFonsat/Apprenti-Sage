@@ -48,7 +48,7 @@ public class ExerciceDAO extends DataBaseAccess {
         exerciceValue.put(ConfigDB.TABLE_EXERCICE_COL_RESPONSES, exercice.getResponses());
         exerciceValue.put(ConfigDB.TABLE_EXERCICE_COL_ID_SERIE, idSerie);
 
-        return savingDataInDatabase(ConfigDB.TABLE_ELEVE, exerciceValue);
+        return savingDataInDatabase(ConfigDB.TABLE_EXERCICE, exerciceValue);
     }
 
     public ArrayList<Exercice> getExercicesBySeries(Serie serie, Enseignant enseignant){
