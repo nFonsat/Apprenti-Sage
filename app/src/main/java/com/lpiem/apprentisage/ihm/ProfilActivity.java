@@ -45,7 +45,6 @@ public class ProfilActivity extends SherlockActivity{
     private TextView classeTxt;
     private Button deco;
 
-
 	private TextView pourcentageTxt;
 	private ImageView avatarView;
 	private LinearLayout categoriesLayout;
@@ -56,8 +55,6 @@ public class ProfilActivity extends SherlockActivity{
 	private ListView listStats;
 	
 	private StatsAdapter adapter;
-
-
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
