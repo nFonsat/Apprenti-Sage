@@ -14,7 +14,6 @@ package com.lpiem.apprentisage.ihm;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
@@ -26,7 +25,6 @@ import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockActivity;
 import com.lpiem.apprentisage.ActionBarService;
-import com.lpiem.apprentisage.Consts;
 import com.lpiem.apprentisage.R;
 import com.lpiem.apprentisage.Shared;
 import com.lpiem.apprentisage.UIService;
@@ -89,12 +87,6 @@ public class ProfilActivity extends SherlockActivity{
 
         avatarView.setImageResource(R.drawable.avatar_3);
 
-        if(mApplication.getCurrentClasse().getNiveau().equals(Consts.CLASSE_CP)){
-            Shared.getInstance().setCurrentCategorieList(Shared.getInstance().getCategorieListCp());
-        }else if (mApplication.getCurrentClasse().getNiveau().equals(Consts.CLASSE_CE1)){
-            Shared.getInstance().setCurrentCategorieList(Shared.getInstance().getCategorieListCe1());
-        }
-
         deco.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -102,8 +94,7 @@ public class ProfilActivity extends SherlockActivity{
             }
         });
 
-
-		initCategorieList();
+		initMatiereList();
 		
 		ActionBarService.initActionBar(this, this.getSupportActionBar(), getString(R.string.profil_titre));
 	}
@@ -114,10 +105,9 @@ public class ProfilActivity extends SherlockActivity{
 		adapter.notifyDataSetChanged();
 	}
 	
-	private void initCategorieList()
+	private void initMatiereList()
 	{
-        Log.d("Shared.getInstance().getCurrentCategorieList()", Shared.getInstance().getCurrentCategorieList().toString());
-		for(final Categorie categorie : Shared.getInstance().getCurrentCategorieList())
+		for(final Categorie categorie : mApplication.generateCategorie(this))
 		{
 			View view = getLayoutInflater().inflate(R.layout.categorie_item,null);
 			
