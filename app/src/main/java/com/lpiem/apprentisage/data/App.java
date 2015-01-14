@@ -10,6 +10,7 @@ import com.lpiem.apprentisage.metier.Classe;
 import com.lpiem.apprentisage.metier.Eleve;
 import com.lpiem.apprentisage.metier.Enseignant;
 import com.lpiem.apprentisage.metier.Serie;
+import com.lpiem.apprentisage.model.Categorie;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -20,15 +21,27 @@ public class App {
     private Enseignant mCurrentEnseignant = new Enseignant();
     private Classe mCurrentClasse = new Classe();
     private Eleve mCurrentEleve = new Eleve();
-    private ArrayList<Serie> mCurrentSeries;
-    private String mCurrentMatiere;
-    private String mCurrentActivite;
+
+    private ArrayList<Categorie> mCurrentCategories = new ArrayList<>();
+    private ArrayList<Serie> mCurrentSeries = new ArrayList<>();
+
+    private Categorie mCurrentCategorie;
 
     public static App getInstance(){
         if(mApplication == null){
             mApplication = new App();
         }
         return mApplication;
+    }
+
+    public void clear(){
+        mCurrentEnseignant = null;
+        mCurrentClasse = null;
+        mCurrentEleve = null;
+        mCurrentCategorie = null;
+
+        mCurrentSeries = new ArrayList<>();
+        mCurrentCategories = new ArrayList<>();
     }
 
     public Enseignant getCurrentEnseignant(){
@@ -63,20 +76,20 @@ public class App {
         return mCurrentSeries;
     }
 
-    public String getCurrentMatiere(){
-        return mCurrentMatiere;
+    public Categorie getCurrentCategorie(){
+        return mCurrentCategorie;
     }
 
-    public String getCurrentActivite(){
-        return mCurrentActivite;
+    public void setCurrentCategorie(Categorie categorie){
+        mCurrentCategorie = categorie;
     }
 
-    public void setCurrentMatiere(String matiere){
-        mCurrentMatiere = matiere;
+    public ArrayList<Categorie> getCurrentCategories(){
+        return mCurrentCategories;
     }
 
-    public void setCurrentActivite(String activite){
-        mCurrentActivite = activite;
+    public void setCurrentCategories(ArrayList<Categorie> categories){
+        mCurrentCategories = categories;
     }
 
     public ArrayList<String> getMatieres(Context context){
@@ -90,15 +103,41 @@ public class App {
         return new ArrayList<>(set);
     }
 
-    public ArrayList<String> getActiviteByMatiere(Context context){
+    public ArrayList<String> getActiviteByMatiere(Context context, String matiere){
         ArrayList<Serie> series = getSeries(context);
+
+        if(matiere == null){
+            matiere.equalsIgnoreCase(mCurrentCategorie.getNom());
+        }
 
         HashSet<String> set = new HashSet<>();
         for (Serie uneSerie : series){
-            if(uneSerie.getMatiere().equalsIgnoreCase(mCurrentActivite))
+            if(uneSerie.getMatiere().equalsIgnoreCase(matiere))
                 set.add(uneSerie.getActivite());
         }
 
         return new ArrayList<>(set);
+    }
+
+    public ArrayList<Categorie> generateCategorie(Context context){
+        mCurrentSeries = getSeries(context);
+
+        for (String matiere : getMatieres(context)){
+            Categorie matiereCategorie = new Categorie(matiere);
+            for(String activite : getActiviteByMatiere(context, matiere)){
+                Categorie activiteCategorie = new Categorie(activite);
+
+                for (Serie serie : mCurrentSeries){
+                    if(serie.getActivite().equalsIgnoreCase(activite)){
+                        activiteCategorie.getSerieList().add(serie);
+                    }
+                }
+
+                matiereCategorie.getSubCategorie().add(activiteCategorie);
+            }
+            mCurrentCategories.add(matiereCategorie);
+        }
+
+        return mCurrentCategories;
     }
 }

@@ -77,7 +77,7 @@ public class CalculActivity extends SherlockActivity
 				editReponse.setVisibility(View.VISIBLE);
 				btnValider.setVisibility(View.VISIBLE);
 				
-				currentSerie = Shared.getInstance().getCurrentSubCategorie().getSerieList().get(position);
+				//currentSerie = Shared.getInstance().getCurrentSubCategorie().getSerieList().get(position);
 				currentTable = Integer.valueOf(currentSerie.getReponses().get(0));
 				
 				serieAdapter.setCurrentIndex(position);

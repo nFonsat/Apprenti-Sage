@@ -4,7 +4,7 @@
 *
 * DicteeActivity.java
 * 
-* Michael Breton - Clément Bretin
+* Michael Breton - Clï¿½ment Bretin
 * LP IEM - 2014
 *
 *******************************************************************************************************************/
@@ -112,7 +112,7 @@ public class DicteeActivity extends SherlockActivity{
 					
 					}else{
 						
-						showMessageBox( "Tu as trouvé " + reponseEditTxt.getText().toString() + " alors que la réponse était " + currentQuestion + " Ton score est de " + nbrBonnesReponses + "/" + nbrReponses);
+						showMessageBox( "Tu as trouvï¿½ " + reponseEditTxt.getText().toString() + " alors que la rï¿½ponse ï¿½tait " + currentQuestion + " Ton score est de " + nbrBonnesReponses + "/" + nbrReponses);
 					}
 					
 					noteTxt.setText("Score : " + nbrBonnesReponses + "/" + nbrReponses);
@@ -174,7 +174,7 @@ public class DicteeActivity extends SherlockActivity{
 				nbrReponses = 0;
 				nbrBonnesReponses = 0;
 				reponseEditTxt.setText("");
-				currentSerie = Shared.getInstance().getCurrentSubCategorie().getSerieList().get(position);
+				//currentSerie = Shared.getInstance().getCurrentSubCategorie().getSerieList().get(position);
 				serieReponseList = (ArrayList<String>) currentSerie.getReponses();
 				currentQuestion = serieReponseList.get(0);
 				nbrQuestion = serieReponseList.size();
@@ -212,7 +212,7 @@ public class DicteeActivity extends SherlockActivity{
 		});
 		
 		setVolumeControlStream(AudioManager.STREAM_MUSIC);
-		ActionBarService.initActionBar(this, getSupportActionBar(), "Dictée");
+		ActionBarService.initActionBar(this, getSupportActionBar(), "Dictï¿½e");
 	}
 	
 	private void resetSerie(){

@@ -159,8 +159,8 @@ public class Shared
 					
 					JSONObject serie = new JSONObject();
 					serie.put("name", catList.get(i).getSubCategorie().get(j).getSerieList().get(x).getNom());
-					serie.put("note", catList.get(i).getSubCategorie().get(j).getSerieList().get(x).getNote());
-					serie.put("finished", catList.get(i).getSubCategorie().get(j).getSerieList().get(x).isFinished());
+					//serie.put("note", catList.get(i).getSubCategorie().get(j).getSerieList().get(x).getNote());
+					//serie.put("finished", catList.get(i).getSubCategorie().get(j).getSerieList().get(x).isFinished());
 					seriesList.put(x, serie);
 				}
 			}
@@ -207,11 +207,11 @@ public class Shared
 						JSONObject serieJSON = seriesJSON.optJSONObject(x);
 						
 						if (profil.getClasse().equals(Consts.CLASSE_CP)){
-							catListCp.get(i).getSubCategorie().get(j).getSerieList().get(x).setNote(serieJSON.optInt("note"));
-							catListCp.get(i).getSubCategorie().get(j).getSerieList().get(x).setFinished(serieJSON.optBoolean("finished"));
+							//catListCp.get(i).getSubCategorie().get(j).getSerieList().get(x).setNote(serieJSON.optInt("note"));
+							//catListCp.get(i).getSubCategorie().get(j).getSerieList().get(x).setFinished(serieJSON.optBoolean("finished"));
 						}else if (profil.getClasse().equals(Consts.CLASSE_CE1)){
-							catListCe1.get(i).getSubCategorie().get(j).getSerieList().get(x).setNote(serieJSON.optInt("note"));
-							catListCe1.get(i).getSubCategorie().get(j).getSerieList().get(x).setFinished(serieJSON.optBoolean("finished"));
+							//catListCe1.get(i).getSubCategorie().get(j).getSerieList().get(x).setNote(serieJSON.optInt("note"));
+							//catListCe1.get(i).getSubCategorie().get(j).getSerieList().get(x).setFinished(serieJSON.optBoolean("finished"));
 						}
 					}
 				}
@@ -338,14 +338,14 @@ public class Shared
 		
 		for(Categorie subCat : categorie.getSubCategorie())
 		{
-			for(Serie serie : subCat.getSerieList())
+			/*for(Serie serie : subCat.getSerieList())
 			{
 				if(serie.isFinished())
 				{
 					moyenne += serie.getNote();
 					nbSerieDone++;
 				}
-			}
+			}*/
 		}
 		
 		categorie.setPourcentage((moyenne/nbSerieDone)*10);

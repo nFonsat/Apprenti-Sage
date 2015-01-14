@@ -4,7 +4,7 @@
 *
 * LectureActivity.java
 * 
-* Michael Breton - Clément Bretin
+* Michael Breton - Clï¿½ment Bretin
 * LP IEM - 2014
 *
 *******************************************************************************************************************/
@@ -82,7 +82,7 @@ public class LectureActivity extends SherlockActivity
 				txtInfos.setText("");
 				btnPlay.setVisibility(View.VISIBLE);
 				
-				currentSerie = Shared.getInstance().getCurrentSubCategorie().getSerieList().get(position);
+				//currentSerie = Shared.getInstance().getCurrentSubCategorie().getSerieList().get(position);
 				listProposition = new ArrayList<String>(currentSerie.getReponses());
 				listReponse = new ArrayList<String>(listProposition);
 
@@ -160,7 +160,7 @@ public class LectureActivity extends SherlockActivity
 					// Reponse Fausse
 					else
 					{
-						showMessageBox("Tu as fait une erreur, la réponse était : "+listReponse.get(currentPhraseIndex));
+						showMessageBox("Tu as fait une erreur, la rï¿½ponse ï¿½tait : "+listReponse.get(currentPhraseIndex));
 					}
 
 					currentPhraseIndex++;

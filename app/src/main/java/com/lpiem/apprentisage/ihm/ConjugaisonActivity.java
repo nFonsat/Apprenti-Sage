@@ -4,7 +4,7 @@
 *
 * ConjugaisonActivity.java
 * 
-* Michael Breton - Clément Bretin
+* Michael Breton - Clï¿½ment Bretin
 * LP IEM - 2014
 *
 *******************************************************************************************************************/
@@ -84,7 +84,7 @@ public class ConjugaisonActivity extends SherlockActivity
 				editReponse.setVisibility(View.VISIBLE);
 				btnValider.setVisibility(View.VISIBLE);
 				
-				currentSerie = Shared.getInstance().getCurrentSubCategorie().getSerieList().get(position);
+				//currentSerie = Shared.getInstance().getCurrentSubCategorie().getSerieList().get(position);
 				listReponse = currentSerie.getReponses();
 				txtInfos.setText("Conjugue le verbe " + currentSerie.getNom() + " au " + Shared.getInstance().getCurrentSubCategorie().getNom() + ".");
 				
@@ -120,7 +120,7 @@ public class ConjugaisonActivity extends SherlockActivity
 				// Reponse fausse //
 				else
 				{
-					showMessageBox("Tu as fait une erreur, la réponse était : " + currentReponse);
+					showMessageBox("Tu as fait une erreur, la rï¿½ponse ï¿½tait : " + currentReponse);
 				}
 
 				currentPhraseIndex++;
