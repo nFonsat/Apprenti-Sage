@@ -39,7 +39,7 @@ import java.util.List;
 public class AccueilActivity extends SherlockActivity{
     private Context mContext;
 
-    public App application;
+    public App mApplication;
 
     private TextView txtTitre;
     private Spinner listeClasseSpinner;
@@ -60,7 +60,9 @@ public class AccueilActivity extends SherlockActivity{
 		setContentView(R.layout.accueil2);
 
         mContext = this;
-        application = App.getInstance();
+
+        mApplication = App.getInstance();
+        mApplication.clear();
 
         EnseignantDAO enseignantDAO = new EnseignantDAO(this);
 
@@ -79,7 +81,7 @@ public class AccueilActivity extends SherlockActivity{
             @Override
             public void onItemSelected(AdapterView<?> arg0, View view, int position, long id) {
                 Enseignant enseignantSelected = listeEnseignant.get(position);
-                application.setCurrentEnseignant(enseignantSelected);
+                mApplication.setCurrentEnseignant(enseignantSelected);
 
                 listeClasse = enseignantSelected.getClasses();
                 adapterClasse = new ListeClasseAdapter(listeClasse, mContext);
@@ -97,7 +99,7 @@ public class AccueilActivity extends SherlockActivity{
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Classe classeSelected = listeClasse.get(position);
-                application.setCurrentClasse(classeSelected);
+                mApplication.setCurrentClasse(classeSelected);
 
                 listeEleve = classeSelected.getEleves();
                 adapterEleve = new ListeEleveAdapter(listeEleve, mContext);
@@ -113,10 +115,9 @@ public class AccueilActivity extends SherlockActivity{
             @Override
             public void onItemClick(AdapterView<?> arg0, View view, int position, long arg3) {
                 Eleve eleveSelected = listeEleve.get(position);
-                application.setCurrentEleve(eleveSelected);
+                mApplication.setCurrentEleve(eleveSelected);
 
                 Intent i = new Intent(mContext, ProfilActivity.class);
-                i.putExtra("eleveCurrent", eleveSelected);
                 startActivity(i);
             }
         });
