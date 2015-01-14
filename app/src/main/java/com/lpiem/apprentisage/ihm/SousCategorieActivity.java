@@ -12,7 +12,6 @@
 package com.lpiem.apprentisage.ihm;
 
 import android.os.Bundle;
-import android.text.TextPaint;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
@@ -43,7 +42,7 @@ public class SousCategorieActivity extends SherlockActivity
 		listCategorie = (ListView) findViewById(R.id.sub_categorie_list);
 
         mApplication = App.getInstance();
-        titreMatiere.setText(mApplication.getCurrentCategorie().getNom());
+        titreMatiere.setText(mApplication.getCurrentMatiere().getNom());
 		listCategorie.setAdapter(new SubCatAdapter(this));
 
         btnRetour.setOnClickListener(new View.OnClickListener() {
@@ -52,7 +51,7 @@ public class SousCategorieActivity extends SherlockActivity
                 finish();
             }
         });
-		
+
 		ActionBarService.initActionBar(this, getSupportActionBar(), getString(R.string.cat_titre));
 	}
 }

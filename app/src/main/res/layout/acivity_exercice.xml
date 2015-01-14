@@ -1,43 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal" android:layout_width="match_parent"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:baselineAligned="false"
+    android:weightSum="4"
     android:background="@color/app_backgroung">
 
     <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="10">
+        android:layout_weight="1"
+        android:orientation="vertical">
 
-        <ListView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/listView"
-            android:layout_weight="80"
-            android:layout_marginLeft="30dp"
-            android:layout_marginTop="30dp"
-            android:layout_marginRight="30dp"
-            android:layout_marginBottom="15dp" />
+            <ListView
+                android:id="@+id/list_series"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="100"
+                android:background="@drawable/rounded_corner_list"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingTop="5dp" />
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Retour"
-            android:id="@+id/btnRetour"
-            android:layout_weight="10"
-            android:layout_gravity="center"
-            android:layout_marginLeft="30dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginRight="30dp"
-            android:layout_marginBottom="30dp"
-            android:textColor="@color/white"
-            android:textSize="50sp" />
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:adjustViewBounds="true"
+                android:src="@drawable/rideau_blanc" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Retour"
+                android:id="@+id/btnRetour"
+                android:onClick="back"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:textColor="@color/white"
+                android:textSize="50sp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp" />
+
     </LinearLayout>
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_weight="90"></LinearLayout>
+        android:layout_weight="3">
+
+    </LinearLayout>
 </LinearLayout>

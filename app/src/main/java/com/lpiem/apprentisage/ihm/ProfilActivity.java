@@ -26,7 +26,6 @@ import android.widget.TextView;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.lpiem.apprentisage.ActionBarService;
 import com.lpiem.apprentisage.R;
-import com.lpiem.apprentisage.Shared;
 import com.lpiem.apprentisage.UIService;
 import com.lpiem.apprentisage.adapter.StatsAdapter;
 import com.lpiem.apprentisage.data.App;
@@ -41,6 +40,7 @@ public class ProfilActivity extends SherlockActivity{
 	private TextView nomTxt;
 	private TextView prenomTxt;
     private TextView classeTxt;
+
     private Button deco;
 
 	private TextView pourcentageTxt;
@@ -107,7 +107,7 @@ public class ProfilActivity extends SherlockActivity{
 	
 	private void initMatiereList()
 	{
-		for(final Categorie categorie : mApplication.generateCategorie(this))
+		for(final Categorie categorie : mApplication.getCurrentMatieres(this))
 		{
 			View view = getLayoutInflater().inflate(R.layout.categorie_item,null);
 			
@@ -125,7 +125,7 @@ public class ProfilActivity extends SherlockActivity{
 				@Override
 				public void onClick(View v)
 				{
-					mApplication.setCurrentCategorie(categorie);
+					mApplication.setCurrentMatiere(categorie);
                     Intent intent = new Intent(ProfilActivity.this, SousCategorieActivity.class);
                     startActivity(intent);
 				}

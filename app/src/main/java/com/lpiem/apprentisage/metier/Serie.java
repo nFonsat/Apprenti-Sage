@@ -17,6 +17,7 @@ public class Serie extends BaseEntity {
 
     public Serie() {
         super();
+        mExercices = new ArrayList<>();
     }
 
     public String getNom(){

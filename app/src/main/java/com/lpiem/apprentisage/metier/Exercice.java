@@ -14,6 +14,7 @@ public class Exercice extends BaseEntity {
 
     public Exercice() {
         super();
+        mResponses = new ArrayList<>();
     }
 
     public String getEnonce(){
