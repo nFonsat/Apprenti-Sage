@@ -21,31 +21,29 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.lpiem.apprentisage.Consts;
 import com.lpiem.apprentisage.R;
-import com.lpiem.apprentisage.Shared;
-import com.lpiem.apprentisage.ihm.CalculActivity;
-import com.lpiem.apprentisage.ihm.CompterActivity;
-import com.lpiem.apprentisage.ihm.ConjugaisonActivity;
-import com.lpiem.apprentisage.ihm.DicteeActivity;
-import com.lpiem.apprentisage.ihm.LectureActivity;
-import com.lpiem.apprentisage.ihm.RangerActivity;
+import com.lpiem.apprentisage.data.App;
+import com.lpiem.apprentisage.ihm.SousCategorieActivity;
 import com.lpiem.apprentisage.model.Categorie;
 
 public class SubCatAdapter extends BaseAdapter
 {
 	private Activity context;
+    private App mApplication;
+    private Categorie mCurrentCategorie;
 	
 	public SubCatAdapter(Activity context)
 	{
 		this.context = context;
+        mApplication = App.getInstance();
+        mCurrentCategorie = mApplication.getCurrentCategorie();
 	}
 	
 	@Override
 	public int getCount()
 	{
-		if(Shared.getInstance().getCurrentCategorie() != null && Shared.getInstance().getCurrentCategorie().getSubCategorie() != null)
-			return Shared.getInstance().getCurrentCategorie().getSubCategorie().size();
+		if(mCurrentCategorie != null && mCurrentCategorie.getSubCategorie() != null)
+			return mCurrentCategorie.getSubCategorie().size();
 		
 		return 0;
 	}
@@ -65,13 +63,15 @@ public class SubCatAdapter extends BaseAdapter
 	@Override
 	public View getView(final int position, View convertView, ViewGroup parent)
 	{
-		Categorie categorie = Shared.getInstance().getCurrentCategorie().getSubCategorie().get(position);
+		Categorie categorie = mCurrentCategorie.getSubCategorie().get(position);
+
+
 		View view = context.getLayoutInflater().inflate(R.layout.sub_categorie_item, null);
 		
 		TextView txtTitre = (TextView) view.findViewById(R.id.sub_categorie_item_txt_nom);
 		txtTitre.setText(categorie.getNom());
 		txtTitre.setTypeface(Typeface.createFromAsset(context.getAssets(), "fonts/ComicRelief.ttf"));
-		txtTitre.setBackgroundColor(Shared.getInstance().getCurrentCategorie().getColor());
+		txtTitre.setBackgroundColor(mCurrentCategorie.getColor());
 		
 		TextView txtSerie = (TextView) view.findViewById(R.id.sub_categorie_item_txt_success);
 		
@@ -90,33 +90,14 @@ public class SubCatAdapter extends BaseAdapter
 			@Override
 			public void onClick(View v)
 			{
-				Shared.getInstance().setCurrentSubCategorie(Shared.getInstance().getCurrentCategorie().getSubCategorie().get(position));
-				
-				if(Shared.getInstance().getCurrentSubCategorie().getMode().equals(Consts.MODE_RANGER))
-				{
-					Intent intent = new Intent(context, RangerActivity.class);
-					context.startActivity(intent);
-				}
-				else if (Shared.getInstance().getCurrentSubCategorie().getMode().equals(Consts.MODE_COMPTER)){
-					Intent i = new Intent(context, CompterActivity.class);
-					context.startActivity(i);
-				}
-				else if (Shared.getInstance().getCurrentSubCategorie().getMode().equals(Consts.MODE_LECTURE)){
-					Intent i = new Intent(context, LectureActivity.class);
-					context.startActivity(i);
-				}
-				else if (Shared.getInstance().getCurrentSubCategorie().getMode().equals(Consts.MODE_CALCUL)){
-					Intent i = new Intent(context, CalculActivity.class);
-					context.startActivity(i);
-				}
-				else if (Shared.getInstance().getCurrentSubCategorie().getMode().equals(Consts.MODE_CONJUGAISON)){
-					Intent i = new Intent(context, ConjugaisonActivity.class);
-					context.startActivity(i);
-				}
-				else if (Shared.getInstance().getCurrentSubCategorie().getMode().equals(Consts.MODE_DICTEE)){
-					Intent i = new Intent(context, DicteeActivity.class);
-					context.startActivity(i);
-				}
+                mApplication.setCurrentCategorie(mApplication.getCurrentCategorie().getSubCategorie().get(position));
+
+                if(mApplication.getCurrentCategorie().getSubCategorie().size() > 0){
+                    Intent intent = new Intent(context, SousCategorieActivity.class);
+                    context.startActivity(intent);
+                }
+
+                return;
 			}
 		});
 		
