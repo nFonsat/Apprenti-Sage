@@ -43,6 +43,7 @@ public class ProfilActivity extends SherlockActivity{
 	private TextView nomTxt;
 	private TextView prenomTxt;
     private TextView classeTxt;
+    private Button deco;
 
 
 	private TextView pourcentageTxt;
@@ -74,6 +75,7 @@ public class ProfilActivity extends SherlockActivity{
 		nomTxt = (TextView) findViewById(R.id.nom_txt);
 		prenomTxt = (TextView) findViewById(R.id.prenom_txt);
         classeTxt = (TextView) findViewById(R.id.classe_txt);
+        deco = (Button) findViewById(R.id.deco);
 
 		pourcentageTxt = (TextView) findViewById(R.id.pourcentage_txt);
 		avatarView = (ImageView) findViewById(R.id.avatar_view);
@@ -90,16 +92,18 @@ public class ProfilActivity extends SherlockActivity{
 
         avatarView.setImageResource(R.drawable.avatar_3);
 
-        Log.d("mApplication.getCurrentClasse().getNiveau()", mApplication.getCurrentClasse().getNiveau());
-        Log.d("mApplication.getCurrentClasse().getNiveau().equals(Consts.CLASSE_CP)", String.valueOf(mApplication.getCurrentClasse().getNiveau().equals(Consts.CLASSE_CP)));
-        Log.d("mApplication.getCurrentClasse().getNiveau().equals(Consts.CLASSE_CE1)", String.valueOf(mApplication.getCurrentClasse().getNiveau().equals(Consts.CLASSE_CE1)));
-
         if(mApplication.getCurrentClasse().getNiveau().equals(Consts.CLASSE_CP)){
             Shared.getInstance().setCurrentCategorieList(Shared.getInstance().getCategorieListCp());
         }else if (mApplication.getCurrentClasse().getNiveau().equals(Consts.CLASSE_CE1)){
             Shared.getInstance().setCurrentCategorieList(Shared.getInstance().getCategorieListCe1());
         }
-		
+
+        deco.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                
+            }
+        });
 		initCategorieList();
 		
 		ActionBarService.initActionBar(this, this.getSupportActionBar(), getString(R.string.profil_titre));

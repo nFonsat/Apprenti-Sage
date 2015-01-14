@@ -84,6 +84,7 @@ public class AccueilActivity extends SherlockActivity{
                 listeClasse = enseignantSelected.getClasses();
                 adapterClasse = new ListeClasseAdapter(listeClasse, mContext);
                 listeClasseSpinner.setAdapter(adapterClasse);
+                listViewEleve.setAdapter(null);
             }
 
             @Override
