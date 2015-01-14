@@ -15,6 +15,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -62,7 +63,6 @@ public class AccueilActivity extends SherlockActivity{
         mContext = this;
 
         mApplication = App.getInstance();
-        mApplication.clear();
 
         EnseignantDAO enseignantDAO = new EnseignantDAO(this);
 
@@ -124,4 +124,9 @@ public class AccueilActivity extends SherlockActivity{
 
 	}
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        adapterEnseignant.notifyDataSetChanged();
+    }
 }
