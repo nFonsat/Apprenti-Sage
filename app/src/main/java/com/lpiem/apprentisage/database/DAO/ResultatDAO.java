@@ -44,7 +44,8 @@ public class ResultatDAO extends DataBaseAccess {
         long idComparaisonResultat = resultatIsDataBase(resultat);
         if(idIsConforme(idComparaisonResultat)) {
             resultat.setId(idComparaisonResultat);
-            return updateDataInDatabase(ConfigDB.TABLE_RESULTAT, resultatValue, idComparaisonResultat);
+            return idComparaisonResultat;
+            //return updateDataInDatabase(ConfigDB.TABLE_RESULTAT, resultatValue, idComparaisonResultat);
         }
 
         return savingDataInDatabase(ConfigDB.TABLE_RESULTAT, resultatValue);
@@ -101,9 +102,10 @@ public class ResultatDAO extends DataBaseAccess {
         String sqlQuery =
                 "SELECT * FROM " + ConfigDB.TABLE_RESULTAT  +
                         " WHERE " + ConfigDB.TABLE_RESULTAT_COL_ID_ELEVE + " = '" + mEleve.getId() + "'" +
-                        " AND " + ConfigDB.TABLE_RESULTAT_COL_NAME + " = '" + serie.getActivite() + "'" +
-                        " AND " + ConfigDB.TABLE_RESULTAT_COL_TYPE + " = '" + TypeResultat.RESULTAT_SERIE.getType() + "'" +
-                        " AND " + ConfigDB.TABLE_RESULTAT_COL_ID_CORRESPONDANT + " = '" + serie.getId() + "'";
+                        " AND " + ConfigDB.TABLE_RESULTAT_COL_NAME + " = '" + serie.getId() + "'" +
+                        " AND " + ConfigDB.TABLE_RESULTAT_COL_TYPE + " = '" + TypeResultat.RESULTAT_EXERCICE.getType() + "'";
+
+        Log.d("Ma requete SQL", sqlQuery);
 
         Cursor cursor = sqlRequest(sqlQuery);
 
@@ -127,7 +129,7 @@ public class ResultatDAO extends DataBaseAccess {
         String sqlQuery =
                 "SELECT * FROM " + ConfigDB.TABLE_RESULTAT  +
                         " WHERE " + ConfigDB.TABLE_RESULTAT_COL_ID_ELEVE + " = '" + mEleve.getId() + "'" +
-                        " AND " + ConfigDB.TABLE_RESULTAT_COL_TYPE + " = '" + TypeResultat.RESULTAT_ACTIVITE.getType() + "'" +
+                        " AND " + ConfigDB.TABLE_RESULTAT_COL_TYPE + " = '" + TypeResultat.RESULTAT_SERIE.getType() + "'" +
                         " AND " + ConfigDB.TABLE_RESULTAT_COL_NAME + " = '" + activite + "'" ;
 
         Cursor cursor = sqlRequest(sqlQuery);
@@ -151,7 +153,7 @@ public class ResultatDAO extends DataBaseAccess {
         String sqlQuery =
                 "SELECT * FROM " + ConfigDB.TABLE_RESULTAT  +
                         " WHERE " + ConfigDB.TABLE_RESULTAT_COL_ID_ELEVE + " = '" + mEleve.getId() + "'" +
-                        " AND " + ConfigDB.TABLE_RESULTAT_COL_TYPE + " = '" + TypeResultat.RESULTAT_MATIERE.getType() + "'" +
+                        " AND " + ConfigDB.TABLE_RESULTAT_COL_TYPE + " = '" + TypeResultat.RESULTAT_ACTIVITE.getType() + "'" +
                         " AND " + ConfigDB.TABLE_RESULTAT_COL_NAME + " = '" + serie.getMatiere() + "'" ;
 
         Cursor cursor = sqlRequest(sqlQuery);
@@ -172,6 +174,7 @@ public class ResultatDAO extends DataBaseAccess {
     public Resultat Cursor2Resultat(Cursor cursor) {
         Resultat resultat = new Resultat();
 
+        resultat.setId(cursor.getLong(cursor.getColumnIndex(ConfigDB.TABLE_RESULTAT_COL_ID)));
         resultat.setNom(cursor.getString(cursor.getColumnIndex(ConfigDB.TABLE_RESULTAT_COL_NAME)));
         resultat.setType(cursor.getString(cursor.getColumnIndex(ConfigDB.TABLE_RESULTAT_COL_TYPE)));
         resultat.setIdTableCorrespondant(cursor.getInt(cursor.getColumnIndex(ConfigDB.TABLE_RESULTAT_COL_ID_CORRESPONDANT)));
