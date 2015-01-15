@@ -1,3 +1,6 @@
+/**
+ * Created by Nicolas on 11/01/2015.
+ */
 package com.lpiem.apprentisage.database;
 
 import android.content.Context;
@@ -7,9 +10,6 @@ import android.util.Log;
 
 import com.lpiem.apprentisage.Consts;
 
-/**
- * Created by Nicolas on 11/01/2015.
- */
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     public DatabaseHelper(Context context) {
@@ -18,7 +18,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        Log.d(Consts.TAG_APPLICATION + " : DatabaseHelper : onUpgrade() :", "Creation table database");
+        Log.d(Consts.TAG_APPLICATION, "Creation database");
         db.execSQL(ConfigDB.CREATE_SCHEMA_ENSEIGNANT);
         db.execSQL(ConfigDB.CREATE_SCHEMA_CLASSE);
         db.execSQL(ConfigDB.CREATE_SCHEMA_ENSEIGNANT_CLASSE);
@@ -30,10 +30,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        Log.d(Consts.TAG_APPLICATION + " : DatabaseHelper : onUpgrade() :", "Modification database");
-        String textOldVersion = "oldVersion : " + oldVersion;
-        String textNewVersion = "newVersion : " + newVersion;
-        Log.d(Consts.TAG_APPLICATION + " : DatabaseHelper : onUpgrade() : listText", textOldVersion + " : " + textNewVersion);
+        Log.d(Consts.TAG_APPLICATION, "Upgrade database");
         db.execSQL(ConfigDB.DELETE_TABLE_EXERCICE);
         db.execSQL(ConfigDB.DELETE_TABLE_SERIE);
         db.execSQL(ConfigDB.DELETE_TABLE_RESULTAT);
@@ -46,7 +43,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        Log.d(Consts.TAG_APPLICATION + " : DatabaseHelper : onUpgrade() :", "Remise database");
+        Log.d(Consts.TAG_APPLICATION, "Downgrade database");
         onUpgrade(db, oldVersion, newVersion);
     }
 }

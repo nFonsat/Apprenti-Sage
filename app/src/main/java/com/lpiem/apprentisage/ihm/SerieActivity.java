@@ -2,6 +2,7 @@ package com.lpiem.apprentisage.ihm;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,9 +15,12 @@ import com.lpiem.apprentisage.ActionBarService;
 import com.lpiem.apprentisage.R;
 import com.lpiem.apprentisage.adapter.SerieAdapter;
 import com.lpiem.apprentisage.data.App;
+import com.lpiem.apprentisage.database.DAO.ResultatDAO;
 import com.lpiem.apprentisage.fragment.AudioFragment;
 import com.lpiem.apprentisage.fragment.TextFragment;
+import com.lpiem.apprentisage.metier.Eleve;
 import com.lpiem.apprentisage.metier.Exercice;
+import com.lpiem.apprentisage.metier.Resultat;
 import com.lpiem.apprentisage.metier.Serie;
 import com.lpiem.apprentisage.model.Categorie;
 
@@ -27,9 +31,14 @@ public class SerieActivity extends SherlockActivity {
     private ListView mListSeries;
 
     private Fragment mFragment;
+    private Context mContext;
 
-    private Serie mSerie;
-    private Exercice mExercice;
+    private Categorie mActivite;
+    private Serie mCurrentSerie;
+    private Exercice mCurrentExercice;
+
+    private Eleve mCurrentEleve;
+    private Resultat mResultat;
 
     private App mApplication;
 
@@ -38,8 +47,11 @@ public class SerieActivity extends SherlockActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.acivity_exercice);
 
+        mContext = getApplicationContext();
+
         mApplication = App.getInstance();
-        Categorie activite = mApplication.getCurrentActivite();
+        mCurrentEleve = mApplication.getCurrentEleve();
+        mActivite = mApplication.getCurrentActivite();
 
         mSerieAdapter = new SerieAdapter(this);
         mListSeries = (ListView)findViewById(R.id.list_series);
@@ -48,26 +60,28 @@ public class SerieActivity extends SherlockActivity {
         mListSeries.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
             @Override
-            public void onItemClick(AdapterView<?> arg0, View view, int position, long arg3)
-            {
-                mSerie = mApplication.getCurrentActivite().getSerieList().get(position);
-                for(Exercice exercice : mSerie.getExercices()){
-                    mExercice = exercice;
-                    Log.d("Enoncé de l'exercice", exercice.getEnonce());
-                    switchFragment(mExercice);
+            public void onItemClick(AdapterView<?> arg0, View view, int position, long arg3) {
+                mCurrentSerie = mActivite.getSerieList().get(position);
+                mCurrentExercice = mCurrentSerie.nextExercice(mCurrentEleve, mContext);
+                if(mCurrentExercice == null ){
+                    return;
                 }
+
+                Log.d("Enonce du prochain exercice", mCurrentExercice.getEnonce());
+                switchFragment(mCurrentExercice);
             }
         });
 
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
-        ActionBarService.initActionBar(this, this.getSupportActionBar(), activite.getNom());
+        ActionBarService.initActionBar(this, this.getSupportActionBar(), mActivite.getNom());
     }
 
     private void switchFragment(Exercice exercice) {
-        if(mFragment == null) {
+        /*if(mFragment == null) {
             return;
-        }
+        }*/
 
+        Log.d("Type d'exercice", mCurrentExercice.getEnonce());
         switch (exercice.getType()){
             case "text":
                 mFragment = new TextFragment();
@@ -90,15 +104,19 @@ public class SerieActivity extends SherlockActivity {
     }
 
     public void validerReponse(View view){
-        if(mSerie == null || mExercice == null){
+        if(mCurrentSerie == null || mCurrentExercice == null){
             return;
         }
 
         String maReponse = ((TextFragment) mFragment).getResponse();
 
-        for(String uneReponse : mExercice.getResponses()){
+        for(String uneReponse : mCurrentExercice.getResponses()){
             if(uneReponse.equalsIgnoreCase(maReponse)){
                 Log.d("Bravo", "Tu as la bonne reponse");
+                mResultat = new Resultat();
+
+                ResultatDAO mResultatDAO = new ResultatDAO(mContext, mCurrentEleve);
+                mResultatDAO.ajouter(mResultat);
             }
         }
     }

@@ -14,6 +14,7 @@ package com.lpiem.apprentisage.ihm;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
@@ -107,7 +108,7 @@ public class ProfilActivity extends SherlockActivity{
 	
 	private void initMatiereList()
 	{
-		for(final Categorie categorie : mApplication.getCurrentMatieres(this))
+		for(final Categorie matiere : mApplication.getCurrentMatieres(this))
 		{
 			View view = getLayoutInflater().inflate(R.layout.categorie_item,null);
 			
@@ -116,8 +117,8 @@ public class ProfilActivity extends SherlockActivity{
 			view.setLayoutParams(params);
 			
 			TextView txtNom = (TextView) view.findViewById(R.id.categorie_item_txt_nom);
-			txtNom.setBackgroundColor(categorie.getColor());
-			txtNom.setText(categorie.getNom());
+			txtNom.setBackgroundColor(matiere.getColor());
+			txtNom.setText(matiere.getNom());
 			
 			Button btnCat = (Button) view.findViewById(R.id.categorie_item_btn_cat);
 			btnCat.setOnClickListener(new OnClickListener()
@@ -125,7 +126,7 @@ public class ProfilActivity extends SherlockActivity{
 				@Override
 				public void onClick(View v)
 				{
-					mApplication.setCurrentMatiere(categorie);
+					mApplication.setCurrentMatiere(matiere);
                     Intent intent = new Intent(ProfilActivity.this, SousCategorieActivity.class);
                     startActivity(intent);
 				}

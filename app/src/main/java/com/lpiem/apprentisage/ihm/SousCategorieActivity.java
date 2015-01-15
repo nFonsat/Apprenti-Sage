@@ -11,9 +11,8 @@
 
 package com.lpiem.apprentisage.ihm;
 
-import android.graphics.Typeface;
 import android.os.Bundle;
-import android.text.TextPaint;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
@@ -45,16 +44,16 @@ public class SousCategorieActivity extends SherlockActivity
 
         mApplication = App.getInstance();
         titreMatiere.setText(mApplication.getCurrentMatiere().getNom());
-        titreMatiere.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/Craie.ttf"));
 		listCategorie.setAdapter(new SubCatAdapter(this));
 
         btnRetour.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
+                mApplication.setCurrentMatiere(null);
             }
         });
-		
+
 		ActionBarService.initActionBar(this, getSupportActionBar(), getString(R.string.cat_titre));
 	}
 }
