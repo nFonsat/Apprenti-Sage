@@ -66,9 +66,9 @@ public class SubCatAdapter extends BaseAdapter
 		Categorie categorie = mCurrentCategorie.getSubCategorie().get(position);
 
 
-		View view = context.getLayoutInflater().inflate(R.layout.sub_categorie_item, null);
+		View view = context.getLayoutInflater().inflate(R.layout.serie_item, null);
 		
-		TextView txtTitre = (TextView) view.findViewById(R.id.sub_categorie_item_txt_nom);
+		TextView txtTitre = (TextView) view.findViewById(R.id.serie_txt_nom);
 		txtTitre.setText(categorie.getNom());
 		txtTitre.setTypeface(Typeface.createFromAsset(context.getAssets(), "fonts/ComicRelief.ttf"));
 		txtTitre.setBackgroundColor(mCurrentCategorie.getColor());
