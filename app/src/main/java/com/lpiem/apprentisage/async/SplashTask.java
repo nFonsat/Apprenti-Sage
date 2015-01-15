@@ -72,7 +72,7 @@ public class SplashTask extends AsyncTask<Void, Void, String[]>{
 
     @Override
     protected String[] doInBackground(Void... params) {
-        RestApiCall api = new RestApiCall(ConfigNetwork.URL_LOCALHOST_IEM_LIST_ENSEIGNANT);
+        RestApiCall api = new RestApiCall(ConfigNetwork.URL_LOCALHOST_NICOLAS_LIST_ENSEIGNANT);
 
         api.executeRequest(RestApiCall.RestApiCallMethod.GET);
         String[] responses = new String[2];

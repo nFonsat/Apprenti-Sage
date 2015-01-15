@@ -16,6 +16,7 @@ public class Eleve extends BaseEntity {
 
     public Eleve(){
         super();
+        mResultats = new ArrayList<>();
     }
 
     public String getNom() {

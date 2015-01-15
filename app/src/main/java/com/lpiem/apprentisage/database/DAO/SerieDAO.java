@@ -58,9 +58,11 @@ public class SerieDAO extends DataBaseAccess {
         Cursor cursor = sqlRequest(sqlQuery);
 
         ArrayList<Serie> series = new ArrayList<>();
+        ExerciceDAO mExerciceDAO = new ExerciceDAO(mContext);
         if((cursor.getCount() > 0) && (cursor.moveToFirst())){
             do{
                 Serie serie = Cursor2Serie(cursor);
+                serie.setExercices(mExerciceDAO.getExercicesBySeries(serie, enseignant));
                 series.add(serie);
             }
             while(cursor.moveToNext());
@@ -79,9 +81,11 @@ public class SerieDAO extends DataBaseAccess {
         Cursor cursor = sqlRequest(sqlQuery);
 
         ArrayList<Serie> series = new ArrayList<>();
+        ExerciceDAO mExerciceDAO = new ExerciceDAO(mContext);
         if((cursor.getCount() > 0) && (cursor.moveToFirst())){
             do {
                 Serie serie = Cursor2Serie(cursor);
+                serie.setExercices(mExerciceDAO.getExercicesBySeries(serie, enseignant));
                 series.add(serie);
             }while (cursor.moveToNext());
         }

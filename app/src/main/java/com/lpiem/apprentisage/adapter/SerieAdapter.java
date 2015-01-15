@@ -19,23 +19,26 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.lpiem.apprentisage.R;
-import com.lpiem.apprentisage.Shared;
-import com.lpiem.apprentisage.model.Serie;
+import com.lpiem.apprentisage.data.App;
+
+import com.lpiem.apprentisage.metier.Serie;
 
 public class SerieAdapter extends BaseAdapter
 {
 	private int selectedIndex = -1;
-	private Activity context;
+	private Activity mContext;
+
+    private App mApplication;
 	
-	public SerieAdapter(Activity context)
-	{
-		this.context = context;
+	public SerieAdapter(Activity context){
+		this.mContext = context;
+        mApplication = App.getInstance();
 	}
 	
 	@Override
 	public int getCount()
 	{
-		return Shared.getInstance().getCurrentSubCategorie().getSerieList().size();
+        return mApplication.getCurrentActivite().getSerieList().size();
 	}
 
 	@Override
@@ -53,18 +56,18 @@ public class SerieAdapter extends BaseAdapter
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent)
 	{
-		//Serie serie = Shared.getInstance().getCurrentSubCategorie().getSerieList().get(position);
-		View view = context.getLayoutInflater().inflate(R.layout.serie_item, null);
+		Serie serie = mApplication.getCurrentActivite().getSerieList().get(position);
+		View view = mContext.getLayoutInflater().inflate(R.layout.serie_item, null);
 
 		TextView txtNom = (TextView) view.findViewById(R.id.serie_txt_nom);
-		//txtNom.setText(serie.getNom());
-		txtNom.setTypeface(Typeface.createFromAsset(context.getAssets(), "fonts/ComicRelief.ttf"));
+		txtNom.setText(serie.getNom());
+		txtNom.setTypeface(Typeface.createFromAsset(mContext.getAssets(), "fonts/ComicRelief.ttf"));
 		
 		TextView txtNote = (TextView) view.findViewById(R.id.serie_txt_note);
-		txtNote.setTypeface(Typeface.createFromAsset(context.getAssets(), "fonts/ComicRelief.ttf"));
+		txtNote.setTypeface(Typeface.createFromAsset(mContext.getAssets(), "fonts/ComicRelief.ttf"));
 		
 		if(selectedIndex == position)
-			view.setBackgroundColor(Shared.getInstance().getCurrentCategorie().getColor());
+			view.setBackgroundColor(mApplication.getCurrentActivite().getColor());
 		
 		//if(serie.isFinished())
 		//	txtNote.setText(serie.getNote() + "/10");

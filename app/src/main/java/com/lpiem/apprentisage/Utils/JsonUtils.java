@@ -109,15 +109,19 @@ public class JsonUtils {
 
     public static Exercice jsonToExercice(JSONObject object) throws JSONException {
         Exercice exercice = new Exercice();
-        exercice.setEnonce(object.getString(""));
-        exercice.setMedia(object.getString(""));
-        exercice.setType(object.getString(""));
+        exercice.setEnonce(object.getString("label"));
+
+        JSONObject media = object.getJSONObject("media");
+        exercice.setType(media.getString("media"));
+
+
+        //exercice.setMedia(object.getString(""));
 
         ArrayList<String> responses = new ArrayList<>();
-        JSONArray responsesJson = object.getJSONArray("responses");
+        JSONArray responsesJson = object.getJSONArray("reponses");
         for (int i = 0; i < responsesJson.length(); i++){
-            String response = responsesJson.getString(i);
-            responses.add(response);
+            JSONObject objectReponse = responsesJson.getJSONObject(i);
+            responses.add(objectReponse.getString("label"));
         }
         exercice.setResponses(responses);
 

@@ -6,10 +6,12 @@ package com.lpiem.apprentisage.data;
 import android.content.Context;
 
 import com.lpiem.apprentisage.database.DAO.SerieDAO;
+
 import com.lpiem.apprentisage.metier.Classe;
 import com.lpiem.apprentisage.metier.Eleve;
 import com.lpiem.apprentisage.metier.Enseignant;
 import com.lpiem.apprentisage.metier.Serie;
+
 import com.lpiem.apprentisage.model.Categorie;
 
 import java.util.ArrayList;
@@ -21,9 +23,11 @@ public class App {
     private Enseignant mCurrentEnseignant = null;
     private Classe mCurrentClasse = null;
     private Eleve mCurrentEleve = null;
-    private Categorie mCurrentCategorie = null;
 
-    private ArrayList<Categorie> mCurrentCategories = new ArrayList<>();
+    private Categorie mLastMatiereSelected = null;
+    private Categorie mLastActiviteSelected = null;
+
+    private ArrayList<Categorie> mCurrentMatieres = new ArrayList<>();
     private ArrayList<Serie> mCurrentSeries = new ArrayList<>();
 
 
@@ -67,23 +71,53 @@ public class App {
         return mCurrentSeries;
     }
 
-    public Categorie getCurrentCategorie(){
-        return mCurrentCategorie;
+    public Categorie getCurrentMatiere(){
+        return mLastMatiereSelected;
     }
 
-    public void setCurrentCategorie(Categorie categorie){
-        mCurrentCategorie = categorie;
+    public void setCurrentMatiere(Categorie categorie){
+        mLastMatiereSelected = categorie;
     }
 
-    public ArrayList<Categorie> getCurrentCategories(){
-        return mCurrentCategories;
+    public Categorie getCurrentActivite(){
+        return mLastActiviteSelected;
     }
 
-    public void setCurrentCategories(ArrayList<Categorie> categories){
-        mCurrentCategories = categories;
+    public void setCurrentActivite(Categorie categorie){
+        mLastActiviteSelected = categorie;
     }
 
-    public ArrayList<String> getMatieres(Context context){
+    public ArrayList<Categorie> getCurrentMatieres(Context context){
+        if(mCurrentMatieres.size() == 0){
+            generateMatiere(context);
+        }
+        return mCurrentMatieres;
+    }
+
+    private ArrayList<Categorie> generateMatiere(Context context){
+        ArrayList<Serie> series = getSeries(context);
+        mCurrentMatieres = new ArrayList();
+
+        for (String matiere : getListMatieres(context)){
+            Categorie matiereCategorie = new Categorie(matiere);
+            for(String activite : getActiviteByMatiere(context, matiere)){
+                Categorie activiteCategorie = new Categorie(activite);
+
+                for (Serie serie : series){
+                    if(serie.getActivite().equalsIgnoreCase(activite)){
+                        activiteCategorie.getSerieList().add(serie);
+                    }
+                }
+
+                matiereCategorie.getSubCategorie().add(activiteCategorie);
+            }
+            mCurrentMatieres.add(matiereCategorie);
+        }
+
+        return mCurrentMatieres;
+    }
+
+    public ArrayList<String> getListMatieres(Context context){
         ArrayList<Serie> series = getSeries(context);
 
         HashSet<String> set = new HashSet<>();
@@ -98,7 +132,7 @@ public class App {
         ArrayList<Serie> series = getSeries(context);
 
         if(matiere == null){
-            matiere.equalsIgnoreCase(mCurrentCategorie.getNom());
+            matiere.equalsIgnoreCase(mLastMatiereSelected.getNom());
         }
 
         HashSet<String> set = new HashSet<>();
@@ -108,28 +142,5 @@ public class App {
         }
 
         return new ArrayList<>(set);
-    }
-
-    public ArrayList<Categorie> generateCategorie(Context context){
-        ArrayList<Serie> series = getSeries(context);
-        mCurrentCategories = new ArrayList();
-
-        for (String matiere : getMatieres(context)){
-            Categorie matiereCategorie = new Categorie(matiere);
-            for(String activite : getActiviteByMatiere(context, matiere)){
-                Categorie activiteCategorie = new Categorie(activite);
-
-                for (Serie serie : series){
-                    if(serie.getActivite().equalsIgnoreCase(activite)){
-                        activiteCategorie.getSerieList().add(serie);
-                    }
-                }
-
-                matiereCategorie.getSubCategorie().add(activiteCategorie);
-            }
-            mCurrentCategories.add(matiereCategorie);
-        }
-
-        return mCurrentCategories;
     }
 }

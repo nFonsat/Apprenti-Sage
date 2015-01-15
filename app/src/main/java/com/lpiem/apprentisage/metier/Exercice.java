@@ -14,6 +14,7 @@ public class Exercice extends BaseEntity {
 
     public Exercice() {
         super();
+        mResponses = new ArrayList<>();
     }
 
     public String getEnonce(){
@@ -40,12 +41,16 @@ public class Exercice extends BaseEntity {
         mMedia = media;
     }
 
-    public String getResponses() {
+    public String getResponsesString() {
         String response = "";
         for (String uneResponse : mResponses){
             response += uneResponse + ";";
         }
         return response;
+    }
+
+    public ArrayList<String> getResponses() {
+        return mResponses;
     }
 
     public void setResponses(ArrayList<String> responses) {
