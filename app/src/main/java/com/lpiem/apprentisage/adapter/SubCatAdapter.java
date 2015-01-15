@@ -76,27 +76,6 @@ public class SubCatAdapter extends BaseAdapter
 		TextView noteSerie = (TextView) view.findViewById(R.id.serie_txt_note);
         // recuperer la note de la serie
 
-/*
-		Button itemBtn = (Button) view.findViewById(R.id.sub_categorie_item_btn_cat);
-		itemBtn.setOnClickListener(new OnClickListener()
-		{
-			@Override
-			public void onClick(View v)
-			{
-                Categorie activite = mApplication.getCurrentMatiere().getSubCategorie().get(position);
-                mApplication.setCurrentActivite(activite);
-
-                Intent intent = new Intent(context, SerieActivity.class);
-                if(activite.getSubCategorie().size() > 0){
-                     intent = new Intent(context, SousCategorieActivity.class);
-                }
-
-                context.startActivity(intent);
-			}
-		});
-*/
-
-
 		return view;
 	}
 }

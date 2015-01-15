@@ -80,6 +80,11 @@
             android:screenOrientation="landscape"
             android:windowSoftInputMode="adjustPan" >
         </activity>
+        <activity
+            android:name=".ihm.SerieActivity"
+            android:screenOrientation="landscape"
+            android:windowSoftInputMode="adjustPan" >
+        </activity>
     </application>
 
 </manifest>
