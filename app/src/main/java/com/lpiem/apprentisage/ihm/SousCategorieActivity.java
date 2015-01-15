@@ -44,7 +44,7 @@ public class SousCategorieActivity extends SherlockActivity
 		listCategorie = (ListView) findViewById(R.id.sub_categorie_list);
 
         mApplication = App.getInstance();
-        titreMatiere.setText(mApplication.getCurrentCategorie().getNom());
+        titreMatiere.setText(mApplication.getCurrentMatiere().getNom());
         titreMatiere.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/Craie.ttf"));
 		listCategorie.setAdapter(new SubCatAdapter(this));
 
