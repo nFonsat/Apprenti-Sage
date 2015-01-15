@@ -22,7 +22,11 @@ import com.lpiem.apprentisage.metier.Eleve;
 import com.lpiem.apprentisage.metier.Exercice;
 import com.lpiem.apprentisage.metier.Resultat;
 import com.lpiem.apprentisage.metier.Serie;
+import com.lpiem.apprentisage.metier.TypeExercice;
+import com.lpiem.apprentisage.metier.TypeResultat;
 import com.lpiem.apprentisage.model.Categorie;
+
+import java.util.ArrayList;
 
 
 public class SerieActivity extends SherlockActivity {
@@ -62,13 +66,8 @@ public class SerieActivity extends SherlockActivity {
             @Override
             public void onItemClick(AdapterView<?> arg0, View view, int position, long arg3) {
                 mCurrentSerie = mActivite.getSerieList().get(position);
-                mCurrentExercice = mCurrentSerie.nextExercice(mCurrentEleve, mContext);
-                if(mCurrentExercice == null ){
-                    return;
-                }
-
-                Log.d("Enonce du prochain exercice", mCurrentExercice.getEnonce());
-                switchFragment(mCurrentExercice);
+                mCurrentExercice = mCurrentSerie.nextExercice(mCurrentEleve, mContext); //Peut retourner null
+                switchFragment();
             }
         });
 
@@ -76,23 +75,27 @@ public class SerieActivity extends SherlockActivity {
         ActionBarService.initActionBar(this, this.getSupportActionBar(), mActivite.getNom());
     }
 
-    private void switchFragment(Exercice exercice) {
-        /*if(mFragment == null) {
+    private void switchFragment() {
+        if(mCurrentExercice == null ){
             return;
-        }*/
+        }
 
-        Log.d("Type d'exercice", mCurrentExercice.getEnonce());
-        switch (exercice.getType()){
+        Log.d("Type d'exercice", mCurrentExercice.getType());
+        switch (mCurrentExercice.getType()){
             case "text":
                 mFragment = new TextFragment();
-                ((TextFragment) mFragment).setParameter(exercice);
+                ((TextFragment) mFragment).setParameter(mCurrentExercice);
                 break;
             case "audio":
                 mFragment = new AudioFragment();
-                ((AudioFragment) mFragment).setParameter(exercice);
+                ((AudioFragment) mFragment).setParameter(mCurrentExercice);
                 break;
             case "audio-text":
                 break;
+        }
+
+        if(mFragment == null){
+            return;
         }
 
         FragmentTransaction ft = getFragmentManager().beginTransaction();
@@ -108,16 +111,66 @@ public class SerieActivity extends SherlockActivity {
             return;
         }
 
-        String maReponse = ((TextFragment) mFragment).getResponse();
+        Log.d("L'id la serie", String.valueOf(mCurrentSerie.getId()));
+        Log.d("L'id l'exercice", String.valueOf(mCurrentExercice.getId()));
 
-        for(String uneReponse : mCurrentExercice.getResponses()){
+        String maReponse = ((TextFragment) mFragment).getResponse();
+        Log.d("ma Reponse", maReponse);
+
+        ArrayList<String> lesReponses = mCurrentExercice.getResponses();
+
+        boolean reponseCorrecte = false;
+        int i = 0;
+
+        mResultat = new Resultat();
+        mResultat.setNom(String.valueOf(mCurrentSerie.getId()));
+        mResultat.setType(TypeResultat.RESULTAT_EXERCICE.getType());
+        mResultat.setIdTableCorrespondant(mCurrentExercice.getId());
+
+        while((i < lesReponses.size()) && (!reponseCorrecte)){
+            String uneReponse = lesReponses.get(i);
+            Log.d("une reponse", uneReponse);
             if(uneReponse.equalsIgnoreCase(maReponse)){
                 Log.d("Bravo", "Tu as la bonne reponse");
-                mResultat = new Resultat();
-
-                ResultatDAO mResultatDAO = new ResultatDAO(mContext, mCurrentEleve);
-                mResultatDAO.ajouter(mResultat);
+                mResultat.setNote(1);
+                reponseCorrecte = true;
             }
+            i++;
+        }
+
+
+        Log.d("Reponse Correcte ?", String.valueOf(reponseCorrecte));
+        Log.d("Resutat Obtenue", String.valueOf(mResultat.getNote()));
+
+        ResultatDAO mResultatDAO = new ResultatDAO(mContext, mCurrentEleve);
+        long id = mResultatDAO.ajouter(mResultat);
+        Log.d("L'id du resultat de l'exercice", String.valueOf(id));
+
+
+        ArrayList<Resultat> resultatsTest = mResultatDAO.getResultatsByEleve();
+        Log.d("Nombre de resultat pour cette eleve", String.valueOf(resultatsTest.size()));
+
+        ArrayList<Resultat> resultatsSerie = mResultatDAO.getResultatsBySerie(mCurrentSerie);
+        Log.d("Nombre de resultat pour cette serie", String.valueOf(resultatsSerie.size()));
+
+        if (resultatsSerie.size() == mCurrentSerie.getExercices().size()){
+            int noteSerie = 0;
+            Log.d("Bravo", "Tu as terminer la série");
+            Resultat resultatSerie = new Resultat();
+            resultatSerie.setNom(mCurrentSerie.getNom());
+            resultatSerie.setType(TypeResultat.RESULTAT_SERIE.getType());
+            resultatSerie.setIdTableCorrespondant(mCurrentSerie.getId());
+            for (Resultat unResultat : resultatsSerie){
+                noteSerie += unResultat.getNote();
+            }
+            resultatSerie.setNote(noteSerie);
+            id = mResultatDAO.ajouter(resultatSerie);
+            Log.d("L'id du resultat de la serie", String.valueOf(id));
+
+            mSerieAdapter.setNote(noteSerie, mCurrentSerie);
+
+            mFragment = null;
+            getFragmentManager().popBackStack(null, getFragmentManager().POP_BACK_STACK_INCLUSIVE);
         }
     }
 }
