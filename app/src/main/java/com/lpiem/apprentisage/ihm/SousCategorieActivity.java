@@ -12,6 +12,7 @@
 package com.lpiem.apprentisage.ihm;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -53,6 +54,7 @@ public class SousCategorieActivity extends SherlockActivity
 
         mApplication = App.getInstance();
         titreMatiere.setText(mApplication.getCurrentMatiere().getNom());
+        titreMatiere.setTypeface(Typeface.createFromAsset(this.getAssets(), "fonts/Craie.ttf"));
         listCat = mApplication.getCurrentMatiere().getSubCategorie();
 
 		listCategorie.setAdapter(new SubCatAdapter(this));

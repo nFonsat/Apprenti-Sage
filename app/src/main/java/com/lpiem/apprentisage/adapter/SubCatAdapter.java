@@ -19,6 +19,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.lpiem.apprentisage.R;
@@ -67,13 +68,19 @@ public class SubCatAdapter extends BaseAdapter
 		Categorie categorie = mCurrentCategorie.getSubCategorie().get(position);
 
 		View view = context.getLayoutInflater().inflate(R.layout.serie_item, null);
+
+        LinearLayout linearIdActivity = (LinearLayout) view.findViewById(R.id.linearIdActivity);
+        linearIdActivity.setBackgroundColor(mCurrentCategorie.getColor());
 		
 		TextView txtTitre = (TextView) view.findViewById(R.id.serie_txt_nom);
 		txtTitre.setText(categorie.getNom());
 		txtTitre.setTypeface(Typeface.createFromAsset(context.getAssets(), "fonts/ComicRelief.ttf"));
-		txtTitre.setBackgroundColor(mCurrentCategorie.getColor());
+        txtTitre.setTextColor(view.getResources().getColor(R.color.white));
 		
 		TextView noteSerie = (TextView) view.findViewById(R.id.serie_txt_note);
+        noteSerie.setText(String.valueOf(categorie.getPourcentage())+" %  ");
+        noteSerie.setTypeface(Typeface.createFromAsset(context.getAssets(), "fonts/ComicRelief.ttf"));
+        noteSerie.setTextColor(view.getResources().getColor(R.color.white));
         // recuperer la note de la serie
 
 		return view;
