@@ -104,7 +104,7 @@ public class App {
                 Categorie activiteCategorie = new Categorie(activite);
 
                 for (Serie serie : series){
-                    if(serie.getActivite().equalsIgnoreCase(activite)){
+                    if(serie.getActivite().equalsIgnoreCase(activite)  && serie.getExercices().size() > 0){
                         activiteCategorie.getSerieList().add(serie);
                     }
                 }
@@ -122,7 +122,9 @@ public class App {
 
         HashSet<String> set = new HashSet<>();
         for (Serie uneSerie : series){
-            set.add(uneSerie.getMatiere());
+            if(uneSerie.getExercices().size() > 0){
+                set.add(uneSerie.getMatiere());
+            }
         }
 
         return new ArrayList<>(set);
@@ -137,7 +139,7 @@ public class App {
 
         HashSet<String> set = new HashSet<>();
         for (Serie uneSerie : series){
-            if(uneSerie.getMatiere().equalsIgnoreCase(matiere))
+            if(uneSerie.getMatiere().equalsIgnoreCase(matiere) && uneSerie.getExercices().size() > 0)
                 set.add(uneSerie.getActivite());
         }
 
