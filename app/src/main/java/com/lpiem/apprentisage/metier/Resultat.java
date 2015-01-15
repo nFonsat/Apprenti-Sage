@@ -7,10 +7,11 @@ public class Resultat extends BaseEntity {
     private String mNom;
     private String mType;
     private int mNote;
-    private int mIdTableCorrespondant; //Id de l'exercice, de la serie, de l'activite ou de la matiere Corespondant au resultat
+    private long mIdTableCorrespondant; //Id de l'exercice, de la serie, de l'activite ou de la matiere Corespondant au resultat
 
     public Resultat(){
         super();
+        mNote = 0;
     }
 
     public String getNom(){
@@ -37,11 +38,11 @@ public class Resultat extends BaseEntity {
         mNote = note;
     }
 
-    public int geIdTableCorrespondant(){
+    public long geIdTableCorrespondant(){
         return mIdTableCorrespondant;
     }
 
-    public void setIdTableCorrespondant(int idCorrespondant){
+    public void setIdTableCorrespondant(long idCorrespondant){
         mIdTableCorrespondant = idCorrespondant;
     }
 }

@@ -97,6 +97,7 @@ public class SerieDAO extends DataBaseAccess {
     public Serie Cursor2Serie(Cursor cursor) {
         Serie serie = new Serie();
 
+        serie.setId(cursor.getLong(cursor.getColumnIndex(ConfigDB.TABLE_SERIE_COL_ID)));
         serie.setNom(cursor.getString(cursor.getColumnIndex(ConfigDB.TABLE_SERIE_COL_NAME)));
         serie.setDescription(cursor.getString(cursor.getColumnIndex(ConfigDB.TABLE_SERIE_COL_DESC)));
         serie.setDifficulte(cursor.getInt(cursor.getColumnIndex(ConfigDB.TABLE_SERIE_COL_DIFF)));

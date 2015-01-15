@@ -59,7 +59,7 @@ public class EnseignantDAO extends DataBaseAccess {
     private Enseignant Cursor2Enseignant(Cursor cursor) {
         Enseignant enseignant = new Enseignant();
 
-        enseignant.setId(cursor.getInt(cursor.getColumnIndex(ConfigDB.TABLE_ENSEIGNANT_COL_ID)));
+        enseignant.setId(cursor.getLong(cursor.getColumnIndex(ConfigDB.TABLE_ENSEIGNANT_COL_ID)));
         enseignant.setNom(cursor.getString(cursor.getColumnIndex(ConfigDB.TABLE_ENSEIGNANT_COL_NAME)));
         enseignant.setPrenom(cursor.getString(cursor.getColumnIndex(ConfigDB.TABLE_ENSEIGNANT_COL_PRENOM)));
         enseignant.setUsername(cursor.getString(cursor.getColumnIndex(ConfigDB.TABLE_ENSEIGNANT_COL_USERNAME)));
