@@ -12,6 +12,7 @@
 package com.lpiem.apprentisage.ihm;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
@@ -49,6 +50,7 @@ public class SousCategorieActivity extends SherlockActivity
             @Override
             public void onClick(View v) {
                 finish();
+                mApplication.setCurrentMatiere(null);
             }
         });
 
