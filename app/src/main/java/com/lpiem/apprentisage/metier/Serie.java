@@ -3,6 +3,11 @@
  */
 package com.lpiem.apprentisage.metier;
 
+import android.content.Context;
+import android.util.Log;
+
+import com.lpiem.apprentisage.database.DAO.ResultatDAO;
+
 import java.util.ArrayList;
 
 public class Serie extends BaseEntity {
@@ -82,5 +87,17 @@ public class Serie extends BaseEntity {
 
     public void setExercices(ArrayList<Exercice> exercices) {
         mExercices = exercices;
+    }
+
+    public Exercice nextExercice(Eleve eleve, Context context) {
+        Exercice nextExercice = null;
+
+        ResultatDAO mResultatDAO = new ResultatDAO(context, eleve);
+        for (Exercice exercice : mExercices){
+            Log.d("Enonce de l'exercice", exercice.getEnonce());
+            if(mResultatDAO.getResultatByExercice(exercice) == null)
+                return exercice;
+        }
+        return nextExercice;
     }
 }
