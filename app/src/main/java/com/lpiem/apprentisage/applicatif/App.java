@@ -61,6 +61,12 @@ public class App {
 
     public void setCurrentEleve(Eleve eleve){
         mCurrentEleve = eleve;
+
+        mLastMatiereSelected = null;
+        mLastActiviteSelected = null;
+
+        mCurrentMatieres = new ArrayList<>();
+        mCurrentSeries = new ArrayList<>();
     }
 
     public ArrayList<Serie> getSeries(Context context){
