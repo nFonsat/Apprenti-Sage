@@ -19,8 +19,6 @@ import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockActivity;
 import com.lpiem.apprentisage.R;
-import com.lpiem.apprentisage.Shared;
-import com.lpiem.apprentisage.Utils.JsonReaderFile;
 import com.lpiem.apprentisage.async.SplashTask;
 
 public class SplashScreenActivity extends SherlockActivity{
@@ -34,13 +32,6 @@ public class SplashScreenActivity extends SherlockActivity{
 
         TextView txtTitre = (TextView) findViewById(R.id.splash_txt_titre);
         txtTitre.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/Craie.ttf"));
-
-		/*Shared.getInstance().getCategorieListCp().clear();
-		Shared.getInstance().getCategorieListCe1().clear();
-
-        JsonReaderFile readerJson = new JsonReaderFile(this);
-        readerJson.loadJson("cp.json");
-        readerJson.loadJson("ce1.json");*/
 
         new Handler().postDelayed(new Runnable() {
 

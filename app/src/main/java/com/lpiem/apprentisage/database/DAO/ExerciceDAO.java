@@ -79,6 +79,7 @@ public class ExerciceDAO extends DataBaseAccess {
     public Exercice Cursor2Exercice(Cursor cursor) {
         Exercice exercice = new Exercice();
 
+        exercice.setId(cursor.getLong(cursor.getColumnIndex(ConfigDB.TABLE_EXERCICE_COL_ID)));
         exercice.setEnonce(cursor.getString(cursor.getColumnIndex(ConfigDB.TABLE_EXERCICE_COL_ENONCE)));
         exercice.setMedia(cursor.getString(cursor.getColumnIndex(ConfigDB.TABLE_EXERCICE_COL_MEDIA)));
         exercice.setType(cursor.getString(cursor.getColumnIndex(ConfigDB.TABLE_EXERCICE_COL_TYPE)));

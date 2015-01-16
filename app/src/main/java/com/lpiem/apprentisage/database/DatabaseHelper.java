@@ -11,6 +11,7 @@ import android.util.Log;
 import com.lpiem.apprentisage.Consts;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
+    public static final String LOG = Consts.TAG_APPLICATION + " : " + DatabaseHelper.class.getSimpleName();
 
     public DatabaseHelper(Context context) {
         super(context, ConfigDB.DATABASE_NAME, null, ConfigDB.DATABASE_VERSION);
@@ -18,7 +19,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        Log.d(Consts.TAG_APPLICATION, "Creation database");
+        Log.d(LOG, "Creation database");
         db.execSQL(ConfigDB.CREATE_SCHEMA_ENSEIGNANT);
         db.execSQL(ConfigDB.CREATE_SCHEMA_CLASSE);
         db.execSQL(ConfigDB.CREATE_SCHEMA_ENSEIGNANT_CLASSE);
@@ -30,7 +31,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        Log.d(Consts.TAG_APPLICATION, "Upgrade database");
+        Log.d(LOG, "Upgrade database");
         db.execSQL(ConfigDB.DELETE_TABLE_EXERCICE);
         db.execSQL(ConfigDB.DELETE_TABLE_SERIE);
         db.execSQL(ConfigDB.DELETE_TABLE_RESULTAT);
@@ -43,7 +44,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        Log.d(Consts.TAG_APPLICATION, "Downgrade database");
+        Log.d(LOG, "Downgrade database");
         onUpgrade(db, oldVersion, newVersion);
     }
 }

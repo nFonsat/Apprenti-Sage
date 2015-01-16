@@ -92,7 +92,7 @@ public class ClasseDAO extends DataBaseAccess {
     private Classe Cursor2Classe(Cursor cursor) {
         Classe classe = new Classe();
 
-        classe.setId(cursor.getInt(cursor.getColumnIndex(ConfigDB.TABLE_CLASSE_COL_ID)));
+        classe.setId(cursor.getLong(cursor.getColumnIndex(ConfigDB.TABLE_CLASSE_COL_ID)));
         classe.setNom(cursor.getString(cursor.getColumnIndex(ConfigDB.TABLE_CLASSE_COL_NAME)));
         classe.setNiveau(cursor.getString(cursor.getColumnIndex(ConfigDB.TABLE_CLASSE_COL_LEVEL)));
         classe.setAnnee(cursor.getInt(cursor.getColumnIndex(ConfigDB.TABLE_CLASSE_COL_YEAR)));

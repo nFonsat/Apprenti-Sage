@@ -16,8 +16,6 @@ import java.util.List;
 
 import com.lpiem.apprentisage.metier.Serie;
 
-import android.graphics.Color;
-
 import com.lpiem.apprentisage.Utils.ColorApp;
 
 public class Categorie

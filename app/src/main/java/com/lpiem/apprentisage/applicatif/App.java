@@ -1,7 +1,7 @@
 /**
  * Created by Nicolas on 13/01/2015.
  */
-package com.lpiem.apprentisage.data;
+package com.lpiem.apprentisage.applicatif;
 
 import android.content.Context;
 
@@ -61,6 +61,12 @@ public class App {
 
     public void setCurrentEleve(Eleve eleve){
         mCurrentEleve = eleve;
+
+        mLastMatiereSelected = null;
+        mLastActiviteSelected = null;
+
+        mCurrentMatieres = new ArrayList<>();
+        mCurrentSeries = new ArrayList<>();
     }
 
     public ArrayList<Serie> getSeries(Context context){
@@ -96,7 +102,7 @@ public class App {
 
     private ArrayList<Categorie> generateMatiere(Context context){
         ArrayList<Serie> series = getSeries(context);
-        mCurrentMatieres = new ArrayList();
+        mCurrentMatieres = new ArrayList<>();
 
         for (String matiere : getListMatieres(context)){
             Categorie matiereCategorie = new Categorie(matiere);
@@ -104,7 +110,7 @@ public class App {
                 Categorie activiteCategorie = new Categorie(activite);
 
                 for (Serie serie : series){
-                    if(serie.getActivite().equalsIgnoreCase(activite)){
+                    if(serie.getActivite().equalsIgnoreCase(activite)  && serie.getExercices().size() > 0){
                         activiteCategorie.getSerieList().add(serie);
                     }
                 }
@@ -122,7 +128,9 @@ public class App {
 
         HashSet<String> set = new HashSet<>();
         for (Serie uneSerie : series){
-            set.add(uneSerie.getMatiere());
+            if(uneSerie.getExercices().size() > 0){
+                set.add(uneSerie.getMatiere());
+            }
         }
 
         return new ArrayList<>(set);
@@ -132,12 +140,12 @@ public class App {
         ArrayList<Serie> series = getSeries(context);
 
         if(matiere == null){
-            matiere.equalsIgnoreCase(mLastMatiereSelected.getNom());
+            matiere = mLastMatiereSelected.getNom();
         }
 
         HashSet<String> set = new HashSet<>();
         for (Serie uneSerie : series){
-            if(uneSerie.getMatiere().equalsIgnoreCase(matiere))
+            if(uneSerie.getMatiere().equalsIgnoreCase(matiere) && uneSerie.getExercices().size() > 0)
                 set.add(uneSerie.getActivite());
         }
 

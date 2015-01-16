@@ -14,7 +14,6 @@ package com.lpiem.apprentisage.ihm;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -25,7 +24,7 @@ import com.actionbarsherlock.app.SherlockActivity;
 import com.lpiem.apprentisage.ActionBarService;
 import com.lpiem.apprentisage.R;
 import com.lpiem.apprentisage.adapter.SubCatAdapter;
-import com.lpiem.apprentisage.data.App;
+import com.lpiem.apprentisage.applicatif.App;
 import com.lpiem.apprentisage.model.Categorie;
 
 import java.util.ArrayList;

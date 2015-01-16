@@ -12,9 +12,10 @@ import android.widget.ListView;
 
 import com.actionbarsherlock.app.SherlockActivity;
 import com.lpiem.apprentisage.ActionBarService;
+import com.lpiem.apprentisage.Consts;
 import com.lpiem.apprentisage.R;
 import com.lpiem.apprentisage.adapter.SerieAdapter;
-import com.lpiem.apprentisage.data.App;
+import com.lpiem.apprentisage.applicatif.App;
 import com.lpiem.apprentisage.database.DAO.ResultatDAO;
 import com.lpiem.apprentisage.fragment.AudioFragment;
 import com.lpiem.apprentisage.fragment.TextFragment;
@@ -22,14 +23,19 @@ import com.lpiem.apprentisage.metier.Eleve;
 import com.lpiem.apprentisage.metier.Exercice;
 import com.lpiem.apprentisage.metier.Resultat;
 import com.lpiem.apprentisage.metier.Serie;
+import com.lpiem.apprentisage.metier.TypeResultat;
 import com.lpiem.apprentisage.model.Categorie;
+
+import java.util.ArrayList;
 
 
 public class SerieActivity extends SherlockActivity {
+    public static final String LOG = Consts.TAG_APPLICATION + " : " + SerieActivity.class.getSimpleName();
 
     private SerieAdapter mSerieAdapter;
     private ListView mListSeries;
 
+    private FragmentTransaction mFragmentTransaction;
     private Fragment mFragment;
     private Context mContext;
 
@@ -57,18 +63,12 @@ public class SerieActivity extends SherlockActivity {
         mListSeries = (ListView)findViewById(R.id.list_series);
         mListSeries.setAdapter(mSerieAdapter);
 
-        mListSeries.setOnItemClickListener(new AdapterView.OnItemClickListener()
-        {
+        mListSeries.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> arg0, View view, int position, long arg3) {
                 mCurrentSerie = mActivite.getSerieList().get(position);
-                mCurrentExercice = mCurrentSerie.nextExercice(mCurrentEleve, mContext);
-                if(mCurrentExercice == null ){
-                    return;
-                }
-
-                Log.d("Enonce du prochain exercice", mCurrentExercice.getEnonce());
-                switchFragment(mCurrentExercice);
+                mCurrentExercice = mCurrentSerie.nextExercice(mCurrentEleve, mContext); //Peut retourner null
+                switchFragment();
             }
         });
 
@@ -76,29 +76,33 @@ public class SerieActivity extends SherlockActivity {
         ActionBarService.initActionBar(this, this.getSupportActionBar(), mActivite.getNom());
     }
 
-    private void switchFragment(Exercice exercice) {
-        /*if(mFragment == null) {
+    private void switchFragment() {
+        if(mCurrentExercice == null && mFragment == null){
             return;
-        }*/
+        }
 
-        Log.d("Type d'exercice", mCurrentExercice.getEnonce());
+        if (mCurrentExercice == null) {
+            mFragmentTransaction = getFragmentManager().beginTransaction();
+            mFragmentTransaction.remove(mFragment).commit();
+            mFragment = null;
+            return;
+        }
 
-
-        switch (exercice.getType()){
+        switch (mCurrentExercice.getType()){
             case "text":
                 mFragment = new TextFragment();
-                ((TextFragment) mFragment).setParameter(exercice);
+                ((TextFragment) mFragment).setParameter(mCurrentExercice);
                 break;
             case "audio":
                 mFragment = new AudioFragment();
-                ((AudioFragment) mFragment).setParameter(exercice);
+                ((AudioFragment) mFragment).setParameter(mCurrentExercice);
                 break;
             case "audio-text":
                 break;
         }
 
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.replace(R.id.fragment_media_exercice, mFragment).commit();
+        mFragmentTransaction = getFragmentManager().beginTransaction();
+        mFragmentTransaction.replace(R.id.fragment_media_exercice, mFragment).commit();
     }
 
     public void back(View view){
@@ -111,15 +115,52 @@ public class SerieActivity extends SherlockActivity {
         }
 
         String maReponse = ((TextFragment) mFragment).getResponse();
+        ArrayList<String> lesReponses = mCurrentExercice.getResponses();
 
-        for(String uneReponse : mCurrentExercice.getResponses()){
+        boolean reponseCorrecte = false;
+        int i = 0;
+
+        mResultat = new Resultat();
+        mResultat.setNom(String.valueOf(mCurrentSerie.getId()));
+        mResultat.setType(TypeResultat.RESULTAT_EXERCICE.getType());
+        mResultat.setIdTableCorrespondant(mCurrentExercice.getId());
+
+        while((i < lesReponses.size()) && (!reponseCorrecte)){
+            String uneReponse = lesReponses.get(i);
             if(uneReponse.equalsIgnoreCase(maReponse)){
-                Log.d("Bravo", "Tu as la bonne reponse");
-                mResultat = new Resultat();
-
-                ResultatDAO mResultatDAO = new ResultatDAO(mContext, mCurrentEleve);
-                mResultatDAO.ajouter(mResultat);
+                Log.d(LOG, "Tu as la bonne reponse");
+                mResultat.setNote(1);
+                reponseCorrecte = true;
             }
+            i++;
         }
+
+        ResultatDAO mResultatDAO = new ResultatDAO(mContext, mCurrentEleve);
+        mResultatDAO.ajouter(mResultat);
+
+        ArrayList<Resultat> resultatsSerie = mResultatDAO.getResultatsBySerie(mCurrentSerie);
+        if (resultatsSerie.size() == mCurrentSerie.getExercices().size()){
+            int noteSerie = 0;
+            Log.d(LOG, "Tu as terminer la série");
+            Resultat resultatSerie = new Resultat();
+            resultatSerie.setNom(mCurrentSerie.getNom());
+            resultatSerie.setType(TypeResultat.RESULTAT_SERIE.getType());
+            resultatSerie.setIdTableCorrespondant(mCurrentSerie.getId());
+            for (Resultat unResultat : resultatsSerie){
+                noteSerie += unResultat.getNote();
+            }
+            resultatSerie.setNote(noteSerie);
+            mResultatDAO.ajouter(resultatSerie);
+
+            mSerieAdapter.setNote(noteSerie, mCurrentSerie);
+
+            mFragmentTransaction = getFragmentManager().beginTransaction();
+            mFragmentTransaction.remove(mFragment).commit();
+            mFragment = null;
+            return;
+        }
+
+        mCurrentExercice = mCurrentSerie.nextExercice(mCurrentEleve, mContext); //Peut retourner null
+        switchFragment();
     }
 }
