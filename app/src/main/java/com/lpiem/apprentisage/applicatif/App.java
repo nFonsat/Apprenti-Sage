@@ -96,7 +96,7 @@ public class App {
 
     private ArrayList<Categorie> generateMatiere(Context context){
         ArrayList<Serie> series = getSeries(context);
-        mCurrentMatieres = new ArrayList();
+        mCurrentMatieres = new ArrayList<>();
 
         for (String matiere : getListMatieres(context)){
             Categorie matiereCategorie = new Categorie(matiere);
@@ -134,7 +134,7 @@ public class App {
         ArrayList<Serie> series = getSeries(context);
 
         if(matiere == null){
-            matiere.equalsIgnoreCase(mLastMatiereSelected.getNom());
+            matiere = mLastMatiereSelected.getNom();
         }
 
         HashSet<String> set = new HashSet<>();

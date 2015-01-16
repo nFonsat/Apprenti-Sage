@@ -8,6 +8,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.util.Log;
 
+import com.lpiem.apprentisage.Consts;
 import com.lpiem.apprentisage.database.ConfigDB;
 import com.lpiem.apprentisage.database.DataBaseAccess;
 import com.lpiem.apprentisage.metier.Eleve;
@@ -19,7 +20,9 @@ import com.lpiem.apprentisage.metier.TypeResultat;
 import java.util.ArrayList;
 
 public class ResultatDAO extends DataBaseAccess {
-    Eleve mEleve;
+    public static final String LOG = Consts.TAG_APPLICATION + " : " + ResultatDAO.class.getSimpleName();
+
+    private Eleve mEleve;
 
     public ResultatDAO(Context context, Eleve eleve){
         super(context);
@@ -86,7 +89,7 @@ public class ResultatDAO extends DataBaseAccess {
         Cursor cursor = sqlRequest(sqlQuery);
 
         Resultat resultat = null;
-        Log.d("getResultatByExercice : cursor.getCount()", String.valueOf(cursor.getCount()));
+        Log.d(LOG + " : getResultatByExercice : cursor.getCount()", String.valueOf(cursor.getCount()));
         if((cursor.getCount() == 1) && (cursor.moveToFirst())){
             resultat = Cursor2Resultat(cursor);
         }
@@ -105,12 +108,10 @@ public class ResultatDAO extends DataBaseAccess {
                         " AND " + ConfigDB.TABLE_RESULTAT_COL_NAME + " = '" + serie.getId() + "'" +
                         " AND " + ConfigDB.TABLE_RESULTAT_COL_TYPE + " = '" + TypeResultat.RESULTAT_EXERCICE.getType() + "'";
 
-        Log.d("Ma requete SQL", sqlQuery);
-
         Cursor cursor = sqlRequest(sqlQuery);
 
         ArrayList<Resultat> resultats = new ArrayList<>();
-        Log.d("getResultatsBySerie : cursor.getCount()", String.valueOf(cursor.getCount()));
+        Log.d(LOG + " : getResultatsBySerie : cursor.getCount()", String.valueOf(cursor.getCount()));
         if((cursor.getCount() > 0) && (cursor.moveToFirst())){
             do {
                 Resultat resultat = Cursor2Resultat(cursor);
@@ -135,7 +136,7 @@ public class ResultatDAO extends DataBaseAccess {
         Cursor cursor = sqlRequest(sqlQuery);
 
         ArrayList<Resultat> resultats = new ArrayList<>();
-        Log.d("getResultatsByActivite : cursor.getCount()", String.valueOf(cursor.getCount()));
+        Log.d(LOG + " : getResultatsByActivite : cursor.getCount()", String.valueOf(cursor.getCount()));
         if((cursor.getCount() > 0) && (cursor.moveToFirst())){
             do {
                 Resultat resultat = Cursor2Resultat(cursor);
@@ -159,7 +160,7 @@ public class ResultatDAO extends DataBaseAccess {
         Cursor cursor = sqlRequest(sqlQuery);
 
         ArrayList<Resultat> resultats = new ArrayList<>();
-        Log.d("getResultatsByMatiere : cursor.getCount()", String.valueOf(cursor.getCount()));
+        Log.d(LOG + " : getResultatsByMatiere : cursor.getCount()", String.valueOf(cursor.getCount()));
         if((cursor.getCount() > 0) && (cursor.moveToFirst())){
             do {
                 Resultat resultat = Cursor2Resultat(cursor);

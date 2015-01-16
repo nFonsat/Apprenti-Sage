@@ -12,6 +12,7 @@ import android.widget.ListView;
 
 import com.actionbarsherlock.app.SherlockActivity;
 import com.lpiem.apprentisage.ActionBarService;
+import com.lpiem.apprentisage.Consts;
 import com.lpiem.apprentisage.R;
 import com.lpiem.apprentisage.adapter.SerieAdapter;
 import com.lpiem.apprentisage.applicatif.App;
@@ -29,10 +30,12 @@ import java.util.ArrayList;
 
 
 public class SerieActivity extends SherlockActivity {
+    public static final String LOG = Consts.TAG_APPLICATION + " : " + SerieActivity.class.getSimpleName();
 
     private SerieAdapter mSerieAdapter;
     private ListView mListSeries;
 
+    private FragmentTransaction mFragmentTransaction;
     private Fragment mFragment;
     private Context mContext;
 
@@ -60,8 +63,7 @@ public class SerieActivity extends SherlockActivity {
         mListSeries = (ListView)findViewById(R.id.list_series);
         mListSeries.setAdapter(mSerieAdapter);
 
-        mListSeries.setOnItemClickListener(new AdapterView.OnItemClickListener()
-        {
+        mListSeries.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> arg0, View view, int position, long arg3) {
                 mCurrentSerie = mActivite.getSerieList().get(position);
@@ -75,11 +77,17 @@ public class SerieActivity extends SherlockActivity {
     }
 
     private void switchFragment() {
-        if(mCurrentExercice == null ){
+        if(mCurrentExercice == null && mFragment == null){
             return;
         }
 
-        Log.d("Type d'exercice", mCurrentExercice.getType());
+        if (mCurrentExercice == null) {
+            mFragmentTransaction = getFragmentManager().beginTransaction();
+            mFragmentTransaction.remove(mFragment).commit();
+            mFragment = null;
+            return;
+        }
+
         switch (mCurrentExercice.getType()){
             case "text":
                 mFragment = new TextFragment();
@@ -93,12 +101,8 @@ public class SerieActivity extends SherlockActivity {
                 break;
         }
 
-        if(mFragment == null){
-            return;
-        }
-
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.replace(R.id.fragment_media_exercice, mFragment).commit();
+        mFragmentTransaction = getFragmentManager().beginTransaction();
+        mFragmentTransaction.replace(R.id.fragment_media_exercice, mFragment).commit();
     }
 
     public void back(View view){
@@ -110,12 +114,7 @@ public class SerieActivity extends SherlockActivity {
             return;
         }
 
-        Log.d("L'id la serie", String.valueOf(mCurrentSerie.getId()));
-        Log.d("L'id l'exercice", String.valueOf(mCurrentExercice.getId()));
-
         String maReponse = ((TextFragment) mFragment).getResponse();
-        Log.d("ma Reponse", maReponse);
-
         ArrayList<String> lesReponses = mCurrentExercice.getResponses();
 
         boolean reponseCorrecte = false;
@@ -128,33 +127,21 @@ public class SerieActivity extends SherlockActivity {
 
         while((i < lesReponses.size()) && (!reponseCorrecte)){
             String uneReponse = lesReponses.get(i);
-            Log.d("une reponse", uneReponse);
             if(uneReponse.equalsIgnoreCase(maReponse)){
-                Log.d("Bravo", "Tu as la bonne reponse");
+                Log.d(LOG, "Tu as la bonne reponse");
                 mResultat.setNote(1);
                 reponseCorrecte = true;
             }
             i++;
         }
 
-
-        Log.d("Reponse Correcte ?", String.valueOf(reponseCorrecte));
-        Log.d("Resutat Obtenue", String.valueOf(mResultat.getNote()));
-
         ResultatDAO mResultatDAO = new ResultatDAO(mContext, mCurrentEleve);
-        long id = mResultatDAO.ajouter(mResultat);
-        Log.d("L'id du resultat de l'exercice", String.valueOf(id));
-
-
-        ArrayList<Resultat> resultatsTest = mResultatDAO.getResultatsByEleve();
-        Log.d("Nombre de resultat pour cette eleve", String.valueOf(resultatsTest.size()));
+        mResultatDAO.ajouter(mResultat);
 
         ArrayList<Resultat> resultatsSerie = mResultatDAO.getResultatsBySerie(mCurrentSerie);
-        Log.d("Nombre de resultat pour cette serie", String.valueOf(resultatsSerie.size()));
-
         if (resultatsSerie.size() == mCurrentSerie.getExercices().size()){
             int noteSerie = 0;
-            Log.d("Bravo", "Tu as terminer la série");
+            Log.d(LOG, "Tu as terminer la série");
             Resultat resultatSerie = new Resultat();
             resultatSerie.setNom(mCurrentSerie.getNom());
             resultatSerie.setType(TypeResultat.RESULTAT_SERIE.getType());
@@ -163,13 +150,17 @@ public class SerieActivity extends SherlockActivity {
                 noteSerie += unResultat.getNote();
             }
             resultatSerie.setNote(noteSerie);
-            id = mResultatDAO.ajouter(resultatSerie);
-            Log.d("L'id du resultat de la serie", String.valueOf(id));
+            mResultatDAO.ajouter(resultatSerie);
 
             mSerieAdapter.setNote(noteSerie, mCurrentSerie);
 
+            mFragmentTransaction = getFragmentManager().beginTransaction();
+            mFragmentTransaction.remove(mFragment).commit();
             mFragment = null;
-            getFragmentManager().popBackStack(null, getFragmentManager().POP_BACK_STACK_INCLUSIVE);
+            return;
         }
+
+        mCurrentExercice = mCurrentSerie.nextExercice(mCurrentEleve, mContext); //Peut retourner null
+        switchFragment();
     }
 }

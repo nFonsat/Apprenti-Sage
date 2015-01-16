@@ -13,7 +13,7 @@ package com.lpiem.apprentisage;
 
 public class Consts {
 
-    public static final String TAG_APPLICATION = "Apprenti-Sage App";
+    public static final String TAG_APPLICATION = "Apprenti-Sage";
 
 	public static final String CLASSE_CP = "CP";
 	public static final String CLASSE_CE1 = "CE1";
