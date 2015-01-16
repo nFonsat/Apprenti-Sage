@@ -56,7 +56,7 @@ public class ListeEleveAdapter extends BaseAdapter {
         }
         Eleve eleve = eleveListe.get(position);
 
-        holder.nomTxt.setText(eleve.getNom());
+        holder.nomTxt.setText(eleve.getNom() + " " + eleve.getPrenom());
         holder.nomTxt.setTypeface(Typeface.createFromAsset(context.getAssets(), "fonts/ComicRelief.ttf"));
 
         return convertView;
