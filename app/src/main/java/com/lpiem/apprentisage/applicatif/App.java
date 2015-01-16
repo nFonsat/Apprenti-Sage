@@ -1,7 +1,7 @@
 /**
  * Created by Nicolas on 13/01/2015.
  */
-package com.lpiem.apprentisage.data;
+package com.lpiem.apprentisage.applicatif;
 
 import android.content.Context;
 

@@ -20,7 +20,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.lpiem.apprentisage.R;
-import com.lpiem.apprentisage.data.App;
+import com.lpiem.apprentisage.applicatif.App;
 import com.lpiem.apprentisage.model.Categorie;
 
 public class StatsAdapter extends BaseAdapter

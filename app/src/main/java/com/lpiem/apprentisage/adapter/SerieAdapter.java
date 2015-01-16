@@ -13,21 +13,17 @@ package com.lpiem.apprentisage.adapter;
 
 import android.app.Activity;
 import android.graphics.Typeface;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.lpiem.apprentisage.R;
-import com.lpiem.apprentisage.data.App;
+import com.lpiem.apprentisage.applicatif.App;
 
 import com.lpiem.apprentisage.database.DAO.ResultatDAO;
-import com.lpiem.apprentisage.metier.Eleve;
 import com.lpiem.apprentisage.metier.Resultat;
 import com.lpiem.apprentisage.metier.Serie;
-
-import java.util.ArrayList;
 
 public class SerieAdapter extends BaseAdapter {
     private TextView mTxtNom;

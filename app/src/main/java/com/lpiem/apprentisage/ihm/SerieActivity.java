@@ -14,7 +14,7 @@ import com.actionbarsherlock.app.SherlockActivity;
 import com.lpiem.apprentisage.ActionBarService;
 import com.lpiem.apprentisage.R;
 import com.lpiem.apprentisage.adapter.SerieAdapter;
-import com.lpiem.apprentisage.data.App;
+import com.lpiem.apprentisage.applicatif.App;
 import com.lpiem.apprentisage.database.DAO.ResultatDAO;
 import com.lpiem.apprentisage.fragment.AudioFragment;
 import com.lpiem.apprentisage.fragment.TextFragment;
@@ -22,7 +22,6 @@ import com.lpiem.apprentisage.metier.Eleve;
 import com.lpiem.apprentisage.metier.Exercice;
 import com.lpiem.apprentisage.metier.Resultat;
 import com.lpiem.apprentisage.metier.Serie;
-import com.lpiem.apprentisage.metier.TypeExercice;
 import com.lpiem.apprentisage.metier.TypeResultat;
 import com.lpiem.apprentisage.model.Categorie;
 

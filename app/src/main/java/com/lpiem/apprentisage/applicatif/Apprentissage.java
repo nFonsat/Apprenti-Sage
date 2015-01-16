@@ -1,4 +1,4 @@
-package com.lpiem.apprentisage;
+package com.lpiem.apprentisage.applicatif;
 
 /**
  * Created by iem on 08/01/15.

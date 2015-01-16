@@ -12,20 +12,15 @@
 package com.lpiem.apprentisage.adapter;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.graphics.Typeface;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.lpiem.apprentisage.R;
-import com.lpiem.apprentisage.ihm.SerieActivity;
-import com.lpiem.apprentisage.data.App;
-import com.lpiem.apprentisage.ihm.SousCategorieActivity;
+import com.lpiem.apprentisage.applicatif.App;
 import com.lpiem.apprentisage.model.Categorie;
 
 public class SubCatAdapter extends BaseAdapter
