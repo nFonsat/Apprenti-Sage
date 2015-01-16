@@ -15,9 +15,9 @@ import java.util.Locale;
  */
 public class TextToSpeechUtils {
 
-    private TextToSpeech textToSpeech;
+    private static TextToSpeech textToSpeech;
 
-    public void speakText(Context context, String enoncer){
+    public static void speakText(Context context, String enoncer){
         String toSpeak = enoncer;
 
         textToSpeech = new TextToSpeech(context, new TextToSpeech.OnInitListener() {

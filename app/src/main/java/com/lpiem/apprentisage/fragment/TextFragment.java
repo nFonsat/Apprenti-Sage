@@ -17,7 +17,6 @@ import com.lpiem.apprentisage.metier.Exercice;
 
 public class TextFragment extends Fragment {
     private TextView mEnonce;
-    private Button mPlayEnonce;
     private EditText mReponse;
 
     private Exercice mCurrentExercice;
@@ -26,22 +25,13 @@ public class TextFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_text_text, container, false);
 
-        mEnonce = (TextView) view.findViewById(R.id.enonce_exercice_txt);
-        mPlayEnonce = (Button) view.findViewById(R.id.play_exercice_btn);
-        mReponse = (EditText) view.findViewById(R.id.reponse_exercice_txt);
+        mEnonce = (TextView) view.findViewById(R.id.enonce_txt);
+        mReponse = (EditText) view.findViewById(R.id.reponse_txt);
 
         if(mCurrentExercice != null){
             mEnonce.setText(mCurrentExercice.getEnonce());
         }
 
-        mPlayEnonce.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(mCurrentExercice != null){
-                    //TextToSpeech
-                }
-            }
-        });
 
         return view;
     }

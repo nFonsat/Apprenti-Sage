@@ -86,7 +86,6 @@ public class SerieActivity extends SherlockActivity {
 
         switch (exercice.getType()){
             case "text":
-
                 mFragment = new TextFragment();
                 ((TextFragment) mFragment).setParameter(exercice);
                 break;
