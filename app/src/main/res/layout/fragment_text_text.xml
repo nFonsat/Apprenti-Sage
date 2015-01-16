@@ -1,40 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/app_backgroung"
-    android:weightSum="100">
+    android:weightSum="10">
 
-    <LinearLayout
-        android:orientation="horizontal"
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Je :"
+        android:id="@+id/enonce_txt"
+        android:layout_gravity="center"
+        android:textSize="50dp"
+        android:textColor="@color/white"
+        android:layout_margin="15dp" />
+
+    <EditText
+        android:id="@+id/reponse_txt"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="50">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="New Text"
-            android:id="@+id/enonce_exercice_txt" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="50">
-
-        <EditText
-            android:id="@+id/reponse_exercice_txt"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/rounded_corner_shape"
-            android:inputType="numberSigned"
-            android:textColor="@color/black"
-            android:textSize="40sp"
-            android:layout_margin="50dp">
-        </EditText>
-    </LinearLayout>
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_corner_shape"
+        android:inputType="numberSigned"
+        android:textColor="@color/black"
+        android:textSize="40sp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginBottom="15dp"
+        android:layout_marginTop="15dp"
+        android:layout_gravity="center">
+    </EditText>
 
 </LinearLayout>
