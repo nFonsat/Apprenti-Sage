@@ -32,7 +32,6 @@ public class TextFragment extends Fragment {
             mEnonce.setText(mCurrentExercice.getEnonce());
         }
 
-
         return view;
     }
 
