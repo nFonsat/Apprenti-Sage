@@ -56,7 +56,7 @@ public class SousCategorieActivity extends SherlockActivity
         titreMatiere.setTypeface(Typeface.createFromAsset(this.getAssets(), "fonts/Craie.ttf"));
         listCat = mApplication.getCurrentMatiere().getSubCategorie();
 
-		listCategorie.setAdapter(new SubCatAdapter(this));
+		listCategorie.setAdapter(new SubCatAdapter(this, mApplication.getCurrentEleve()));
 
         btnRetour.setOnClickListener(new View.OnClickListener() {
             @Override

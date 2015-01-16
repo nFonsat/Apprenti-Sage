@@ -32,7 +32,6 @@ import java.util.ArrayList;
 public class SerieAdapter extends BaseAdapter {
     public static final String LOG = Consts.TAG_APPLICATION + " : " + SerieAdapter.class.getSimpleName();
 
-    private TextView mTxtNom;
     private TextView mTxtNote;
 
 	private int selectedIndex = -1;
@@ -66,33 +65,31 @@ public class SerieAdapter extends BaseAdapter {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		Serie serie = mApplication.getCurrentActivite().getSerieList().get(position);
+
 		View view = mContext.getLayoutInflater().inflate(R.layout.serie_item, null);
 
-		mTxtNom = (TextView) view.findViewById(R.id.serie_txt_nom);
-        mTxtNom.setText(serie.getNom());
-        mTxtNom.setTypeface(Typeface.createFromAsset(mContext.getAssets(), "fonts/ComicRelief.ttf"));
-
+        TextView mTxtNom = (TextView) view.findViewById(R.id.serie_txt_nom);
+		mTxtNote = (TextView) view.findViewById(R.id.serie_txt_note);
 
         int noteSerie = 0;
         ArrayList<Resultat> resultats = mResultatDAO.getResultatsBySerie(serie);
+
         Log.d(LOG + " : Nombre de resultat pour la serie " + serie.getNom(), String.valueOf(resultats.size()));
+        Log.d(LOG + " : Nombre de question pour la serie " + serie.getNom(), String.valueOf(serie.getExercices().size()));
+
         for (Resultat unResultat : resultats){
             noteSerie += unResultat.getNote();
         }
 
-		mTxtNote = (TextView) view.findViewById(R.id.serie_txt_note);
+        mTxtNom.setText(serie.getNom());
         setNote(noteSerie, serie);
+
+        mTxtNom.setTypeface(Typeface.createFromAsset(mContext.getAssets(), "fonts/ComicRelief.ttf"));
         mTxtNote.setTypeface(Typeface.createFromAsset(mContext.getAssets(), "fonts/ComicRelief.ttf"));
-		
-		if(selectedIndex == position) {
+
+        if(selectedIndex == position) {
             view.setBackgroundColor(mApplication.getCurrentActivite().getColor());
         }
-
-
-
-
-
-
 
 		return view;
 	}
@@ -100,7 +97,6 @@ public class SerieAdapter extends BaseAdapter {
     public void setNote(int note, Serie serie){
         int nbTotalExercice = serie.getExercices().size();
         int remetreADix = ((note * 10)/nbTotalExercice);
-        Log.d(LOG + " : Note obtenue pour la serie " + serie.getNom(), String.valueOf(note));
         Log.d(LOG + " : Ma note sur 10 pour la serie " + serie.getNom(), String.valueOf(remetreADix));
         if (mResultatDAO.getResultatsBySerie(serie).size() == nbTotalExercice){
             mTxtNote.setText(remetreADix + "/" + 10);
