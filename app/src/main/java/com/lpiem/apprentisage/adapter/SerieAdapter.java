@@ -22,7 +22,12 @@ import android.widget.TextView;
 import com.lpiem.apprentisage.R;
 import com.lpiem.apprentisage.data.App;
 
+import com.lpiem.apprentisage.database.DAO.ResultatDAO;
+import com.lpiem.apprentisage.metier.Eleve;
+import com.lpiem.apprentisage.metier.Resultat;
 import com.lpiem.apprentisage.metier.Serie;
+
+import java.util.ArrayList;
 
 public class SerieAdapter extends BaseAdapter {
     private TextView mTxtNom;
@@ -32,10 +37,13 @@ public class SerieAdapter extends BaseAdapter {
 	private Activity mContext;
 
     private App mApplication;
+
+    private ResultatDAO mResultatDAO;
 	
 	public SerieAdapter(Activity context){
 		this.mContext = context;
         mApplication = App.getInstance();
+        mResultatDAO = new ResultatDAO(context, mApplication.getCurrentEleve());
 	}
 	
 	@Override
@@ -69,18 +77,28 @@ public class SerieAdapter extends BaseAdapter {
 		mTxtNote = (TextView) view.findViewById(R.id.serie_txt_note);
         mTxtNote.setTypeface(Typeface.createFromAsset(mContext.getAssets(), "fonts/ComicRelief.ttf"));
 		
-		if(selectedIndex == position)
-			view.setBackgroundColor(mApplication.getCurrentActivite().getColor());
-		
-		//if(serie.isFinished())
-		//	txtNote.setText(serie.getNote() + "/10");
-		
+		if(selectedIndex == position) {
+            view.setBackgroundColor(mApplication.getCurrentActivite().getColor());
+        }
+
+        int noteSerie = 0;
+        for (Resultat unResultat : mResultatDAO.getResultatsBySerie(serie)){
+            noteSerie += unResultat.getNote();
+        }
+
+        setNote(noteSerie, serie);
+
+
+
 		return view;
 	}
 
     public void setNote(int note, Serie serie){
-        int remetreADix = ((note * 10)/serie.getExercices().size());
-        mTxtNote.setText(remetreADix + "/" + 10);
+        int nbTotalExercice = serie.getExercices().size();
+        int remetreADix = ((note * 10)/nbTotalExercice);
+        if (mResultatDAO.getResultatsBySerie(serie).size() == nbTotalExercice){
+            mTxtNote.setText(remetreADix + "/" + 10);
+        }
     }
 	
 	public void setCurrentIndex(int position)
