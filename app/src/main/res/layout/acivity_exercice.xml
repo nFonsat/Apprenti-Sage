@@ -36,7 +36,7 @@
                 android:layout_height="wrap_content"
                 android:text="Retour"
                 android:id="@+id/btnRetour"
-                android:onClick="back"
+                android:onClick="backToListActivite"
                 android:layout_weight="1"
                 android:layout_gravity="center"
                 android:textColor="@color/white"
