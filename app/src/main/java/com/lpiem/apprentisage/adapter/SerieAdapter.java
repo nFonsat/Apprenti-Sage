@@ -13,13 +13,11 @@ package com.lpiem.apprentisage.adapter;
 
 import android.app.Activity;
 import android.graphics.Typeface;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.lpiem.apprentisage.Consts;
 import com.lpiem.apprentisage.R;
 import com.lpiem.apprentisage.applicatif.App;
 
@@ -30,7 +28,6 @@ import com.lpiem.apprentisage.metier.Serie;
 import java.util.ArrayList;
 
 public class SerieAdapter extends BaseAdapter {
-    public static final String LOG = Consts.TAG_APPLICATION + " : " + SerieAdapter.class.getSimpleName();
 
     private TextView mTxtNote;
 
@@ -73,10 +70,6 @@ public class SerieAdapter extends BaseAdapter {
 
         int noteSerie = 0;
         ArrayList<Resultat> resultats = mResultatDAO.getResultatsBySerie(serie);
-
-        Log.d(LOG + " : Nombre de resultat pour la serie " + serie.getNom(), String.valueOf(resultats.size()));
-        Log.d(LOG + " : Nombre de question pour la serie " + serie.getNom(), String.valueOf(serie.getExercices().size()));
-
         for (Resultat unResultat : resultats){
             noteSerie += unResultat.getNote();
         }
@@ -97,7 +90,6 @@ public class SerieAdapter extends BaseAdapter {
     public void setNote(int note, Serie serie){
         int nbTotalExercice = serie.getExercices().size();
         int remetreADix = ((note * 10)/nbTotalExercice);
-        Log.d(LOG + " : Ma note sur 10 pour la serie " + serie.getNom(), String.valueOf(remetreADix));
         if (mResultatDAO.getResultatsBySerie(serie).size() == nbTotalExercice){
             mTxtNote.setText(remetreADix + "/" + 10);
         }
