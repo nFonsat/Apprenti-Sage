@@ -12,6 +12,7 @@ public class Resultat extends BaseEntity {
     public Resultat(){
         super();
         mNote = 0;
+        mIdTableCorrespondant = -1;
     }
 
     public String getNom(){
