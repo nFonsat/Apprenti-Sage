@@ -21,24 +21,27 @@ import android.widget.TextView;
 
 import com.lpiem.apprentisage.R;
 import com.lpiem.apprentisage.applicatif.App;
+import com.lpiem.apprentisage.database.DAO.ResultatDAO;
+import com.lpiem.apprentisage.metier.Resultat;
 import com.lpiem.apprentisage.model.Categorie;
 
-public class StatsAdapter extends BaseAdapter
-{
-	private Activity context;
+import java.util.ArrayList;
+
+public class StatsAdapter extends BaseAdapter{
+	private Activity mActivity;
+
     private App mApplication;
+    private ResultatDAO mResultatDAO;
 	
-	public StatsAdapter(Activity context)
-	{
-		this.context = context;
+	public StatsAdapter(Activity activity){
+        mActivity = activity;
         mApplication = App.getInstance();
+        mResultatDAO = new ResultatDAO(mActivity.getApplicationContext(), mApplication.getCurrentEleve());
 	}
 	
 	@Override
-	public int getCount()
-	{
-		//return Shared.getInstance().getCurrentCategorieList().size();
-        return mApplication.getCurrentMatieres(context).size();
+	public int getCount(){
+        return mApplication.getCurrentMatieres(mActivity).size();
 	}
 
 	@Override
@@ -56,32 +59,36 @@ public class StatsAdapter extends BaseAdapter
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent)
 	{
-		Categorie categorie = mApplication.getCurrentMatieres(context).get(position);
+		Categorie matiere = mApplication.getCurrentMatieres(mActivity).get(position);
 		
-		if(convertView == null)
-		{
-			convertView = context.getLayoutInflater().inflate(R.layout.item_stats, null);
+		if(convertView == null){
+			convertView = mActivity.getLayoutInflater().inflate(R.layout.item_stats, null);
 		}
 		
 		//convertView.setLayoutParams(new AbsListView.LayoutParams(LayoutParams.MATCH_PARENT,LayoutParams.WRAP_CONTENT));
 		
 		TextView txtCategorie = (TextView) convertView.findViewById(R.id.stats_txt_categorie);
-		txtCategorie.setText(categorie.getNom());
-		txtCategorie.setTypeface(Typeface.createFromAsset(context.getAssets(), "fonts/ComicRelief.ttf"));
-		
-		TextView txtPourcentage = (TextView) convertView.findViewById(R.id.stats_txt_pourcentage);
-		txtPourcentage.setText(categorie.getPourcentage() + " %");
-		txtPourcentage.setTypeface(Typeface.createFromAsset(context.getAssets(), "fonts/ComicRelief.ttf"));
-		
-		ProgressBar progress = (ProgressBar) convertView.findViewById(R.id.stats_progress);
-		progress.setProgress(categorie.getPourcentage());
-		
-		if(categorie.getPourcentage() < 30)
-			progress.setProgressDrawable(context.getResources().getDrawable(R.drawable.progress_craie_rouge));
-		else if(categorie.getPourcentage() >= 30 && categorie.getPourcentage() < 60)
-			progress.setProgressDrawable(context.getResources().getDrawable(R.drawable.progress_craie_jaune));
-		else if(categorie.getPourcentage() >= 60)
-			progress.setProgressDrawable(context.getResources().getDrawable(R.drawable.progress_craie_vert));
+        TextView txtPourcentage = (TextView) convertView.findViewById(R.id.stats_txt_pourcentage);
+
+        ArrayList<Resultat> resultats = mResultatDAO.getResultatsByMatiere(matiere.getNom());
+        int pourcentage = ((resultats.size() * 100) / matiere.getSubCategorie().size());
+        matiere.setPourcentage(pourcentage);
+
+        txtCategorie.setText(matiere.getNom());
+        txtPourcentage.setText(matiere.getPourcentage() + " %");
+
+        ProgressBar progress = (ProgressBar) convertView.findViewById(R.id.stats_progress);
+        progress.setProgress(matiere.getPourcentage());
+
+        txtCategorie.setTypeface(Typeface.createFromAsset(mActivity.getAssets(), "fonts/ComicRelief.ttf"));
+        txtPourcentage.setTypeface(Typeface.createFromAsset(mActivity.getAssets(), "fonts/ComicRelief.ttf"));
+
+        if(matiere.getPourcentage() < 30)
+			progress.setProgressDrawable(mActivity.getResources().getDrawable(R.drawable.progress_craie_rouge));
+		else if(matiere.getPourcentage() >= 30 && matiere.getPourcentage() < 60)
+			progress.setProgressDrawable(mActivity.getResources().getDrawable(R.drawable.progress_craie_jaune));
+		else if(matiere.getPourcentage() >= 60)
+			progress.setProgressDrawable(mActivity.getResources().getDrawable(R.drawable.progress_craie_vert));
 		
 		return convertView;
 	}

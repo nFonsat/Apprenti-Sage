@@ -41,7 +41,13 @@ public class ResultatDAO extends DataBaseAccess {
         resultatValue.put(ConfigDB.TABLE_RESULTAT_COL_ID_ELEVE, idEleve);
         resultatValue.put(ConfigDB.TABLE_RESULTAT_COL_ID_CORRESPONDANT, resultat.getIdTableCorrespondant());
 
-        long idComparaisonResultat = resultatIsDataBase(resultat);
+        long idComparaisonResultat;
+        if((resultat.getType().equalsIgnoreCase(TypeResultat.RESULTAT_EXERCICE.getType()))||(resultat.getType().equalsIgnoreCase(TypeResultat.RESULTAT_SERIE.getType()))){
+            idComparaisonResultat = resultatExerciceOrSerieIsDataBase(resultat);
+        } else {
+            idComparaisonResultat = resultatActiviteOrMatiereIsDataBase(resultat);
+        }
+
         if(idIsConforme(idComparaisonResultat)) {
             resultat.setId(idComparaisonResultat);
             return idComparaisonResultat;
@@ -142,14 +148,13 @@ public class ResultatDAO extends DataBaseAccess {
         return resultats;
     }
 
-    public ArrayList<Resultat> getResultatsByMatiere(Serie serie) {
+    public ArrayList<Resultat> getResultatsByMatiere(String matiere) {
         EleveDAO eleveDAO = new EleveDAO(mContext);
         mEleve.setId(eleveDAO.eleveIsDataBase(mEleve));
         String sqlQuery =
                 "SELECT * FROM " + ConfigDB.TABLE_RESULTAT  +
                         " WHERE " + ConfigDB.TABLE_RESULTAT_COL_ID_ELEVE + " = '" + mEleve.getId() + "'" +
-                        " AND " + ConfigDB.TABLE_RESULTAT_COL_TYPE + " = '" + TypeResultat.RESULTAT_ACTIVITE.getType() + "'" +
-                        " AND " + ConfigDB.TABLE_RESULTAT_COL_NAME + " = '" + serie.getMatiere() + "'" ;
+                        " AND " + ConfigDB.TABLE_RESULTAT_COL_TYPE + " = '" + TypeResultat.RESULTAT_ACTIVITE.getType() + "'";
 
         Cursor cursor = sqlRequest(sqlQuery);
 
@@ -157,7 +162,10 @@ public class ResultatDAO extends DataBaseAccess {
         if((cursor.getCount() > 0) && (cursor.moveToFirst())){
             do {
                 Resultat resultat = Cursor2Resultat(cursor);
-                resultats.add(resultat);
+                String[] matiereResultat = resultat.getNom().split(":");
+                if (matiereResultat[0].equalsIgnoreCase(matiere)){
+                    resultats.add(resultat);
+                }
             }while (cursor.moveToNext());
         }
 
@@ -177,11 +185,21 @@ public class ResultatDAO extends DataBaseAccess {
         return resultat;
     }
 
-    public long resultatIsDataBase(Resultat resultat) {
+    public long resultatExerciceOrSerieIsDataBase(Resultat resultat) {
         String sqlQuery =
                 "SELECT * FROM " + ConfigDB.TABLE_RESULTAT +
                         " WHERE " + ConfigDB.TABLE_RESULTAT_COL_ID_ELEVE + " = '" + mEleve.getId() + "'" +
                         " AND " + ConfigDB.TABLE_RESULTAT_COL_ID_CORRESPONDANT + " = '" + resultat.getIdTableCorrespondant() + "'" +
+                        " AND " + ConfigDB.TABLE_RESULTAT_COL_TYPE + " = '" + resultat.getType()  + "'";
+
+        return idInDataBase(sqlQuery, ConfigDB.TABLE_RESULTAT_COL_ID);
+    }
+
+    public long resultatActiviteOrMatiereIsDataBase(Resultat resultat) {
+        String sqlQuery =
+                "SELECT * FROM " + ConfigDB.TABLE_RESULTAT +
+                        " WHERE " + ConfigDB.TABLE_RESULTAT_COL_ID_ELEVE + " = '" + mEleve.getId() + "'" +
+                        " AND " + ConfigDB.TABLE_RESULTAT_COL_NAME + " = '" + resultat.getNom() + "'" +
                         " AND " + ConfigDB.TABLE_RESULTAT_COL_TYPE + " = '" + resultat.getType()  + "'";
 
         return idInDataBase(sqlQuery, ConfigDB.TABLE_RESULTAT_COL_ID);

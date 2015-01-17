@@ -5,6 +5,7 @@ import android.app.FragmentTransaction;
 import android.content.Context;
 import android.media.AudioManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -37,6 +38,8 @@ public class SerieActivity extends SherlockActivity {
 
     private SerieAdapter mSerieAdapter;
 
+    private App mApplication;
+
     private Categorie mActivite;
     private Serie mCurrentSerie;
     private Exercice mCurrentExercice;
@@ -50,7 +53,7 @@ public class SerieActivity extends SherlockActivity {
 
         mContext = getApplicationContext();
 
-        App mApplication = App.getInstance();
+        mApplication = App.getInstance();
         mCurrentEleve = mApplication.getCurrentEleve();
         mActivite = mApplication.getCurrentActivite();
 
@@ -106,7 +109,27 @@ public class SerieActivity extends SherlockActivity {
         return nextExercice;
     }
 
-    public void back(View view){
+    public void backToListActivite(View view){
+        mActivite = mApplication.getCurrentActivite();
+        ResultatDAO mResultatDAO = new ResultatDAO(view.getContext(), mApplication.getCurrentEleve());
+
+        ArrayList<Resultat> resultats = mResultatDAO.getResultatsByActivite(mActivite.getNom());
+        int noteActivite = 0;
+        for (Resultat resultat : resultats){
+            Log.d("Mes resultats", resultat.getNom() + " " + resultat.getNote());
+            noteActivite += resultat.getNote();
+        }
+
+        Resultat resultat = new  Resultat();
+        resultat.setNom(mApplication.getCurrentMatiere().getNom() + ":" + mActivite.getNom());
+        resultat.setNote(noteActivite);
+        resultat.setType(TypeResultat.RESULTAT_ACTIVITE.getType());
+
+        mResultatDAO.ajouter(resultat);
+
+        int pourcentage = ((resultats.size()*100)/mActivite.getSerieList().size());
+        mActivite.setPourcentage(pourcentage);
+
         finish();
     }
 
@@ -142,7 +165,7 @@ public class SerieActivity extends SherlockActivity {
         if (resultatsSerie.size() == mCurrentSerie.getExercices().size()){
             int noteSerie = 0;
             Resultat resultatSerie = new Resultat();
-            resultatSerie.setNom(mCurrentSerie.getNom());
+            resultatSerie.setNom(mApplication.getCurrentActivite().getNom());
             resultatSerie.setType(TypeResultat.RESULTAT_SERIE.getType());
             resultatSerie.setIdTableCorrespondant(mCurrentSerie.getId());
             for (Resultat unResultat : resultatsSerie){
