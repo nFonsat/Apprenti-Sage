@@ -7,7 +7,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 
-import com.lpiem.apprentisage.Consts;
 import com.lpiem.apprentisage.database.ConfigDB;
 import com.lpiem.apprentisage.database.DataBaseAccess;
 import com.lpiem.apprentisage.metier.Eleve;
@@ -40,7 +39,7 @@ public class ResultatDAO extends DataBaseAccess {
         resultatValue.put(ConfigDB.TABLE_RESULTAT_COL_TYPE, resultat.getType());
         resultatValue.put(ConfigDB.TABLE_RESULTAT_COL_NOTE, resultat.getNote());
         resultatValue.put(ConfigDB.TABLE_RESULTAT_COL_ID_ELEVE, idEleve);
-        resultatValue.put(ConfigDB.TABLE_RESULTAT_COL_ID_CORRESPONDANT, resultat.geIdTableCorrespondant());
+        resultatValue.put(ConfigDB.TABLE_RESULTAT_COL_ID_CORRESPONDANT, resultat.getIdTableCorrespondant());
 
         long idComparaisonResultat = resultatIsDataBase(resultat);
         if(idIsConforme(idComparaisonResultat)) {
@@ -182,8 +181,8 @@ public class ResultatDAO extends DataBaseAccess {
         String sqlQuery =
                 "SELECT * FROM " + ConfigDB.TABLE_RESULTAT +
                         " WHERE " + ConfigDB.TABLE_RESULTAT_COL_ID_ELEVE + " = '" + mEleve.getId() + "'" +
-                        " AND " + ConfigDB.TABLE_RESULTAT_COL_TYPE + " = '" + resultat.getType()  + "'" +
-                        " AND " + ConfigDB.TABLE_RESULTAT_COL_NAME + " = '" + resultat.getNom() + "'";
+                        " AND " + ConfigDB.TABLE_RESULTAT_COL_ID_CORRESPONDANT + " = '" + resultat.getIdTableCorrespondant() + "'" +
+                        " AND " + ConfigDB.TABLE_RESULTAT_COL_TYPE + " = '" + resultat.getType()  + "'";
 
         return idInDataBase(sqlQuery, ConfigDB.TABLE_RESULTAT_COL_ID);
     }

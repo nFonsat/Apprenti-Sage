@@ -38,7 +38,7 @@ public class Resultat extends BaseEntity {
         mNote = note;
     }
 
-    public long geIdTableCorrespondant(){
+    public long getIdTableCorrespondant(){
         return mIdTableCorrespondant;
     }
 
