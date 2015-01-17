@@ -5,7 +5,6 @@ import android.app.FragmentTransaction;
 import android.content.Context;
 import android.media.AudioManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -32,21 +31,17 @@ import java.util.ArrayList;
 public class SerieActivity extends SherlockActivity {
     public static final String LOG = Consts.TAG_APPLICATION + " : " + SerieActivity.class.getSimpleName();
 
-    private SerieAdapter mSerieAdapter;
-    private ListView mListSeries;
-
     private FragmentTransaction mFragmentTransaction;
     private Fragment mFragment;
     private Context mContext;
+
+    private SerieAdapter mSerieAdapter;
 
     private Categorie mActivite;
     private Serie mCurrentSerie;
     private Exercice mCurrentExercice;
 
     private Eleve mCurrentEleve;
-    private Resultat mResultat;
-
-    private App mApplication;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,20 +50,19 @@ public class SerieActivity extends SherlockActivity {
 
         mContext = getApplicationContext();
 
-        mApplication = App.getInstance();
+        App mApplication = App.getInstance();
         mCurrentEleve = mApplication.getCurrentEleve();
         mActivite = mApplication.getCurrentActivite();
 
         mSerieAdapter = new SerieAdapter(this);
-        mListSeries = (ListView)findViewById(R.id.list_series);
+        ListView mListSeries = (ListView)findViewById(R.id.list_series);
         mListSeries.setAdapter(mSerieAdapter);
 
         mListSeries.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> arg0, View view, int position, long arg3) {
                 mCurrentSerie = mActivite.getSerieList().get(position);
-                mCurrentExercice = mCurrentSerie.nextExercice(mCurrentEleve, mContext); //Peut retourner null
-                switchFragment();
+                mCurrentExercice = changeExercice();
             }
         });
 
@@ -76,33 +70,40 @@ public class SerieActivity extends SherlockActivity {
         ActionBarService.initActionBar(this, this.getSupportActionBar(), mActivite.getNom());
     }
 
-    private void switchFragment() {
-        if(mCurrentExercice == null && mFragment == null){
-            return;
+    private Fragment switchFragment(Exercice exercice) {
+        Fragment fragment = null;
+
+        if (exercice == null) {
+            return null;
         }
 
-        if (mCurrentExercice == null) {
-            mFragmentTransaction = getFragmentManager().beginTransaction();
-            mFragmentTransaction.remove(mFragment).commit();
-            mFragment = null;
-            return;
-        }
-
-        switch (mCurrentExercice.getType()){
+        switch (exercice.getType()){
             case "text":
-                mFragment = new TextFragment();
-                ((TextFragment) mFragment).setParameter(mCurrentExercice);
+                fragment = new TextFragment();
+                ((TextFragment) fragment).setParameter(exercice);
                 break;
             case "audio":
-                mFragment = new AudioFragment();
-                ((AudioFragment) mFragment).setParameter(mCurrentExercice);
+                fragment = new AudioFragment();
+                ((AudioFragment) fragment).setParameter(exercice);
                 break;
             case "audio-text":
                 break;
         }
 
         mFragmentTransaction = getFragmentManager().beginTransaction();
-        mFragmentTransaction.replace(R.id.fragment_media_exercice, mFragment).commit();
+        mFragmentTransaction.replace(R.id.fragment_media_exercice, fragment).commit();
+        return fragment;
+    }
+
+    private Exercice changeExercice(){
+        Exercice nextExercice;
+        nextExercice = mCurrentSerie.nextExercice(mCurrentEleve, mContext); //Peut retourner null
+        if((mFragment != null)){
+            mFragmentTransaction = getFragmentManager().beginTransaction();
+            mFragmentTransaction.remove(mFragment).commit();
+        }
+        mFragment = switchFragment(nextExercice);
+        return nextExercice;
     }
 
     public void back(View view){
@@ -117,31 +118,29 @@ public class SerieActivity extends SherlockActivity {
         String maReponse = ((TextFragment) mFragment).getResponse();
         ArrayList<String> lesReponses = mCurrentExercice.getResponses();
 
-        boolean reponseCorrecte = false;
+        Resultat resultatExercice = new Resultat();
+        resultatExercice.setNom(String.valueOf(mCurrentSerie.getId()));
+        resultatExercice.setType(TypeResultat.RESULTAT_EXERCICE.getType());
+        resultatExercice.setIdTableCorrespondant(mCurrentExercice.getId());
+
         int i = 0;
-
-        mResultat = new Resultat();
-        mResultat.setNom(String.valueOf(mCurrentSerie.getId()));
-        mResultat.setType(TypeResultat.RESULTAT_EXERCICE.getType());
-        mResultat.setIdTableCorrespondant(mCurrentExercice.getId());
-
+        boolean reponseCorrecte = false;
         while((i < lesReponses.size()) && (!reponseCorrecte)){
             String uneReponse = lesReponses.get(i);
             if(uneReponse.equalsIgnoreCase(maReponse)){
-                Log.d(LOG, "Tu as la bonne reponse");
-                mResultat.setNote(1);
+                resultatExercice.setNote(1);
                 reponseCorrecte = true;
             }
             i++;
         }
 
         ResultatDAO mResultatDAO = new ResultatDAO(mContext, mCurrentEleve);
-        mResultatDAO.ajouter(mResultat);
+        long id = mResultatDAO.ajouter(resultatExercice);
+        resultatExercice.setId(id);
 
         ArrayList<Resultat> resultatsSerie = mResultatDAO.getResultatsBySerie(mCurrentSerie);
         if (resultatsSerie.size() == mCurrentSerie.getExercices().size()){
             int noteSerie = 0;
-            Log.d(LOG, "Tu as terminer la série");
             Resultat resultatSerie = new Resultat();
             resultatSerie.setNom(mCurrentSerie.getNom());
             resultatSerie.setType(TypeResultat.RESULTAT_SERIE.getType());
@@ -152,15 +151,12 @@ public class SerieActivity extends SherlockActivity {
             resultatSerie.setNote(noteSerie);
             mResultatDAO.ajouter(resultatSerie);
 
-            mSerieAdapter.setNote(noteSerie, mCurrentSerie);
-
+            mSerieAdapter.notifyDataSetChanged();
             mFragmentTransaction = getFragmentManager().beginTransaction();
             mFragmentTransaction.remove(mFragment).commit();
-            mFragment = null;
             return;
         }
 
-        mCurrentExercice = mCurrentSerie.nextExercice(mCurrentEleve, mContext); //Peut retourner null
-        switchFragment();
+        mCurrentExercice = changeExercice();
     }
 }
