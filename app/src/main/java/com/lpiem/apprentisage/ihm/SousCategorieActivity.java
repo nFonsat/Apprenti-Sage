@@ -16,7 +16,6 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -32,39 +31,29 @@ import java.util.List;
 
 public class SousCategorieActivity extends SherlockActivity
 {
-	private ListView listCategorie;
-    private Button btnRetour;
-    private TextView titreMatiere;
     private List<Categorie> listCat;
 
     private App mApplication;
-	
+    private SubCatAdapter mSubCatAdapter;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.sub_categorie_list);
-
-        btnRetour = (Button)findViewById(R.id.retour);
-        titreMatiere = (TextView)findViewById(R.id.titreMatiere);
-		listCategorie = (ListView) findViewById(R.id.sub_categorie_list);
+        TextView titreMatiere = (TextView)findViewById(R.id.titreMatiere);
+        ListView listCategorie = (ListView) findViewById(R.id.sub_categorie_list);
 
         listCat = new ArrayList<>();
 
         mApplication = App.getInstance();
+
         titreMatiere.setText(mApplication.getCurrentMatiere().getNom());
         titreMatiere.setTypeface(Typeface.createFromAsset(this.getAssets(), "fonts/Craie.ttf"));
         listCat = mApplication.getCurrentMatiere().getSubCategorie();
 
-		listCategorie.setAdapter(new SubCatAdapter(this, mApplication.getCurrentEleve()));
-
-        btnRetour.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-                mApplication.setCurrentMatiere(null);
-            }
-        });
+        mSubCatAdapter = new SubCatAdapter(this);
+		listCategorie.setAdapter(mSubCatAdapter);
 
         listCategorie.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -77,4 +66,15 @@ public class SousCategorieActivity extends SherlockActivity
 
 		ActionBarService.initActionBar(this, getSupportActionBar(), getString(R.string.cat_titre));
 	}
+
+    public void backToProfile(View view){
+        mApplication.setCurrentMatiere(null);
+        finish();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mSubCatAdapter.notifyDataSetChanged();
+    }
 }

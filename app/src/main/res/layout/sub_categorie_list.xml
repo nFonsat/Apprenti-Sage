@@ -77,7 +77,8 @@
                 android:textColor="@color/white"
                 android:textSize="50sp"
                 android:layout_marginBottom="10dp"
-                android:layout_marginRight="30dp" />
+                android:layout_marginRight="30dp"
+                android:onClick="backToProfile"/>
         </LinearLayout>
     </LinearLayout>
 
