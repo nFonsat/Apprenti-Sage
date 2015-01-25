@@ -40,6 +40,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class SplashTask extends AsyncTask<Void, Void, String[]>{
+    private static final String CLASS_TAG = Consts.TAG_APPLICATION +  " : " + SplashTask.class.getSimpleName();
+
     private Activity mActity;
 
     private EnseignantDAO mEnseignantDAO;
@@ -48,9 +50,6 @@ public class SplashTask extends AsyncTask<Void, Void, String[]>{
     private ResultatDAO mResultatDAO;
     private SerieDAO mSerieDAO;
     private ExerciceDAO mExerciceDAO;
-
-    private static final String CLASS_TAG = Consts.TAG_APPLICATION +  " : SplashTask";
-
 
     public SplashTask(Activity activity) {
         super();
@@ -71,7 +70,7 @@ public class SplashTask extends AsyncTask<Void, Void, String[]>{
 
     @Override
     protected String[] doInBackground(Void... params) {
-        RestApiCall api = new RestApiCall(ConfigNetwork.URL_LOCALHOST_IEM_LIST_ENSEIGNANT);
+        RestApiCall api = new RestApiCall(ConfigNetwork.URL_LOCALHOST_NICOLAS_LIST_ENSEIGNANT);
 
         api.executeRequest(RestApiCall.RestApiCallMethod.GET);
         String[] responses = new String[2];
@@ -85,9 +84,6 @@ public class SplashTask extends AsyncTask<Void, Void, String[]>{
     @Override
     protected void onPostExecute(String[] responses) {
         super.onPostExecute(responses);
-
-        Log.d(Consts.TAG_APPLICATION + " : API Call Response", responses[0]);
-
         if(Integer.valueOf(responses[0]) != 200){
             goToHome();
             return;
@@ -125,11 +121,11 @@ public class SplashTask extends AsyncTask<Void, Void, String[]>{
                 }
             }
         } catch (JSONException jsonException) {
-            Log.e(CLASS_TAG + " : Error JSon", jsonException.getMessage());
+            Log.e(CLASS_TAG + " : JSon", jsonException.getMessage());
         } catch (SQLiteException sqliteException) {
-            Log.e(CLASS_TAG + " : Error SqLite", sqliteException.getMessage());
+            Log.e(CLASS_TAG + " : SqLite", sqliteException.getMessage());
         } catch (Exception exception) {
-            Log.e(CLASS_TAG + " : Error General", exception.getMessage());
+            Log.e(CLASS_TAG + " : General", exception.getMessage());
         }
 
         goToHome();

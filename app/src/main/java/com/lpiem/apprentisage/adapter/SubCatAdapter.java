@@ -12,40 +12,37 @@
 package com.lpiem.apprentisage.adapter;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.graphics.Typeface;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.lpiem.apprentisage.Consts;
 import com.lpiem.apprentisage.R;
-import com.lpiem.apprentisage.ihm.SerieActivity;
-import com.lpiem.apprentisage.data.App;
-import com.lpiem.apprentisage.ihm.SousCategorieActivity;
+import com.lpiem.apprentisage.applicatif.App;
+import com.lpiem.apprentisage.applicatif.ResultatApp;
 import com.lpiem.apprentisage.model.Categorie;
 
-public class SubCatAdapter extends BaseAdapter
-{
-	private Activity context;
-    private App mApplication;
-    private Categorie mCurrentCategorie;
+public class SubCatAdapter extends BaseAdapter {
+    public static final String LOG = Consts.TAG_APPLICATION + " : " + SubCatAdapter.class.getSimpleName();
+
+	private Activity mActivity;
+
+    private Categorie mCurrentMatiere;
+    private ResultatApp mResultatApp;
 	
-	public SubCatAdapter(Activity context)
-	{
-		this.context = context;
-        mApplication = App.getInstance();
-        mCurrentCategorie = mApplication.getCurrentMatiere();
+	public SubCatAdapter(Activity activity) {
+		mActivity = activity;
+        mCurrentMatiere = App.getInstance().getCurrentMatiere();
+        mResultatApp = ResultatApp.getInstance();
 	}
 	
 	@Override
-	public int getCount()
-	{
-		if(mCurrentCategorie != null && mCurrentCategorie.getSubCategorie() != null)
-			return mCurrentCategorie.getSubCategorie().size();
+	public int getCount() {
+		if(mCurrentMatiere != null && mCurrentMatiere.getSubCategorie() != null)
+			return mCurrentMatiere.getSubCategorie().size();
 		
 		return 0;
 	}
@@ -65,23 +62,26 @@ public class SubCatAdapter extends BaseAdapter
 	@Override
 	public View getView(final int position, View convertView, ViewGroup parent)
 	{
-		Categorie categorie = mCurrentCategorie.getSubCategorie().get(position);
+		Categorie mActivite = mCurrentMatiere.getSubCategorie().get(position);
+        mResultatApp.calculateResultActivite(mActivity, mActivite);
 
-		View view = context.getLayoutInflater().inflate(R.layout.serie_item, null);
+        View view = mActivity.getLayoutInflater().inflate(R.layout.serie_item, null);
 
         LinearLayout linearIdActivity = (LinearLayout) view.findViewById(R.id.linearIdActivity);
-        linearIdActivity.setBackgroundColor(mCurrentCategorie.getColor());
-		
-		TextView txtTitre = (TextView) view.findViewById(R.id.serie_txt_nom);
-		txtTitre.setText(categorie.getNom());
-		txtTitre.setTypeface(Typeface.createFromAsset(context.getAssets(), "fonts/ComicRelief.ttf"));
+        linearIdActivity.setBackgroundColor(mCurrentMatiere.getColor());
+
+        TextView txtTitre = (TextView) view.findViewById(R.id.serie_txt_nom);
+        TextView mTxtNote = (TextView) view.findViewById(R.id.serie_txt_note);
+
+
+        txtTitre.setText(mActivite.getNom());
+        mTxtNote.setText(mActivite.getPourcentage() + " % ");
+
         txtTitre.setTextColor(view.getResources().getColor(R.color.white));
-		
-		TextView noteSerie = (TextView) view.findViewById(R.id.serie_txt_note);
-        noteSerie.setText(String.valueOf(categorie.getPourcentage())+" %  ");
-        noteSerie.setTypeface(Typeface.createFromAsset(context.getAssets(), "fonts/ComicRelief.ttf"));
-        noteSerie.setTextColor(view.getResources().getColor(R.color.white));
-        // recuperer la note de la serie
+        mTxtNote.setTextColor(view.getResources().getColor(R.color.white));
+
+		txtTitre.setTypeface(Typeface.createFromAsset(mActivity.getAssets(), "fonts/ComicRelief.ttf"));
+        mTxtNote.setTypeface(Typeface.createFromAsset(mActivity.getAssets(), "fonts/ComicRelief.ttf"));
 
 		return view;
 	}

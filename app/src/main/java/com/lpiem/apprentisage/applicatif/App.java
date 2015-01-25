@@ -1,7 +1,7 @@
 /**
  * Created by Nicolas on 13/01/2015.
  */
-package com.lpiem.apprentisage.data;
+package com.lpiem.apprentisage.applicatif;
 
 import android.content.Context;
 
@@ -26,6 +26,7 @@ public class App {
 
     private Categorie mLastMatiereSelected = null;
     private Categorie mLastActiviteSelected = null;
+    private Serie mLastSerieSelected = null;
 
     private ArrayList<Categorie> mCurrentMatieres = new ArrayList<>();
     private ArrayList<Serie> mCurrentSeries = new ArrayList<>();
@@ -40,7 +41,7 @@ public class App {
 
     public Enseignant getCurrentEnseignant(){
         return mCurrentEnseignant;
-    }
+}
 
     public Classe getCurrentClasse(){
         return mCurrentClasse;
@@ -61,6 +62,12 @@ public class App {
 
     public void setCurrentEleve(Eleve eleve){
         mCurrentEleve = eleve;
+
+        mLastMatiereSelected = null;
+        mLastActiviteSelected = null;
+
+        mCurrentMatieres = new ArrayList<>();
+        mCurrentSeries = new ArrayList<>();
     }
 
     public ArrayList<Serie> getSeries(Context context){
@@ -77,6 +84,14 @@ public class App {
 
     public void setCurrentMatiere(Categorie categorie){
         mLastMatiereSelected = categorie;
+    }
+
+    public Serie getCurrentSerie(){
+        return mLastSerieSelected;
+    }
+
+    public void setCurrentSerie(Serie serie){
+        mLastSerieSelected = serie;
     }
 
     public Categorie getCurrentActivite(){
@@ -96,7 +111,7 @@ public class App {
 
     private ArrayList<Categorie> generateMatiere(Context context){
         ArrayList<Serie> series = getSeries(context);
-        mCurrentMatieres = new ArrayList();
+        mCurrentMatieres = new ArrayList<>();
 
         for (String matiere : getListMatieres(context)){
             Categorie matiereCategorie = new Categorie(matiere);
@@ -131,14 +146,12 @@ public class App {
     }
 
     public ArrayList<String> getActiviteByMatiere(Context context, String matiere){
-        ArrayList<Serie> series = getSeries(context);
-
-        if(matiere == null){
-            matiere.equalsIgnoreCase(mLastMatiereSelected.getNom());
-        }
+         if(matiere == null){
+            matiere = mLastMatiereSelected.getNom();
+         }
 
         HashSet<String> set = new HashSet<>();
-        for (Serie uneSerie : series){
+        for (Serie uneSerie : getSeries(context)){
             if(uneSerie.getMatiere().equalsIgnoreCase(matiere) && uneSerie.getExercices().size() > 0)
                 set.add(uneSerie.getActivite());
         }

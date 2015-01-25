@@ -24,7 +24,7 @@ public class TextFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_text_text, container, false);
+        View view = inflater.inflate(R.layout.fragment_exercice_text, container, false);
 
         mEnonce = (TextView) view.findViewById(R.id.enonce_exercice_txt);
         mPlayEnonce = (Button) view.findViewById(R.id.play_exercice_btn);

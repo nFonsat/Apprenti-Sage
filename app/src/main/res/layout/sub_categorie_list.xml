@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
     android:orientation="vertical"
     android:background="@color/app_backgroung"
     android:weightSum="100" >
@@ -28,8 +28,8 @@
 
     <LinearLayout
         android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
         android:layout_weight="15">
 
         <LinearLayout
@@ -55,8 +55,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
-            android:layout_weight="50"
-            android:weightSum="100">
+            android:layout_weight="50">
 
             <ListView
                 android:id="@+id/sub_categorie_list"
@@ -66,7 +65,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="20dp"
-                android:layout_weight="15" />
+                android:layout_weight="10" />
 
             <Button
                 android:layout_width="wrap_content"
@@ -74,11 +73,12 @@
                 android:text="Retour"
                 android:id="@+id/retour"
                 android:layout_gravity="center_vertical|right"
-                android:layout_weight="85"
+                android:layout_weight="60"
                 android:textColor="@color/white"
                 android:textSize="50sp"
                 android:layout_marginBottom="10dp"
-                android:layout_marginRight="30dp" />
+                android:layout_marginRight="30dp"
+                android:onClick="backToProfile"/>
         </LinearLayout>
     </LinearLayout>
 

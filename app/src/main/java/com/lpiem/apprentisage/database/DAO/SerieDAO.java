@@ -6,8 +6,8 @@ package com.lpiem.apprentisage.database.DAO;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.util.Log;
 
+import com.lpiem.apprentisage.Consts;
 import com.lpiem.apprentisage.database.ConfigDB;
 import com.lpiem.apprentisage.database.DataBaseAccess;
 import com.lpiem.apprentisage.metier.Classe;
@@ -15,9 +15,9 @@ import com.lpiem.apprentisage.metier.Enseignant;
 import com.lpiem.apprentisage.metier.Serie;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 
 public class SerieDAO extends DataBaseAccess {
+
     public SerieDAO(Context context){
         super(context);
     }
@@ -97,6 +97,7 @@ public class SerieDAO extends DataBaseAccess {
     public Serie Cursor2Serie(Cursor cursor) {
         Serie serie = new Serie();
 
+        serie.setId(cursor.getLong(cursor.getColumnIndex(ConfigDB.TABLE_SERIE_COL_ID)));
         serie.setNom(cursor.getString(cursor.getColumnIndex(ConfigDB.TABLE_SERIE_COL_NAME)));
         serie.setDescription(cursor.getString(cursor.getColumnIndex(ConfigDB.TABLE_SERIE_COL_DESC)));
         serie.setDifficulte(cursor.getInt(cursor.getColumnIndex(ConfigDB.TABLE_SERIE_COL_DIFF)));
