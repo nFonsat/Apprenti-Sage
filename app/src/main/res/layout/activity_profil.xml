@@ -4,21 +4,21 @@
     android:layout_height="match_parent"
     android:background="@color/app_backgroung"
     android:orientation="horizontal"
-    android:weightSum="3" >
+    android:weightSum="10" >
 
     <LinearLayout
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="2"
+        android:layout_weight="3"
         android:orientation="vertical"
-        android:weightSum="2" >
+        android:weightSum="100" >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginLeft="15dp"
             android:layout_marginTop="15dp"
-            android:layout_weight="1"
+            android:layout_weight="49"
             android:orientation="horizontal"
             android:weightSum="3" >
 
@@ -67,7 +67,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_weight="49"
             android:orientation="vertical" >
 
             <TextView
@@ -102,17 +102,18 @@
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
             android:textColor="@color/white"
-            android:textSize="50sp"/>
+            android:textSize="50sp"
+            android:layout_weight="2" />
 
 
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/categorie_layout"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="10dp"
-        android:layout_weight="1"
+        android:layout_weight="7"
         android:orientation="vertical" />
 
 </LinearLayout>
