@@ -42,7 +42,7 @@ public class ResultatDAO extends DataBaseAccess {
         resultatValue.put(ConfigDB.TABLE_RESULTAT_COL_ID_CORRESPONDANT, resultat.getIdTableCorrespondant());
 
         long idComparaisonResultat;
-        if((resultat.getType().equalsIgnoreCase(TypeResultat.RESULTAT_EXERCICE.getType()))||(resultat.getType().equalsIgnoreCase(TypeResultat.RESULTAT_SERIE.getType()))){
+        if(isExerciceOrSerie(resultat)){
             idComparaisonResultat = resultatExerciceOrSerieIsDataBase(resultat);
         } else {
             idComparaisonResultat = resultatActiviteOrMatiereIsDataBase(resultat);
@@ -50,8 +50,9 @@ public class ResultatDAO extends DataBaseAccess {
 
         if(idIsConforme(idComparaisonResultat)) {
             resultat.setId(idComparaisonResultat);
-            return idComparaisonResultat;
-            //return updateDataInDatabase(ConfigDB.TABLE_RESULTAT, resultatValue, idComparaisonResultat);
+            String selection = ConfigDB.TABLE_RESULTAT_COL_ID + " LIKE ?";
+            String[] selectionArgs = { String.valueOf(idComparaisonResultat) };
+            return updateDataInDatabase(ConfigDB.TABLE_RESULTAT, resultatValue, selection, selectionArgs);
         }
 
         return savingDataInDatabase(ConfigDB.TABLE_RESULTAT, resultatValue);
@@ -210,7 +211,7 @@ public class ResultatDAO extends DataBaseAccess {
 
         long id = resultatASupprimer.getId();
         if(!idIsConforme(id)){
-            if((resultatASupprimer.getType().equalsIgnoreCase(TypeResultat.RESULTAT_EXERCICE.getType()))||(resultatASupprimer.getType().equalsIgnoreCase(TypeResultat.RESULTAT_SERIE.getType()))){
+            if(isExerciceOrSerie(resultatASupprimer)){
                 id = resultatExerciceOrSerieIsDataBase(resultatASupprimer);
             } else {
                 id = resultatActiviteOrMatiereIsDataBase(resultatASupprimer);
@@ -219,5 +220,13 @@ public class ResultatDAO extends DataBaseAccess {
 
         String[] selectionArgs = { String.valueOf(id) };
         return deleteDataInDatabase(ConfigDB.TABLE_RESULTAT, selection, selectionArgs);
+    }
+
+    public boolean isExerciceOrSerie(Resultat resultat){
+        return ((resultat.getType().equalsIgnoreCase(TypeResultat.RESULTAT_EXERCICE.getType()))||(resultat.getType().equalsIgnoreCase(TypeResultat.RESULTAT_SERIE.getType())));
+    }
+
+    public boolean isActiviteOrMatiere(Resultat resultat){
+        return ((resultat.getType().equalsIgnoreCase(TypeResultat.RESULTAT_ACTIVITE.getType()))||(resultat.getType().equalsIgnoreCase(TypeResultat.RESULTAT_MATIERE.getType())));
     }
 }

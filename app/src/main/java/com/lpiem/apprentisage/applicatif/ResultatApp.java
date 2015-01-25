@@ -51,7 +51,7 @@ public class ResultatApp {
 
         int nombreTotalDeSerie = getNumberSerieByMatiere(context, matiere);
         int nombreDeResultatTrouve = getNumberResultatByMatiere(context,matiere);
-        matiere.setPourcentage((nombreDeResultatTrouve*100)/nombreTotalDeSerie);
+        matiere.setPourcentage((nombreDeResultatTrouve * 100) / nombreTotalDeSerie);
 
         Resultat resultatMatiere = new Resultat();
         resultatMatiere.setNom(matiere.getNom());
@@ -165,5 +165,22 @@ public class ResultatApp {
         }
 
         return numberResultat;
+    }
+
+    public void updateResultatSerie(Context context, Serie serie){
+        mApplication = App.getInstance();
+        mResultatDAO = new ResultatDAO(context, mApplication.getCurrentEleve());
+
+        //Suppression des resultats des exercices de la serie
+        for (Resultat resultatExercice : mResultatDAO.getResultatsBySerie(serie)) {
+            mResultatDAO.supprimer(resultatExercice);
+        }
+
+        //Suppression du resultat de la serie
+        for (Resultat resultatSerie : mResultatDAO.getResultatsByActivite(mApplication.getCurrentActivite().getNom())){
+            if (resultatSerie.getIdTableCorrespondant() == serie.getId()){
+                mResultatDAO.supprimer(resultatSerie);
+            }
+        }
     }
 }
