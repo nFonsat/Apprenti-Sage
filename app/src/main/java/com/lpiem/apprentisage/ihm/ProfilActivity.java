@@ -29,6 +29,7 @@ import com.lpiem.apprentisage.R;
 import com.lpiem.apprentisage.UIService;
 import com.lpiem.apprentisage.adapter.StatsAdapter;
 import com.lpiem.apprentisage.applicatif.App;
+import com.lpiem.apprentisage.applicatif.ResultatApp;
 import com.lpiem.apprentisage.metier.Classe;
 import com.lpiem.apprentisage.metier.Eleve;
 import com.lpiem.apprentisage.model.Categorie;
@@ -36,6 +37,7 @@ import com.lpiem.apprentisage.model.Categorie;
 public class ProfilActivity extends SherlockActivity{
 
     private App mApplication;
+    private ResultatApp mResultatApp;
 
 	private TextView nomTxt;
 	private TextView prenomTxt;
@@ -58,6 +60,8 @@ public class ProfilActivity extends SherlockActivity{
         setContentView(R.layout.activity_profil);
 
         mApplication = App.getInstance();
+        mResultatApp = ResultatApp.getInstance();
+
         eleve = mApplication.getCurrentEleve();
         classe = mApplication.getCurrentClasse();
 
@@ -97,6 +101,7 @@ public class ProfilActivity extends SherlockActivity{
 	@Override
 	protected void onResume() {
 		super.onResume();
+        mResultatApp.calculateResultMatieres(this);
 		adapter.notifyDataSetChanged();
 	}
 	

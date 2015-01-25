@@ -22,26 +22,21 @@ import android.widget.TextView;
 import com.lpiem.apprentisage.Consts;
 import com.lpiem.apprentisage.R;
 import com.lpiem.apprentisage.applicatif.App;
-import com.lpiem.apprentisage.database.DAO.ResultatDAO;
-import com.lpiem.apprentisage.metier.Eleve;
-import com.lpiem.apprentisage.metier.Resultat;
+import com.lpiem.apprentisage.applicatif.ResultatApp;
 import com.lpiem.apprentisage.model.Categorie;
-
-import java.util.ArrayList;
 
 public class SubCatAdapter extends BaseAdapter {
     public static final String LOG = Consts.TAG_APPLICATION + " : " + SubCatAdapter.class.getSimpleName();
 
-	private Activity mContext;
+	private Activity mActivity;
 
     private Categorie mCurrentMatiere;
-
-    private ResultatDAO mResultatDAO;
+    private ResultatApp mResultatApp;
 	
-	public SubCatAdapter(Activity context, Eleve eleve) {
-		this.mContext = context;
+	public SubCatAdapter(Activity activity) {
+		mActivity = activity;
         mCurrentMatiere = App.getInstance().getCurrentMatiere();
-        mResultatDAO = new ResultatDAO(mContext, eleve);
+        mResultatApp = ResultatApp.getInstance();
 	}
 	
 	@Override
@@ -68,17 +63,16 @@ public class SubCatAdapter extends BaseAdapter {
 	public View getView(final int position, View convertView, ViewGroup parent)
 	{
 		Categorie mActivite = mCurrentMatiere.getSubCategorie().get(position);
-		View view = mContext.getLayoutInflater().inflate(R.layout.serie_item, null);
+        mResultatApp.calculateResultActivite(mActivity, mActivite);
+
+        View view = mActivity.getLayoutInflater().inflate(R.layout.serie_item, null);
 
         LinearLayout linearIdActivity = (LinearLayout) view.findViewById(R.id.linearIdActivity);
         linearIdActivity.setBackgroundColor(mCurrentMatiere.getColor());
-		
-		TextView txtTitre = (TextView) view.findViewById(R.id.serie_txt_nom);
+
+        TextView txtTitre = (TextView) view.findViewById(R.id.serie_txt_nom);
         TextView mTxtNote = (TextView) view.findViewById(R.id.serie_txt_note);
 
-        ArrayList<Resultat> resultats = mResultatDAO.getResultatsByActivite(mActivite.getNom());
-        int pourcentage = ((resultats.size() * 100) / mActivite.getSerieList().size());
-        mActivite.setPourcentage(pourcentage);
 
         txtTitre.setText(mActivite.getNom());
         mTxtNote.setText(mActivite.getPourcentage() + " % ");
@@ -86,8 +80,8 @@ public class SubCatAdapter extends BaseAdapter {
         txtTitre.setTextColor(view.getResources().getColor(R.color.white));
         mTxtNote.setTextColor(view.getResources().getColor(R.color.white));
 
-		txtTitre.setTypeface(Typeface.createFromAsset(mContext.getAssets(), "fonts/ComicRelief.ttf"));
-        mTxtNote.setTypeface(Typeface.createFromAsset(mContext.getAssets(), "fonts/ComicRelief.ttf"));
+		txtTitre.setTypeface(Typeface.createFromAsset(mActivity.getAssets(), "fonts/ComicRelief.ttf"));
+        mTxtNote.setTypeface(Typeface.createFromAsset(mActivity.getAssets(), "fonts/ComicRelief.ttf"));
 
 		return view;
 	}

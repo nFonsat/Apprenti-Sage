@@ -1,9 +1,13 @@
 package com.lpiem.apprentisage.ihm;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.res.AssetFileDescriptor;
 import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -16,6 +20,7 @@ import com.lpiem.apprentisage.Consts;
 import com.lpiem.apprentisage.R;
 import com.lpiem.apprentisage.adapter.SerieAdapter;
 import com.lpiem.apprentisage.applicatif.App;
+import com.lpiem.apprentisage.applicatif.ResultatApp;
 import com.lpiem.apprentisage.database.DAO.ResultatDAO;
 import com.lpiem.apprentisage.fragment.AudioFragment;
 import com.lpiem.apprentisage.fragment.TextFragment;
@@ -23,9 +28,9 @@ import com.lpiem.apprentisage.metier.Eleve;
 import com.lpiem.apprentisage.metier.Exercice;
 import com.lpiem.apprentisage.metier.Resultat;
 import com.lpiem.apprentisage.metier.Serie;
-import com.lpiem.apprentisage.metier.TypeResultat;
 import com.lpiem.apprentisage.model.Categorie;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 
@@ -39,6 +44,7 @@ public class SerieActivity extends SherlockActivity {
     private SerieAdapter mSerieAdapter;
 
     private App mApplication;
+    private ResultatApp mResultatApplication;
 
     private Categorie mActivite;
     private Serie mCurrentSerie;
@@ -54,6 +60,9 @@ public class SerieActivity extends SherlockActivity {
         mContext = getApplicationContext();
 
         mApplication = App.getInstance();
+        mResultatApplication = ResultatApp.getInstance();
+
+        mResultatApplication = ResultatApp.getInstance();
         mCurrentEleve = mApplication.getCurrentEleve();
         mActivite = mApplication.getCurrentActivite();
 
@@ -64,7 +73,8 @@ public class SerieActivity extends SherlockActivity {
         mListSeries.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> arg0, View view, int position, long arg3) {
-                mCurrentSerie = mActivite.getSerieList().get(position);
+                mApplication.setCurrentSerie(mActivite.getSerieList().get(position));
+                mCurrentSerie = mApplication.getCurrentSerie();
                 mCurrentExercice = changeExercice();
             }
         });
@@ -77,6 +87,7 @@ public class SerieActivity extends SherlockActivity {
         Fragment fragment = null;
 
         if (exercice == null) {
+            recommencerSerie(mCurrentSerie);
             return null;
         }
 
@@ -110,26 +121,6 @@ public class SerieActivity extends SherlockActivity {
     }
 
     public void backToListActivite(View view){
-        mActivite = mApplication.getCurrentActivite();
-        ResultatDAO mResultatDAO = new ResultatDAO(view.getContext(), mApplication.getCurrentEleve());
-
-        ArrayList<Resultat> resultats = mResultatDAO.getResultatsByActivite(mActivite.getNom());
-        int noteActivite = 0;
-        for (Resultat resultat : resultats){
-            Log.d("Mes resultats", resultat.getNom() + " " + resultat.getNote());
-            noteActivite += resultat.getNote();
-        }
-
-        Resultat resultat = new  Resultat();
-        resultat.setNom(mApplication.getCurrentMatiere().getNom() + ":" + mActivite.getNom());
-        resultat.setNote(noteActivite);
-        resultat.setType(TypeResultat.RESULTAT_ACTIVITE.getType());
-
-        mResultatDAO.ajouter(resultat);
-
-        int pourcentage = ((resultats.size()*100)/mActivite.getSerieList().size());
-        mActivite.setPourcentage(pourcentage);
-
         finish();
     }
 
@@ -139,40 +130,25 @@ public class SerieActivity extends SherlockActivity {
         }
 
         String maReponse = ((TextFragment) mFragment).getResponse();
-        ArrayList<String> lesReponses = mCurrentExercice.getResponses();
+        Resultat resultatExercice = mResultatApplication.calculateResultExercice(this, mCurrentExercice, maReponse);
 
-        Resultat resultatExercice = new Resultat();
-        resultatExercice.setNom(String.valueOf(mCurrentSerie.getId()));
-        resultatExercice.setType(TypeResultat.RESULTAT_EXERCICE.getType());
-        resultatExercice.setIdTableCorrespondant(mCurrentExercice.getId());
 
-        int i = 0;
-        boolean reponseCorrecte = false;
-        while((i < lesReponses.size()) && (!reponseCorrecte)){
-            String uneReponse = lesReponses.get(i);
-            if(uneReponse.equalsIgnoreCase(maReponse)){
-                resultatExercice.setNote(1);
-                reponseCorrecte = true;
+        if(resultatExercice.getNote() == 1){
+            try {
+                success();
+            } catch (IOException ioError) {
+                Log.e(LOG + " : io error", ioError.getMessage());
+            } catch (Exception error) {
+                Log.e(LOG + " : error", error.getMessage());
             }
-            i++;
+        } else {
+            error(mCurrentExercice.getResponses().get(0));
         }
 
         ResultatDAO mResultatDAO = new ResultatDAO(mContext, mCurrentEleve);
-        long id = mResultatDAO.ajouter(resultatExercice);
-        resultatExercice.setId(id);
-
         ArrayList<Resultat> resultatsSerie = mResultatDAO.getResultatsBySerie(mCurrentSerie);
         if (resultatsSerie.size() == mCurrentSerie.getExercices().size()){
-            int noteSerie = 0;
-            Resultat resultatSerie = new Resultat();
-            resultatSerie.setNom(mApplication.getCurrentActivite().getNom());
-            resultatSerie.setType(TypeResultat.RESULTAT_SERIE.getType());
-            resultatSerie.setIdTableCorrespondant(mCurrentSerie.getId());
-            for (Resultat unResultat : resultatsSerie){
-                noteSerie += unResultat.getNote();
-            }
-            resultatSerie.setNote(noteSerie);
-            mResultatDAO.ajouter(resultatSerie);
+            mResultatApplication.calculateResultSerie(this, mCurrentSerie);
 
             mSerieAdapter.notifyDataSetChanged();
             mFragmentTransaction = getFragmentManager().beginTransaction();
@@ -181,5 +157,69 @@ public class SerieActivity extends SherlockActivity {
         }
 
         mCurrentExercice = changeExercice();
+    }
+
+    public void success() throws IOException {
+        MediaPlayer player = new MediaPlayer();
+
+        AssetFileDescriptor mAssetFileDescriptor = getAssets().openFd("sons/success.mp3");
+        player.setDataSource(mAssetFileDescriptor.getFileDescriptor(), mAssetFileDescriptor.getStartOffset(), mAssetFileDescriptor.getLength());
+
+        player.prepare();
+        player.start();
+    }
+
+    public void error(String response)
+    {
+        AlertDialog dialog = new AlertDialog.Builder(this).create();
+        dialog.setTitle("Dommage tu n'as pas la bonne réponse");
+        dialog.setMessage("La bonne réponse était " + response);
+        dialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.ok), new AlertDialog.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+    }
+
+    public void recommencerSerie(final Serie serie){
+        AlertDialog dialog = new AlertDialog.Builder(this).create();
+        dialog.setMessage("Veux tu recommencer cette série ?");
+
+        dialog.setButton(AlertDialog.BUTTON_NEGATIVE, "NON", new AlertDialog.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.setButton(AlertDialog.BUTTON_POSITIVE, "YES", new AlertDialog.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                ResultatDAO resultatDAO = new ResultatDAO(mContext, mCurrentEleve);
+                for(Resultat unResultatASupprimer : resultatDAO.getResultatsBySerie(serie)){
+                    resultatDAO.supprimer(unResultatASupprimer);
+                }
+                mCurrentExercice = changeExercice();
+                mSerieAdapter.notifyDataSetChanged();
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mSerieAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mResultatApplication.calculateResultActivite(this, mApplication.getCurrentActivite());
     }
 }

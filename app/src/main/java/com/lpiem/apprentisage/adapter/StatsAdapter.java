@@ -21,22 +21,16 @@ import android.widget.TextView;
 
 import com.lpiem.apprentisage.R;
 import com.lpiem.apprentisage.applicatif.App;
-import com.lpiem.apprentisage.database.DAO.ResultatDAO;
-import com.lpiem.apprentisage.metier.Resultat;
 import com.lpiem.apprentisage.model.Categorie;
-
-import java.util.ArrayList;
 
 public class StatsAdapter extends BaseAdapter{
 	private Activity mActivity;
 
     private App mApplication;
-    private ResultatDAO mResultatDAO;
 	
 	public StatsAdapter(Activity activity){
         mActivity = activity;
         mApplication = App.getInstance();
-        mResultatDAO = new ResultatDAO(mActivity.getApplicationContext(), mApplication.getCurrentEleve());
 	}
 	
 	@Override
@@ -64,15 +58,10 @@ public class StatsAdapter extends BaseAdapter{
 		if(convertView == null){
 			convertView = mActivity.getLayoutInflater().inflate(R.layout.item_stats, null);
 		}
-		
 		//convertView.setLayoutParams(new AbsListView.LayoutParams(LayoutParams.MATCH_PARENT,LayoutParams.WRAP_CONTENT));
 		
 		TextView txtCategorie = (TextView) convertView.findViewById(R.id.stats_txt_categorie);
         TextView txtPourcentage = (TextView) convertView.findViewById(R.id.stats_txt_pourcentage);
-
-        ArrayList<Resultat> resultats = mResultatDAO.getResultatsByMatiere(matiere.getNom());
-        int pourcentage = ((resultats.size() * 100) / matiere.getSubCategorie().size());
-        matiere.setPourcentage(pourcentage);
 
         txtCategorie.setText(matiere.getNom());
         txtPourcentage.setText(matiere.getPourcentage() + " %");
