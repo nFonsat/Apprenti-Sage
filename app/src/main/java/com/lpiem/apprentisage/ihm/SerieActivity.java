@@ -198,7 +198,7 @@ public class SerieActivity extends SherlockActivity {
         dialog.setButton(AlertDialog.BUTTON_POSITIVE, "YES", new AlertDialog.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                mResultatApplication.updateResultatSerie(mContext, mApplication.getCurrentSerie());
+                mResultatApplication.updateResultatSerie(mContext, serie);
                 mCurrentExercice = changeExercice();
                 mSerieAdapter.notifyDataSetChanged();
                 dialog.dismiss();
