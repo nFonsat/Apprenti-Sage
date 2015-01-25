@@ -204,4 +204,20 @@ public class ResultatDAO extends DataBaseAccess {
 
         return idInDataBase(sqlQuery, ConfigDB.TABLE_RESULTAT_COL_ID);
     }
+
+    public long supprimer(Resultat resultatASupprimer) {
+        String selection = ConfigDB.TABLE_RESULTAT_COL_ID + " LIKE ?";
+
+        long id = resultatASupprimer.getId();
+        if(!idIsConforme(id)){
+            if((resultatASupprimer.getType().equalsIgnoreCase(TypeResultat.RESULTAT_EXERCICE.getType()))||(resultatASupprimer.getType().equalsIgnoreCase(TypeResultat.RESULTAT_SERIE.getType()))){
+                id = resultatExerciceOrSerieIsDataBase(resultatASupprimer);
+            } else {
+                id = resultatActiviteOrMatiereIsDataBase(resultatASupprimer);
+            }
+        }
+
+        String[] selectionArgs = { String.valueOf(id) };
+        return deleteDataInDatabase(ConfigDB.TABLE_RESULTAT, selection, selectionArgs);
+    }
 }
