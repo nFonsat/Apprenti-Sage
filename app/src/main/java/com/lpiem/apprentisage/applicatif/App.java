@@ -26,6 +26,7 @@ public class App {
 
     private Categorie mLastMatiereSelected = null;
     private Categorie mLastActiviteSelected = null;
+    private Serie mLastSerieSelected = null;
 
     private ArrayList<Categorie> mCurrentMatieres = new ArrayList<>();
     private ArrayList<Serie> mCurrentSeries = new ArrayList<>();
@@ -40,7 +41,7 @@ public class App {
 
     public Enseignant getCurrentEnseignant(){
         return mCurrentEnseignant;
-    }
+}
 
     public Classe getCurrentClasse(){
         return mCurrentClasse;
@@ -83,6 +84,14 @@ public class App {
 
     public void setCurrentMatiere(Categorie categorie){
         mLastMatiereSelected = categorie;
+    }
+
+    public Serie getCurrentSerie(){
+        return mLastSerieSelected;
+    }
+
+    public void setCurrentSerie(Serie serie){
+        mLastSerieSelected = serie;
     }
 
     public Categorie getCurrentActivite(){
@@ -137,14 +146,12 @@ public class App {
     }
 
     public ArrayList<String> getActiviteByMatiere(Context context, String matiere){
-        ArrayList<Serie> series = getSeries(context);
-
-        if(matiere == null){
+         if(matiere == null){
             matiere = mLastMatiereSelected.getNom();
-        }
+         }
 
         HashSet<String> set = new HashSet<>();
-        for (Serie uneSerie : series){
+        for (Serie uneSerie : getSeries(context)){
             if(uneSerie.getMatiere().equalsIgnoreCase(matiere) && uneSerie.getExercices().size() > 0)
                 set.add(uneSerie.getActivite());
         }
