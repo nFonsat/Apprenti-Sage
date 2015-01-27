@@ -9,9 +9,9 @@ import android.content.res.AssetFileDescriptor;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 
 import com.actionbarsherlock.app.SherlockActivity;
@@ -21,20 +21,18 @@ import com.lpiem.apprentisage.R;
 import com.lpiem.apprentisage.adapter.SerieAdapter;
 import com.lpiem.apprentisage.applicatif.App;
 import com.lpiem.apprentisage.applicatif.ResultatApp;
-import com.lpiem.apprentisage.database.DAO.ResultatDAO;
 import com.lpiem.apprentisage.fragment.AudioFragment;
+import com.lpiem.apprentisage.fragment.FragmentAccess;
 import com.lpiem.apprentisage.fragment.TextFragment;
 import com.lpiem.apprentisage.metier.Eleve;
 import com.lpiem.apprentisage.metier.Exercice;
-import com.lpiem.apprentisage.metier.Resultat;
 import com.lpiem.apprentisage.metier.Serie;
 import com.lpiem.apprentisage.model.Categorie;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 
-public class SerieActivity extends SherlockActivity {
+public class SerieActivity extends SherlockActivity implements FragmentAccess {
     public static final String LOG = Consts.TAG_APPLICATION + " : " + SerieActivity.class.getSimpleName();
 
     private FragmentTransaction mFragmentTransaction;
@@ -84,6 +82,7 @@ public class SerieActivity extends SherlockActivity {
     }
 
     private Fragment switchFragment(Exercice exercice) {
+        Button mValiderBtn = (Button)findViewById(R.id.exercice_btn_ok);
         Fragment fragment = null;
 
         if (exercice == null) {
@@ -94,7 +93,7 @@ public class SerieActivity extends SherlockActivity {
         switch (exercice.getType()){
             case "text":
                 fragment = new TextFragment();
-                ((TextFragment) fragment).setParameter(exercice);
+                ((TextFragment) fragment).setParameter(exercice, mValiderBtn);
                 break;
             case "audio":
                 fragment = new AudioFragment();
@@ -109,79 +108,8 @@ public class SerieActivity extends SherlockActivity {
         return fragment;
     }
 
-    private Exercice changeExercice(){
-        Exercice nextExercice;
-        nextExercice = mCurrentSerie.nextExercice(mCurrentEleve, mContext); //Peut retourner null
-        if((mFragment != null)){
-            mFragmentTransaction = getFragmentManager().beginTransaction();
-            mFragmentTransaction.remove(mFragment).commit();
-        }
-        mFragment = switchFragment(nextExercice);
-        return nextExercice;
-    }
-
     public void backToListActivite(View view){
         finish();
-    }
-
-    public void validerReponse(View view){
-        if(mCurrentSerie == null || mCurrentExercice == null){
-            return;
-        }
-
-        String maReponse = ((TextFragment) mFragment).getResponse();
-        Resultat resultatExercice = mResultatApplication.calculateResultExercice(this, mCurrentExercice, maReponse);
-
-
-        if(resultatExercice.getNote() == 1){
-            try {
-                success();
-            } catch (IOException ioError) {
-                Log.e(LOG + " : io error", ioError.getMessage());
-            } catch (Exception error) {
-                Log.e(LOG + " : error", error.getMessage());
-            }
-        } else {
-            error(mCurrentExercice.getResponses().get(0));
-        }
-
-        ResultatDAO mResultatDAO = new ResultatDAO(mContext, mCurrentEleve);
-        ArrayList<Resultat> resultatsSerie = mResultatDAO.getResultatsBySerie(mCurrentSerie);
-        if (resultatsSerie.size() == mCurrentSerie.getExercices().size()){
-            mResultatApplication.calculateResultSerie(this, mCurrentSerie);
-
-            mSerieAdapter.notifyDataSetChanged();
-            mFragmentTransaction = getFragmentManager().beginTransaction();
-            mFragmentTransaction.remove(mFragment).commit();
-            return;
-        }
-
-        mCurrentExercice = changeExercice();
-    }
-
-    public void success() throws IOException {
-        MediaPlayer player = new MediaPlayer();
-
-        AssetFileDescriptor mAssetFileDescriptor = getAssets().openFd("sons/success.mp3");
-        player.setDataSource(mAssetFileDescriptor.getFileDescriptor(), mAssetFileDescriptor.getStartOffset(), mAssetFileDescriptor.getLength());
-
-        player.prepare();
-        player.start();
-    }
-
-    public void error(String response)
-    {
-        AlertDialog dialog = new AlertDialog.Builder(this).create();
-        dialog.setTitle("Dommage tu n'as pas la bonne réponse");
-        dialog.setMessage("La bonne réponse était " + response);
-        dialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.ok), new AlertDialog.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-
-        dialog.show();
     }
 
     public void recommencerSerie(final Serie serie){
@@ -218,5 +146,50 @@ public class SerieActivity extends SherlockActivity {
     protected void onStop() {
         super.onStop();
         mResultatApplication.calculateResultActivite(this, mApplication.getCurrentActivite());
+    }
+
+    @Override
+    public void exerciceSuccess() throws IOException {
+        MediaPlayer player = new MediaPlayer();
+
+        AssetFileDescriptor mAssetFileDescriptor = getAssets().openFd("sons/success.mp3");
+        player.setDataSource(mAssetFileDescriptor.getFileDescriptor(), mAssetFileDescriptor.getStartOffset(), mAssetFileDescriptor.getLength());
+
+        player.prepare();
+        player.start();
+    }
+
+    @Override
+    public void exerciceError(String laReponse) {
+        AlertDialog dialog = new AlertDialog.Builder(this).create();
+        dialog.setTitle("Dommage tu n'as pas la bonne réponse");
+        dialog.setMessage("La bonne réponse était " + laReponse);
+        dialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.ok), new AlertDialog.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+    }
+
+    @Override
+    public void serieIsFinished() {
+        mSerieAdapter.notifyDataSetChanged();
+        mFragmentTransaction = getFragmentManager().beginTransaction();
+        mFragmentTransaction.remove(mFragment).commit();
+    }
+
+    @Override
+    public Exercice changeExercice(){
+        Exercice nextExercice;
+        nextExercice = mCurrentSerie.nextExercice(mCurrentEleve, mContext); //Peut retourner null
+        if((mFragment != null)){
+            mFragmentTransaction = getFragmentManager().beginTransaction();
+            mFragmentTransaction.remove(mFragment).commit();
+        }
+        mFragment = switchFragment(nextExercice);
+        return nextExercice;
     }
 }
