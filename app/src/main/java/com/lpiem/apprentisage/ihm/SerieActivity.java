@@ -22,15 +22,16 @@ import com.lpiem.apprentisage.adapter.SerieAdapter;
 import com.lpiem.apprentisage.applicatif.App;
 import com.lpiem.apprentisage.applicatif.ResultatApp;
 import com.lpiem.apprentisage.fragment.AudioFragment;
+import com.lpiem.apprentisage.fragment.CompterFragment;
 import com.lpiem.apprentisage.fragment.FragmentAccess;
 import com.lpiem.apprentisage.fragment.TextFragment;
 import com.lpiem.apprentisage.metier.Eleve;
 import com.lpiem.apprentisage.metier.Exercice;
 import com.lpiem.apprentisage.metier.Serie;
+import com.lpiem.apprentisage.metier.TypeExercice;
 import com.lpiem.apprentisage.model.Categorie;
 
 import java.io.IOException;
-
 
 public class SerieActivity extends SherlockActivity implements FragmentAccess {
     public static final String LOG = Consts.TAG_APPLICATION + " : " + SerieActivity.class.getSimpleName();
@@ -90,17 +91,15 @@ public class SerieActivity extends SherlockActivity implements FragmentAccess {
             return null;
         }
 
-        switch (exercice.getType()){
-            case "text":
-                fragment = new TextFragment();
-                ((TextFragment) fragment).setParameter(exercice, mValiderBtn);
-                break;
-            case "audio":
-                fragment = new AudioFragment();
-                ((AudioFragment) fragment).setParameter(exercice);
-                break;
-            case "audio-text":
-                break;
+        if(exercice.getType().equalsIgnoreCase(TypeExercice.FragmentText.value())) {
+            fragment = new TextFragment();
+            ((TextFragment) fragment).setParameter(mValiderBtn, exercice);
+        } else if(exercice.getType().equalsIgnoreCase(TypeExercice.FragmentAudio.value())) {
+            fragment = new AudioFragment();
+            ((AudioFragment) fragment).setParameter(exercice);
+        } else if(exercice.getType().equalsIgnoreCase(TypeExercice.FragmentCompter.value())) {
+            fragment = new CompterFragment();
+            ((CompterFragment) fragment).setParameter(mValiderBtn, exercice);
         }
 
         mFragmentTransaction = getFragmentManager().beginTransaction();
