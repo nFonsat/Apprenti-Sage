@@ -3,7 +3,7 @@
  */
 package com.lpiem.apprentisage.fragment;
 
-import android.app.Fragment;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,24 +13,16 @@ import android.widget.Button;
 import com.lpiem.apprentisage.R;
 import com.lpiem.apprentisage.metier.Exercice;
 
-public class AudioFragment extends Fragment {
-    private Button mPlayEnonce;
-
-    private Exercice mCurrentExercice;
-
+public class AudioFragment extends CoreExerciceFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_exercice_text, container, false);
+        View view = inflater.inflate(R.layout.fragment_exercice_audio, container, false);
 
-        mPlayEnonce = (Button) view.findViewById(R.id.play_exercice_btn);
-
-
+        Button mPlayEnonce = (Button) view.findViewById(R.id.lecture_btn_player);
         mPlayEnonce.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mCurrentExercice != null){
-                    //TextToSpeech
-                }
+                if(mCurrentExercice != null){/*TextToSpeech*/}
             }
         });
 
@@ -38,6 +30,6 @@ public class AudioFragment extends Fragment {
     }
 
     public void setParameter(Exercice exercice){
-        mCurrentExercice = exercice;
+        super.setParameter(exercice);
     }
 }
