@@ -21,7 +21,7 @@ import com.lpiem.apprentisage.R;
 import com.lpiem.apprentisage.adapter.SerieAdapter;
 import com.lpiem.apprentisage.applicatif.App;
 import com.lpiem.apprentisage.applicatif.ResultatApp;
-import com.lpiem.apprentisage.fragment.AudioFragment;
+import com.lpiem.apprentisage.fragment.AudioTextFragment;
 import com.lpiem.apprentisage.fragment.CompterFragment;
 import com.lpiem.apprentisage.fragment.FragmentAccess;
 import com.lpiem.apprentisage.fragment.TextFragment;
@@ -95,8 +95,8 @@ public class SerieActivity extends SherlockActivity implements FragmentAccess {
             fragment = new TextFragment();
             ((TextFragment) fragment).setParameter(mValiderBtn, exercice);
         } else if(exercice.getType().equalsIgnoreCase(TypeExercice.FragmentAudio.value())) {
-            fragment = new AudioFragment();
-            ((AudioFragment) fragment).setParameter(exercice);
+            fragment = new AudioTextFragment();
+            ((AudioTextFragment) fragment).setParameter(mValiderBtn, exercice);
         } else if(exercice.getType().equalsIgnoreCase(TypeExercice.FragmentCompter.value())) {
             fragment = new CompterFragment();
             ((CompterFragment) fragment).setParameter(mValiderBtn, exercice);
