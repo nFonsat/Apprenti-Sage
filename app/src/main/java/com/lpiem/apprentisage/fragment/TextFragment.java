@@ -3,8 +3,6 @@
  */
 package com.lpiem.apprentisage.fragment;
 
-import android.app.Activity;
-import android.app.Fragment;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,23 +24,17 @@ import com.lpiem.apprentisage.metier.Serie;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class TextFragment extends Fragment {
+public class TextFragment extends CoreExerciceFragment {
     public static final String LOG = Consts.TAG_APPLICATION + " : " + TextFragment.class.getSimpleName();
-    public FragmentAccess mFragmentAccess;
 
     private EditText mReponse;
-    private TextView mEnonce;
-    private Button mPlayEnonce;
-    private Button mValiderReponse;
-
-    private Exercice mCurrentExercice;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_exercice_text, container, false);
 
-        mEnonce = (TextView) view.findViewById(R.id.enonce_exercice_txt);
-        mPlayEnonce = (Button) view.findViewById(R.id.play_exercice_btn);
+        TextView mEnonce = (TextView) view.findViewById(R.id.enonce_exercice_txt);
+        Button mPlayEnonce = (Button) view.findViewById(R.id.play_exercice_btn);
         mReponse = (EditText) view.findViewById(R.id.reponse_exercice_txt);
 
         if(mCurrentExercice != null){
@@ -52,38 +44,26 @@ public class TextFragment extends Fragment {
         mPlayEnonce.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mCurrentExercice != null){
-                    //TextToSpeech
-                }
+                if(mCurrentExercice != null){/*TextToSpeech*/}
             }
         });
 
         return view;
     }
 
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        try {
-            mFragmentAccess = (FragmentAccess) activity;
-        } catch (ClassCastException e) {
-            String error = activity.toString() + " must implement FragmentAccess";
-            Log.e(LOG + " : Error", error);
-            throw new ClassCastException(error);
-        }
-
-    }
-
-    public void setParameter(Exercice exercice, Button validerReponse){
-        mCurrentExercice = exercice;
-        mValiderReponse = validerReponse;
-        mValiderReponse.setOnClickListener(new ActionValiderReponse());
+    public void setParameter(Button btnValider, Exercice exercice){
+        super.setParameter(exercice);
+        btnValider.setOnClickListener(new ActionValiderReponse());
     }
 
     private class ActionValiderReponse implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-            Log.d(LOG,"Appuie sur le bouton valider");
+            String maReponse = mReponse.getText().toString();
+            if (maReponse.isEmpty() || maReponse == null){
+                return;
+            }
+
             App mApplication = App.getInstance();
             ResultatApp mResultatApplication = ResultatApp.getInstance();
             Serie mCurrentSerie = mApplication.getCurrentSerie();
@@ -91,9 +71,7 @@ public class TextFragment extends Fragment {
                 return;
             }
 
-            String maReponse = mReponse.getText().toString();
             Resultat resultatExercice = mResultatApplication.calculateResultExercice(v.getContext(), mCurrentExercice, maReponse);
-
 
             if(resultatExercice.getNote() == 1){
                 try {
