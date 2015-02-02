@@ -71,7 +71,7 @@ public class ClasseDAO extends DataBaseAccess {
                 "SELECT DISTINCT * FROM " + ConfigDB.TABLE_CLASSE  +
                         " JOIN " + ConfigDB.TABLE_ENSEIGNANT_CLASSE +
                         " ON " + ConfigDB.TABLE_ENSEIGNANT_CLASSE + "." + ConfigDB.TABLE_ENSEIGNANT_CLASSE_COL_ID_ENSEIGNANT + " = '" + idEnseignant + "'" +
-                        " GROUP BY " + ConfigDB.TABLE_ENSEIGNANT_CLASSE_COL_ID_CLASSE;
+                        " GROUP BY " + ConfigDB.TABLE_CLASSE + "."  + ConfigDB.TABLE_CLASSE_COL_ID;
 
         Cursor cursor = sqlRequest(sqlQuery);
 
