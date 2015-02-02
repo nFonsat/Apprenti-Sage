@@ -38,7 +38,10 @@ public class AudioTextFragment extends CoreExerciceFragment {
         mPlayEnonce.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mCurrentExercice != null){/*TextToSpeech*/}
+                if(mCurrentExercice != null){
+                    /*TextToSpeech*/
+                    speaker(mCurrentExercice.getEnonce());
+                }
             }
         });
 

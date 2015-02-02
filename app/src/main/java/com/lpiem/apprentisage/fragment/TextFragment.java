@@ -33,7 +33,7 @@ public class TextFragment extends CoreExerciceFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_exercice_text, container, false);
 
-        TextView mEnonce = (TextView) view.findViewById(R.id.enonce_exercice_txt);
+        final TextView mEnonce = (TextView) view.findViewById(R.id.enonce_exercice_txt);
         Button mPlayEnonce = (Button) view.findViewById(R.id.play_exercice_btn);
         mReponse = (EditText) view.findViewById(R.id.reponse_exercice_txt);
 
@@ -44,7 +44,10 @@ public class TextFragment extends CoreExerciceFragment {
         mPlayEnonce.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mCurrentExercice != null){/*TextToSpeech*/}
+                if(mCurrentExercice != null){
+                    /*TextToSpeech*/
+                    speaker(mCurrentExercice.getEnonce());
+                }
             }
         });
 
