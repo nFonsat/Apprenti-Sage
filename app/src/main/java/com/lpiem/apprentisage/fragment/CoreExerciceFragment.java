@@ -20,7 +20,6 @@ public class CoreExerciceFragment extends Fragment {
 
     protected FragmentAccess mFragmentAccess;
     protected Exercice mCurrentExercice;
-
     protected TextToSpeech mTextToSpeech;
 
     @Override

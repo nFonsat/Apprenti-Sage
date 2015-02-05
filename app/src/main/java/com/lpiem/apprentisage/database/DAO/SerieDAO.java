@@ -48,30 +48,6 @@ public class SerieDAO extends DataBaseAccess {
         return savingDataInDatabase(ConfigDB.TABLE_SERIE, serieValue);
     }
 
-    public ArrayList<Serie> getSeriesByProf(Enseignant enseignant){
-        EnseignantDAO mEnseignantDAO = new EnseignantDAO(mContext);
-        long idEnseignant = mEnseignantDAO.enseignantIsDataBase(enseignant);
-        String sqlQuery =
-                "SELECT * FROM " + ConfigDB.TABLE_SERIE  +
-                        " WHERE " + ConfigDB.TABLE_SERIE + "." + ConfigDB.TABLE_SERIE_COL_ID_ENSEIGNANT + " = '" + idEnseignant + "'";
-
-        Cursor cursor = sqlRequest(sqlQuery);
-
-        ArrayList<Serie> series = new ArrayList<>();
-        ExerciceDAO mExerciceDAO = new ExerciceDAO(mContext);
-        if((cursor.getCount() > 0) && (cursor.moveToFirst())){
-            do{
-                Serie serie = Cursor2Serie(cursor);
-                serie.setExercices(mExerciceDAO.getExercicesBySeries(serie, enseignant));
-                series.add(serie);
-            }
-            while(cursor.moveToNext());
-        }
-
-        closeDataBase();
-        return series;
-    }
-
     public ArrayList<Serie> getSeriesByClasse(Classe classe, Enseignant enseignant){
         String sqlQuery =
                 "SELECT * FROM " + ConfigDB.TABLE_SERIE  +

@@ -37,8 +37,6 @@ public class CompterFragment extends CoreExerciceFragment {
     private RelativeLayout mGameLayout;
     private EditText mReponse;
 
-    private Exercice mCurrentExercice;
-
     private ArrayList<FrameLayout> mLineJetons;
 
     private int mIndexJeton;
