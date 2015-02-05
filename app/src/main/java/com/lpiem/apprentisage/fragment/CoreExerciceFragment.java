@@ -5,12 +5,11 @@ package com.lpiem.apprentisage.fragment;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.content.Context;
 import android.os.Build;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
 
-import com.lpiem.apprentisage.Consts;
+import com.lpiem.apprentisage.Utils.Consts;
 import com.lpiem.apprentisage.metier.Exercice;
 
 import java.util.Locale;

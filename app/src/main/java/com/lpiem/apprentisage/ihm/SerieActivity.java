@@ -15,8 +15,8 @@ import android.widget.Button;
 import android.widget.ListView;
 
 import com.actionbarsherlock.app.SherlockActivity;
-import com.lpiem.apprentisage.ActionBarService;
-import com.lpiem.apprentisage.Consts;
+import com.lpiem.apprentisage.Utils.ActionBarService;
+import com.lpiem.apprentisage.Utils.Consts;
 import com.lpiem.apprentisage.R;
 import com.lpiem.apprentisage.adapter.SerieAdapter;
 import com.lpiem.apprentisage.applicatif.App;
@@ -29,7 +29,7 @@ import com.lpiem.apprentisage.metier.Eleve;
 import com.lpiem.apprentisage.metier.Exercice;
 import com.lpiem.apprentisage.metier.Serie;
 import com.lpiem.apprentisage.metier.TypeExercice;
-import com.lpiem.apprentisage.model.Categorie;
+import com.lpiem.apprentisage.metier.Categorie;
 
 import java.io.IOException;
 

@@ -24,15 +24,15 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockActivity;
-import com.lpiem.apprentisage.ActionBarService;
+import com.lpiem.apprentisage.Utils.ActionBarService;
 import com.lpiem.apprentisage.R;
-import com.lpiem.apprentisage.UIService;
+import com.lpiem.apprentisage.Utils.UIService;
 import com.lpiem.apprentisage.adapter.StatsAdapter;
 import com.lpiem.apprentisage.applicatif.App;
 import com.lpiem.apprentisage.applicatif.ResultatApp;
 import com.lpiem.apprentisage.metier.Classe;
 import com.lpiem.apprentisage.metier.Eleve;
-import com.lpiem.apprentisage.model.Categorie;
+import com.lpiem.apprentisage.metier.Categorie;
 
 public class ProfilActivity extends SherlockActivity{
 

@@ -4,15 +4,14 @@
 package com.lpiem.apprentisage.applicatif;
 
 import android.content.Context;
-import android.util.Log;
 
-import com.lpiem.apprentisage.Consts;
+import com.lpiem.apprentisage.Utils.Consts;
 import com.lpiem.apprentisage.database.DAO.ResultatDAO;
 import com.lpiem.apprentisage.metier.Exercice;
 import com.lpiem.apprentisage.metier.Resultat;
 import com.lpiem.apprentisage.metier.Serie;
 import com.lpiem.apprentisage.metier.TypeResultat;
-import com.lpiem.apprentisage.model.Categorie;
+import com.lpiem.apprentisage.metier.Categorie;
 
 import java.util.ArrayList;
 

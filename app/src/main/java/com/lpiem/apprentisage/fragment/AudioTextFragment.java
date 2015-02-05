@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.lpiem.apprentisage.Consts;
+import com.lpiem.apprentisage.Utils.Consts;
 import com.lpiem.apprentisage.R;
 import com.lpiem.apprentisage.applicatif.App;
 import com.lpiem.apprentisage.applicatif.ResultatApp;

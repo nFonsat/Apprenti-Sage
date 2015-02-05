@@ -20,11 +20,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockActivity;
-import com.lpiem.apprentisage.ActionBarService;
+import com.lpiem.apprentisage.Utils.ActionBarService;
 import com.lpiem.apprentisage.R;
 import com.lpiem.apprentisage.adapter.SubCatAdapter;
 import com.lpiem.apprentisage.applicatif.App;
-import com.lpiem.apprentisage.model.Categorie;
+import com.lpiem.apprentisage.metier.Categorie;
 
 import java.util.ArrayList;
 import java.util.List;

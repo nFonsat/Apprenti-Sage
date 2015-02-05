@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.lpiem.apprentisage.Consts;
+import com.lpiem.apprentisage.Utils.Consts;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String LOG = Consts.TAG_APPLICATION + " : " + DatabaseHelper.class.getSimpleName();

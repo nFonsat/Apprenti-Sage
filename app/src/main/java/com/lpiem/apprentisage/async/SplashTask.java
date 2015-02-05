@@ -10,7 +10,7 @@ import android.database.sqlite.SQLiteException;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.lpiem.apprentisage.Consts;
+import com.lpiem.apprentisage.Utils.Consts;
 
 import com.lpiem.apprentisage.Utils.JsonUtils;
 
@@ -36,8 +36,6 @@ import com.lpiem.apprentisage.network.RestApiCall;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.ArrayList;
 
 public class SplashTask extends AsyncTask<Void, Void, String[]>{
     private static final String CLASS_TAG = Consts.TAG_APPLICATION +  " : " + SplashTask.class.getSimpleName();

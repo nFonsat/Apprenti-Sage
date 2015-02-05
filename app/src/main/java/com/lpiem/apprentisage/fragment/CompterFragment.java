@@ -15,9 +15,9 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
-import com.lpiem.apprentisage.Consts;
+import com.lpiem.apprentisage.Utils.Consts;
 import com.lpiem.apprentisage.R;
-import com.lpiem.apprentisage.UIService;
+import com.lpiem.apprentisage.Utils.UIService;
 import com.lpiem.apprentisage.applicatif.App;
 import com.lpiem.apprentisage.applicatif.ResultatApp;
 import com.lpiem.apprentisage.database.DAO.ResultatDAO;

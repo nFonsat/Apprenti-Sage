@@ -12,7 +12,7 @@ import com.lpiem.apprentisage.metier.Eleve;
 import com.lpiem.apprentisage.metier.Enseignant;
 import com.lpiem.apprentisage.metier.Serie;
 
-import com.lpiem.apprentisage.model.Categorie;
+import com.lpiem.apprentisage.metier.Categorie;
 
 import java.util.ArrayList;
 import java.util.HashSet;

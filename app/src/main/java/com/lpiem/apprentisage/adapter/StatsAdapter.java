@@ -21,7 +21,7 @@ import android.widget.TextView;
 
 import com.lpiem.apprentisage.R;
 import com.lpiem.apprentisage.applicatif.App;
-import com.lpiem.apprentisage.model.Categorie;
+import com.lpiem.apprentisage.metier.Categorie;
 
 public class StatsAdapter extends BaseAdapter{
 	private Activity mActivity;

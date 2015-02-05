@@ -5,7 +5,7 @@ package com.lpiem.apprentisage.metier;
 
 import android.content.Context;
 
-import com.lpiem.apprentisage.Consts;
+import com.lpiem.apprentisage.Utils.Consts;
 import com.lpiem.apprentisage.database.DAO.ResultatDAO;
 
 import java.util.ArrayList;
