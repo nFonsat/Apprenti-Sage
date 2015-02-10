@@ -57,7 +57,7 @@ public class AccueilActivity extends SherlockActivity{
     @Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.accueil2);
+		setContentView(R.layout.activity_accueil);
 
         mContext = this;
 

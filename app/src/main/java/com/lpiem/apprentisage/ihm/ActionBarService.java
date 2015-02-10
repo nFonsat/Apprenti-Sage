@@ -9,7 +9,7 @@
 *
 *******************************************************************************************************************/
 
-package com.lpiem.apprentisage.Utils;
+package com.lpiem.apprentisage.ihm;
 
 import android.app.Activity;
 import android.graphics.Typeface;
@@ -23,10 +23,10 @@ import com.lpiem.apprentisage.R;
 
 public class ActionBarService
 {
-	public static void initActionBar(final Activity context, ActionBar actionBar, String titre)
+	public static void initActionBar(final Activity activity, ActionBar actionBar, String titre)
 	{
-		View actionBarView = context.getLayoutInflater().inflate(R.layout.custom_actionbar, null);
-		Typeface font = Typeface.createFromAsset(context.getAssets(), "fonts/ComicRelief.ttf");
+		View actionBarView = activity.getLayoutInflater().inflate(R.layout.custom_actionbar, null);
+		Typeface font = Typeface.createFromAsset(activity.getAssets(), "fonts/ComicRelief.ttf");
 		
 		TextView txtTitre= (TextView) actionBarView.findViewById(R.id.actionbar_txt_titre);
 		txtTitre.setText(titre);
@@ -38,7 +38,7 @@ public class ActionBarService
 			@Override
 			public void onClick(View v)
 			{
-				context.finish();
+				activity.finish();
 			}
 		});
 

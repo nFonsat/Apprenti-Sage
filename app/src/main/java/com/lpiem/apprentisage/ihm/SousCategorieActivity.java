@@ -20,7 +20,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockActivity;
-import com.lpiem.apprentisage.Utils.ActionBarService;
 import com.lpiem.apprentisage.R;
 import com.lpiem.apprentisage.adapter.SubCatAdapter;
 import com.lpiem.apprentisage.applicatif.App;

@@ -24,7 +24,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockActivity;
-import com.lpiem.apprentisage.Utils.ActionBarService;
 import com.lpiem.apprentisage.R;
 import com.lpiem.apprentisage.Utils.UIService;
 import com.lpiem.apprentisage.adapter.StatsAdapter;
@@ -90,7 +89,7 @@ public class ProfilActivity extends SherlockActivity{
 
 		initMatiereList();
 		
-		ActionBarService.initActionBar(this, this.getSupportActionBar(), getString(R.string.profil_titre));
+		ActionBarService.initActionBar(this, this.getSupportActionBar(), getString(R.string.profile_title));
 	}
 
     public void backInHomePage(View view){

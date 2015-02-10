@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Apprenti-Sage</string>
+
+    <!-- Common String -->
+    <string name="ok">OK</string>
+    <string name="back">Retour</string>
+    <string name="default_text">Texte</string>
+    <string name="action_settings">Paramètre</string>
+    <string name="content_description">Description de l\'image</string>
+
+    <!-- Exercice Activity -->
+    <string name="choose_serie">Clique sur une série dans la liste.</string>
+    <string name="success_serie">séries reussies</string>
+    <string name="valider">Valider</string>
+
+    <!-- Profile Activity -->
+    <string name="profile_title">Profil</string>
+    <string name="deconnection">Déconnexion</string>
+    <string name="percent_success">Pourcentages de réussite : </string>
+    <string name="profile_name">Nom : </string>
+    <string name="profile_firstname">Prénom : </string>
+    <string name="profile_class">Classe : </string>
+
+    <!-- Category Activity -->
+    <string name="cat_titre">Choisi une catégorie</string>
+
+    <!-- RANGER -->
+    <string name="ranger_warning_valider">Tu dois placer tous les mots pour valider ta réponse !</string>
+
+</resources>

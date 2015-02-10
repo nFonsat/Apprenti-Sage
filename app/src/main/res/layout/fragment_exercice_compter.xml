@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal" android:layout_width="match_parent"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:weightSum="10"
     android:background="@color/app_backgroung">
@@ -14,6 +15,7 @@
         android:background="@color/white">
 
         <RelativeLayout
+            android:id="@+id/game_area"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/app_backgroung">
@@ -33,15 +35,15 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="5"
-            android:id="@+id/zone_element_ranger">
+            android:id="@+id/line_count_layout">
         </LinearLayout>
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/edit_reponse"
+            android:id="@+id/reponse_edittxt"
             android:textSize="50dp"
             android:layout_weight="5"
             android:minHeight="150dp"
-            android:background="@color/white"/>
+            android:background="@drawable/rounded_corner_shape" />
     </LinearLayout>
 </LinearLayout>

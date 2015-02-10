@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/app_backgroung"
     android:weightSum="100" >
@@ -15,10 +15,10 @@
         android:weightSum="1">
 
         <TextView
+            android:id="@+id/titreMatiere"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="New Text"
-            android:id="@+id/titreMatiere"
+            android:text="@string/default_text"
             android:layout_gravity="center"
             android:textColor="@color/white"
             android:textSize="50sp"
@@ -28,8 +28,8 @@
 
     <LinearLayout
         android:orientation="horizontal"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_weight="15">
 
         <LinearLayout
@@ -70,12 +70,12 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="Retour"
+                android:text="@string/back"
                 android:id="@+id/retour"
                 android:layout_gravity="center_vertical|right"
                 android:layout_weight="60"
-                android:textColor="@color/white"
-                android:textSize="50sp"
+                android:background="@drawable/button_selector"
+                android:textSize="25sp"
                 android:layout_marginBottom="10dp"
                 android:layout_marginRight="30dp"
                 android:onClick="backToProfile"/>

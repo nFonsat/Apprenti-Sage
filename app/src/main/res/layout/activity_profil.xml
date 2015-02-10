@@ -40,7 +40,7 @@
                     android:id="@+id/prenom_txt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Prenom: "
+                    android:text="@string/profile_firstname"
                     android:textColor="@color/white"
                     android:textSize="30sp" />
 
@@ -49,7 +49,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:text="Nom: "
+                    android:text="@string/profile_name"
                     android:textColor="@color/white"
                     android:textSize="30sp" />
 
@@ -57,9 +57,9 @@
                     android:id="@+id/classe_txt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:text="Classe: "
+                    android:text="@string/profile_class"
                     android:textColor="@color/white"
+                    android:layout_marginTop="20dp"
                     android:textSize="30sp" />
             </LinearLayout>
         </LinearLayout>
@@ -75,7 +75,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
-                android:text="Pourcentages de réussite:"
+                android:text="@string/percent_success"
                 android:textColor="@color/white"
                 android:textSize="30sp"
                 android:layout_marginLeft="10dp" />
@@ -92,17 +92,15 @@
         </LinearLayout>
 
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="270dp"
             android:layout_height="wrap_content"
-            android:text="Deconnexion"
+            android:text="@string/deconnection"
             android:id="@+id/deco"
             android:onClick="backInHomePage"
-            android:layout_gravity="left"
-            android:layout_marginLeft="30dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:textColor="@color/white"
-            android:textSize="50sp"/>
+            android:layout_marginLeft="50dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/button_selector"
+            android:textSize="25sp"/>
 
 
     </LinearLayout>

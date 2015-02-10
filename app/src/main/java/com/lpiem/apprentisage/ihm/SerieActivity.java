@@ -15,7 +15,6 @@ import android.widget.Button;
 import android.widget.ListView;
 
 import com.actionbarsherlock.app.SherlockActivity;
-import com.lpiem.apprentisage.Utils.ActionBarService;
 import com.lpiem.apprentisage.Utils.Consts;
 import com.lpiem.apprentisage.R;
 import com.lpiem.apprentisage.adapter.SerieAdapter;
@@ -54,7 +53,7 @@ public class SerieActivity extends SherlockActivity implements FragmentAccess {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.acivity_exercice);
+        setContentView(R.layout.activity_exercice);
 
         mContext = getApplicationContext();
 

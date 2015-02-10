@@ -49,7 +49,7 @@ public class EnseignantAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
         if (convertView == null) {
-            convertView = inflater.inflate(R.layout.item_spinnerlog, null);
+            convertView = inflater.inflate(R.layout.item_spinner, null);
             holder = new ViewHolder();
             holder.nomTxt = (TextView) convertView.findViewById(R.id.nom_txt);
             convertView.setTag(holder);
