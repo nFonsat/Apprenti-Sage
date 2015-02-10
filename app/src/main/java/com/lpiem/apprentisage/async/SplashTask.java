@@ -3,11 +3,11 @@
  */
 package com.lpiem.apprentisage.async;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.database.sqlite.SQLiteException;
 import android.os.AsyncTask;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 
 import com.lpiem.apprentisage.Utils.Consts;
@@ -20,8 +20,6 @@ import com.lpiem.apprentisage.database.DAO.EnseignantDAO;
 import com.lpiem.apprentisage.database.DAO.ExerciceDAO;
 import com.lpiem.apprentisage.database.DAO.ResultatDAO;
 import com.lpiem.apprentisage.database.DAO.SerieDAO;
-
-import com.lpiem.apprentisage.ihm.AccueilActivity;
 
 import com.lpiem.apprentisage.metier.Classe;
 import com.lpiem.apprentisage.metier.Eleve;
@@ -40,30 +38,37 @@ import org.json.JSONObject;
 public class SplashTask extends AsyncTask<Void, Void, String[]>{
     private static final String CLASS_TAG = Consts.TAG_APPLICATION +  " : " + SplashTask.class.getSimpleName();
 
-    private Activity mActity;
+    private Context mContext;
 
     private EnseignantDAO mEnseignantDAO;
     private ClasseDAO mClasseDAO;
     private EleveDAO mEleveDAO;
-    private ResultatDAO mResultatDAO;
     private SerieDAO mSerieDAO;
     private ExerciceDAO mExerciceDAO;
 
-    public SplashTask(Activity activity) {
+    private Handler mUIHandler;
+    private Message msg;
+
+    public SplashTask(Context context, Handler handler) {
         super();
-        mActity = activity;
+        mUIHandler = handler;
+        mContext = context;
     }
 
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
 
-        Context context = mActity.getApplicationContext();
-        mEnseignantDAO = new EnseignantDAO(context);
-        mClasseDAO = new ClasseDAO(context);
-        mEleveDAO = new EleveDAO(context);
-        mSerieDAO = new SerieDAO(context);
-        mExerciceDAO = new ExerciceDAO(context);
+        mEnseignantDAO = new EnseignantDAO(mContext);
+        mClasseDAO = new ClasseDAO(mContext);
+        mEleveDAO = new EleveDAO(mContext);
+        mSerieDAO = new SerieDAO(mContext);
+        mExerciceDAO = new ExerciceDAO(mContext);
+
+        msg = Message.obtain();
+
+        mExerciceDAO.removeAllExercice();
+        mSerieDAO.removeAllSerie();
     }
 
     @Override
@@ -83,7 +88,9 @@ public class SplashTask extends AsyncTask<Void, Void, String[]>{
     protected void onPostExecute(String[] responses) {
         super.onPostExecute(responses);
         if(Integer.valueOf(responses[0]) != 200){
-            goToHome();
+            msg.what = Consts.SPLASHTASK_ERROR;
+            msg.arg1 = Integer.valueOf(responses[0]);
+            mUIHandler.sendMessage(msg);
             return;
         }
 
@@ -100,7 +107,7 @@ public class SplashTask extends AsyncTask<Void, Void, String[]>{
 
                     for (Eleve unEleve : uneClasse.getEleves()){
                         mEleveDAO.ajouter(unEleve, uneClasse);
-                        mResultatDAO = new ResultatDAO(mActity, unEleve);
+                        ResultatDAO mResultatDAO = new ResultatDAO(mContext, unEleve);
                         for (Resultat unResultat : unEleve.getResultats()){
                             mResultatDAO.ajouter(unResultat);
                         }
@@ -126,12 +133,7 @@ public class SplashTask extends AsyncTask<Void, Void, String[]>{
             Log.e(CLASS_TAG + " : General", exception.getMessage());
         }
 
-        goToHome();
-    }
-
-    public void goToHome(){
-        Intent i = new Intent(mActity, AccueilActivity.class);
-        mActity.startActivity(i);
-        mActity.finish();
+        msg.what = Consts.SPLASHTASK_FINISH;
+        mUIHandler.sendMessage(msg);
     }
 }

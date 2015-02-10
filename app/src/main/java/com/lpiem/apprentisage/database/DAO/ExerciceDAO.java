@@ -58,6 +58,39 @@ public class ExerciceDAO extends DataBaseAccess {
         return savingDataInDatabase(ConfigDB.TABLE_EXERCICE, exerciceValue);
     }
 
+    public long supprimer(Exercice exercice){
+        if(!idIsConforme(exercice.getId())){
+            return -1;
+        }
+
+        String selection = ConfigDB.TABLE_EXERCICE_COL_ID+ " LIKE ?";
+        String[] selectionArgs = { String.valueOf(exercice.getId()) };
+        return deleteDataInDatabase(ConfigDB.TABLE_EXERCICE, selection, selectionArgs );
+    }
+
+    public void removeAllExercice(){
+        for (Exercice exercice: getExercices()){
+            supprimer(exercice);
+        }
+    }
+
+    public ArrayList<Exercice> getExercices(){
+
+        String sqlQuery = "SELECT * FROM " + ConfigDB.TABLE_EXERCICE;
+        Cursor cursor = sqlRequest(sqlQuery);
+
+        ArrayList<Exercice> exercices = new ArrayList<>();
+        if((cursor.getCount() > 0) && (cursor.moveToFirst())){
+            do {
+                Exercice exercice = Cursor2Exercice(cursor);
+                exercices.add(exercice);
+            }while (cursor.moveToNext());
+        }
+
+        closeDataBase();
+        return exercices;
+    }
+
     public ArrayList<Exercice> getExercicesBySeries(Serie serie, Enseignant enseignant){
         EnseignantDAO mEnseignantDAO = new EnseignantDAO(mContext);
         long idEnseignant = mEnseignantDAO.enseignantIsDataBase(enseignant);

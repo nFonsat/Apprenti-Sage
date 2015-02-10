@@ -47,6 +47,38 @@ public class SerieDAO extends DataBaseAccess {
         return savingDataInDatabase(ConfigDB.TABLE_SERIE, serieValue);
     }
 
+    public long supprimer(Serie serie){
+        if(!idIsConforme(serie.getId())){
+            return -1;
+        }
+
+        String selection = ConfigDB.TABLE_SERIE_COL_ID+ " LIKE ?";
+        String[] selectionArgs = { String.valueOf(serie.getId()) };
+        return deleteDataInDatabase(ConfigDB.TABLE_SERIE, selection, selectionArgs );
+    }
+
+    public void removeAllSerie(){
+        for (Serie serie : getSeries()){
+            supprimer(serie);
+        }
+    }
+
+    public ArrayList<Serie> getSeries(){
+        String sqlQuery = "SELECT * FROM " + ConfigDB.TABLE_SERIE;
+        Cursor cursor = sqlRequest(sqlQuery);
+
+        ArrayList<Serie> series = new ArrayList<>();
+        if((cursor.getCount() > 0) && (cursor.moveToFirst())){
+            do {
+                Serie serie = Cursor2Serie(cursor);
+                series.add(serie);
+            }while (cursor.moveToNext());
+        }
+
+        closeDataBase();
+        return series;
+    }
+
     public ArrayList<Serie> getSeriesByClasse(Classe classe, Enseignant enseignant){
         String sqlQuery =
                 "SELECT * FROM " + ConfigDB.TABLE_SERIE  +
