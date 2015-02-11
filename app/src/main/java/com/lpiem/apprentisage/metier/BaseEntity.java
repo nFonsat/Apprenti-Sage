@@ -38,7 +38,7 @@ public class BaseEntity {
         mLastUsed = using;
     }
 
-    public JSONObject getJson() throws JSONException{
+    protected JSONObject getJson() throws JSONException{
         JSONObject jsonObject = new JSONObject();
 
         jsonObject.put("id", getId());
@@ -46,8 +46,4 @@ public class BaseEntity {
 
         return jsonObject;
     }
-
-    /*public String toString() throws JSONException{
-        return getJson().toString();
-    }*/
 }
