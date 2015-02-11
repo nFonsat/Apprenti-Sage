@@ -15,7 +15,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -25,10 +24,10 @@ import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockActivity;
 import com.lpiem.apprentisage.R;
-import com.lpiem.apprentisage.adapter.ListeClasseAdapter;
-import com.lpiem.apprentisage.adapter.ListeEleveAdapter;
-import com.lpiem.apprentisage.adapter.ListeEnseignantAdapter;
-import com.lpiem.apprentisage.data.App;
+import com.lpiem.apprentisage.adapter.ClasseAdapter;
+import com.lpiem.apprentisage.adapter.EleveAdapter;
+import com.lpiem.apprentisage.adapter.EnseignantAdapter;
+import com.lpiem.apprentisage.applicatif.App;
 import com.lpiem.apprentisage.database.DAO.EnseignantDAO;
 import com.lpiem.apprentisage.metier.Classe;
 import com.lpiem.apprentisage.metier.Eleve;
@@ -51,14 +50,14 @@ public class AccueilActivity extends SherlockActivity{
     private List<Classe> listeClasse;
     private List<Eleve> listeEleve;
 
-    private ListeEnseignantAdapter adapterEnseignant;
-    private ListeClasseAdapter adapterClasse;
-    private ListeEleveAdapter adapterEleve;
+    private EnseignantAdapter adapterEnseignant;
+    private ClasseAdapter adapterClasse;
+    private EleveAdapter adapterEleve;
 
     @Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.accueil2);
+		setContentView(R.layout.activity_accueil);
 
         mContext = this;
 
@@ -78,7 +77,7 @@ public class AccueilActivity extends SherlockActivity{
         listViewEleve.setAdapter(null);
 
         listeEnseignant = new ArrayList<>(enseignantDAO.getEnseignants());
-        adapterEnseignant = new ListeEnseignantAdapter(listeEnseignant, mContext);
+        adapterEnseignant = new EnseignantAdapter(listeEnseignant, mContext);
         listeEnseignantSpinner.setAdapter(adapterEnseignant);
 
 
@@ -89,7 +88,7 @@ public class AccueilActivity extends SherlockActivity{
                 mApplication.setCurrentEnseignant(enseignantSelected);
 
                 listeClasse = enseignantSelected.getClasses();
-                adapterClasse = new ListeClasseAdapter(listeClasse, mContext);
+                adapterClasse = new ClasseAdapter(listeClasse, mContext);
                 listeClasseSpinner.setAdapter(adapterClasse);
                 listViewEleve.setAdapter(null);
             }
@@ -107,7 +106,7 @@ public class AccueilActivity extends SherlockActivity{
                 mApplication.setCurrentClasse(classeSelected);
 
                 listeEleve = classeSelected.getEleves();
-                adapterEleve = new ListeEleveAdapter(listeEleve, mContext);
+                adapterEleve = new EleveAdapter(listeEleve, mContext);
                 listViewEleve.setAdapter(adapterEleve);
             }
 

@@ -6,7 +6,6 @@ package com.lpiem.apprentisage.database.DAO;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.util.Log;
 
 import com.lpiem.apprentisage.database.ConfigDB;
 import com.lpiem.apprentisage.database.DataBaseAccess;
@@ -15,9 +14,9 @@ import com.lpiem.apprentisage.metier.Enseignant;
 import com.lpiem.apprentisage.metier.Serie;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 
 public class SerieDAO extends DataBaseAccess {
+
     public SerieDAO(Context context){
         super(context);
     }
@@ -48,24 +47,32 @@ public class SerieDAO extends DataBaseAccess {
         return savingDataInDatabase(ConfigDB.TABLE_SERIE, serieValue);
     }
 
-    public ArrayList<Serie> getSeriesByProf(Enseignant enseignant){
-        EnseignantDAO mEnseignantDAO = new EnseignantDAO(mContext);
-        long idEnseignant = mEnseignantDAO.enseignantIsDataBase(enseignant);
-        String sqlQuery =
-                "SELECT * FROM " + ConfigDB.TABLE_SERIE  +
-                        " WHERE " + ConfigDB.TABLE_SERIE + "." + ConfigDB.TABLE_SERIE_COL_ID_ENSEIGNANT + " = '" + idEnseignant + "'";
+    public long supprimer(Serie serie){
+        if(!idIsConforme(serie.getId())){
+            return -1;
+        }
 
+        String selection = ConfigDB.TABLE_SERIE_COL_ID+ " LIKE ?";
+        String[] selectionArgs = { String.valueOf(serie.getId()) };
+        return deleteDataInDatabase(ConfigDB.TABLE_SERIE, selection, selectionArgs );
+    }
+
+    public void removeAllSerie(){
+        for (Serie serie : getSeries()){
+            supprimer(serie);
+        }
+    }
+
+    public ArrayList<Serie> getSeries(){
+        String sqlQuery = "SELECT * FROM " + ConfigDB.TABLE_SERIE;
         Cursor cursor = sqlRequest(sqlQuery);
 
         ArrayList<Serie> series = new ArrayList<>();
-        ExerciceDAO mExerciceDAO = new ExerciceDAO(mContext);
         if((cursor.getCount() > 0) && (cursor.moveToFirst())){
-            do{
+            do {
                 Serie serie = Cursor2Serie(cursor);
-                serie.setExercices(mExerciceDAO.getExercicesBySeries(serie, enseignant));
                 series.add(serie);
-            }
-            while(cursor.moveToNext());
+            }while (cursor.moveToNext());
         }
 
         closeDataBase();
@@ -97,6 +104,7 @@ public class SerieDAO extends DataBaseAccess {
     public Serie Cursor2Serie(Cursor cursor) {
         Serie serie = new Serie();
 
+        serie.setId(cursor.getLong(cursor.getColumnIndex(ConfigDB.TABLE_SERIE_COL_ID)));
         serie.setNom(cursor.getString(cursor.getColumnIndex(ConfigDB.TABLE_SERIE_COL_NAME)));
         serie.setDescription(cursor.getString(cursor.getColumnIndex(ConfigDB.TABLE_SERIE_COL_DESC)));
         serie.setDifficulte(cursor.getInt(cursor.getColumnIndex(ConfigDB.TABLE_SERIE_COL_DIFF)));

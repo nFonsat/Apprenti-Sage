@@ -17,24 +17,31 @@ import java.util.ArrayList;
 
 
 public class ExerciceDAO extends DataBaseAccess {
+
     public ExerciceDAO(Context context){
         super(context);
     }
 
     public long ajouter(Exercice exercice, Serie serie, Enseignant enseignant){
         EnseignantDAO mEnseignantDAO = new EnseignantDAO(mContext);
-        long idEnseignant = mEnseignantDAO.enseignantIsDataBase(enseignant);
+        long idEnseignant = enseignant.getId();
         if(!idIsConforme(idEnseignant)){
-            return -1;
+            idEnseignant = mEnseignantDAO.enseignantIsDataBase(enseignant);
+            if(!idIsConforme(idEnseignant)){
+                return -1;
+            }
         }
 
         SerieDAO mSerieDAO = new SerieDAO(mContext);
-        long idSerie = mSerieDAO.serieIsDataBase(serie, idEnseignant);
-        if(!idIsConforme(idSerie)){
-            return -1;
+        long idSerie = serie.getId();
+        if (!idIsConforme(idSerie)){
+            idSerie = mSerieDAO.serieIsDataBase(serie, idEnseignant);
+            if(!idIsConforme(idSerie)){
+                return -1;
+            }
         }
 
-        long idComparaison = exerciceIsDataBase(exercice, idEnseignant);
+        long idComparaison = exerciceIsDataBase(exercice, idSerie);
         if(idIsConforme(idComparaison)){
             exercice.setId(idComparaison);
             return idComparaison;
@@ -49,6 +56,39 @@ public class ExerciceDAO extends DataBaseAccess {
         exerciceValue.put(ConfigDB.TABLE_EXERCICE_COL_ID_SERIE, idSerie);
 
         return savingDataInDatabase(ConfigDB.TABLE_EXERCICE, exerciceValue);
+    }
+
+    public long supprimer(Exercice exercice){
+        if(!idIsConforme(exercice.getId())){
+            return -1;
+        }
+
+        String selection = ConfigDB.TABLE_EXERCICE_COL_ID+ " LIKE ?";
+        String[] selectionArgs = { String.valueOf(exercice.getId()) };
+        return deleteDataInDatabase(ConfigDB.TABLE_EXERCICE, selection, selectionArgs );
+    }
+
+    public void removeAllExercice(){
+        for (Exercice exercice: getExercices()){
+            supprimer(exercice);
+        }
+    }
+
+    public ArrayList<Exercice> getExercices(){
+
+        String sqlQuery = "SELECT * FROM " + ConfigDB.TABLE_EXERCICE;
+        Cursor cursor = sqlRequest(sqlQuery);
+
+        ArrayList<Exercice> exercices = new ArrayList<>();
+        if((cursor.getCount() > 0) && (cursor.moveToFirst())){
+            do {
+                Exercice exercice = Cursor2Exercice(cursor);
+                exercices.add(exercice);
+            }while (cursor.moveToNext());
+        }
+
+        closeDataBase();
+        return exercices;
     }
 
     public ArrayList<Exercice> getExercicesBySeries(Serie serie, Enseignant enseignant){
@@ -79,6 +119,7 @@ public class ExerciceDAO extends DataBaseAccess {
     public Exercice Cursor2Exercice(Cursor cursor) {
         Exercice exercice = new Exercice();
 
+        exercice.setId(cursor.getLong(cursor.getColumnIndex(ConfigDB.TABLE_EXERCICE_COL_ID)));
         exercice.setEnonce(cursor.getString(cursor.getColumnIndex(ConfigDB.TABLE_EXERCICE_COL_ENONCE)));
         exercice.setMedia(cursor.getString(cursor.getColumnIndex(ConfigDB.TABLE_EXERCICE_COL_MEDIA)));
         exercice.setType(cursor.getString(cursor.getColumnIndex(ConfigDB.TABLE_EXERCICE_COL_TYPE)));
@@ -98,9 +139,9 @@ public class ExerciceDAO extends DataBaseAccess {
     public long exerciceIsDataBase(Exercice exercice, long serie) {
         String sqlQuery =
                 "SELECT * FROM " + ConfigDB.TABLE_EXERCICE +
-                        " WHERE " + ConfigDB.TABLE_EXERCICE_COL_ENONCE + " = '" + exercice.getEnonce() + "'" +
-                        " AND " + ConfigDB.TABLE_EXERCICE_COL_TYPE + " = '" + exercice.getType()  + "'" +
-                        " AND " + ConfigDB.TABLE_EXERCICE_COL_ID_SERIE + " = '" + serie + "'";
+                " WHERE " + ConfigDB.TABLE_EXERCICE_COL_ID_SERIE + " = " + serie +
+                " AND " + ConfigDB.TABLE_EXERCICE_COL_ENONCE + " = '" + exercice.getEnonce() + "'" +
+                " AND " + ConfigDB.TABLE_EXERCICE_COL_TYPE + " = '" + exercice.getType() + "'";
 
         return idInDataBase(sqlQuery, ConfigDB.TABLE_EXERCICE_COL_ID);
     }

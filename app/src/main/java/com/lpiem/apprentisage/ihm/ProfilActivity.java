@@ -14,7 +14,6 @@ package com.lpiem.apprentisage.ihm;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
@@ -25,24 +24,23 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockActivity;
-import com.lpiem.apprentisage.ActionBarService;
 import com.lpiem.apprentisage.R;
-import com.lpiem.apprentisage.UIService;
+import com.lpiem.apprentisage.Utils.UIService;
 import com.lpiem.apprentisage.adapter.StatsAdapter;
-import com.lpiem.apprentisage.data.App;
+import com.lpiem.apprentisage.applicatif.App;
+import com.lpiem.apprentisage.applicatif.ResultatApp;
 import com.lpiem.apprentisage.metier.Classe;
 import com.lpiem.apprentisage.metier.Eleve;
-import com.lpiem.apprentisage.model.Categorie;
+import com.lpiem.apprentisage.metier.Categorie;
 
 public class ProfilActivity extends SherlockActivity{
 
     private App mApplication;
+    private ResultatApp mResultatApp;
 
 	private TextView nomTxt;
 	private TextView prenomTxt;
     private TextView classeTxt;
-
-    private Button deco;
 
 	private TextView pourcentageTxt;
 	private ImageView avatarView;
@@ -61,6 +59,8 @@ public class ProfilActivity extends SherlockActivity{
         setContentView(R.layout.activity_profil);
 
         mApplication = App.getInstance();
+        mResultatApp = ResultatApp.getInstance();
+
         eleve = mApplication.getCurrentEleve();
         classe = mApplication.getCurrentClasse();
 
@@ -71,7 +71,6 @@ public class ProfilActivity extends SherlockActivity{
 		nomTxt = (TextView) findViewById(R.id.nom_txt);
 		prenomTxt = (TextView) findViewById(R.id.prenom_txt);
         classeTxt = (TextView) findViewById(R.id.classe_txt);
-        deco = (Button) findViewById(R.id.deco);
 
 		pourcentageTxt = (TextView) findViewById(R.id.pourcentage_txt);
 		avatarView = (ImageView) findViewById(R.id.avatar_view);
@@ -88,21 +87,20 @@ public class ProfilActivity extends SherlockActivity{
 
         avatarView.setImageResource(R.drawable.avatar_3);
 
-        deco.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-
 		initMatiereList();
 		
-		ActionBarService.initActionBar(this, this.getSupportActionBar(), getString(R.string.profil_titre));
+		ActionBarService.initActionBar(this, this.getSupportActionBar(), getString(R.string.profile_title));
 	}
+
+    public void backInHomePage(View view){
+        mApplication.setCurrentEleve(null);
+        finish();
+    }
 	
 	@Override
 	protected void onResume() {
 		super.onResume();
+        mResultatApp.calculateResultMatieres(this);
 		adapter.notifyDataSetChanged();
 	}
 	

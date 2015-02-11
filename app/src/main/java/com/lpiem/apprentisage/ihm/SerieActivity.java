@@ -1,74 +1,79 @@
 package com.lpiem.apprentisage.ihm;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.res.AssetFileDescriptor;
 import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 
 import com.actionbarsherlock.app.SherlockActivity;
-import com.lpiem.apprentisage.ActionBarService;
+import com.lpiem.apprentisage.Utils.Consts;
 import com.lpiem.apprentisage.R;
 import com.lpiem.apprentisage.adapter.SerieAdapter;
-import com.lpiem.apprentisage.data.App;
-import com.lpiem.apprentisage.database.DAO.ResultatDAO;
-import com.lpiem.apprentisage.fragment.AudioFragment;
+import com.lpiem.apprentisage.applicatif.App;
+import com.lpiem.apprentisage.applicatif.ResultatApp;
+import com.lpiem.apprentisage.fragment.AudioTextFragment;
+import com.lpiem.apprentisage.fragment.CompterFragment;
+import com.lpiem.apprentisage.fragment.FragmentAccess;
 import com.lpiem.apprentisage.fragment.TextFragment;
 import com.lpiem.apprentisage.metier.Eleve;
 import com.lpiem.apprentisage.metier.Exercice;
-import com.lpiem.apprentisage.metier.Resultat;
 import com.lpiem.apprentisage.metier.Serie;
-import com.lpiem.apprentisage.model.Categorie;
+import com.lpiem.apprentisage.metier.TypeExercice;
+import com.lpiem.apprentisage.metier.Categorie;
 
+import java.io.IOException;
 
-public class SerieActivity extends SherlockActivity {
+public class SerieActivity extends SherlockActivity implements FragmentAccess {
+    public static final String LOG = Consts.TAG_APPLICATION + " : " + SerieActivity.class.getSimpleName();
 
-    private SerieAdapter mSerieAdapter;
-    private ListView mListSeries;
-
+    private FragmentTransaction mFragmentTransaction;
     private Fragment mFragment;
     private Context mContext;
+
+    private SerieAdapter mSerieAdapter;
+
+    private App mApplication;
+    private ResultatApp mResultatApplication;
 
     private Categorie mActivite;
     private Serie mCurrentSerie;
     private Exercice mCurrentExercice;
 
     private Eleve mCurrentEleve;
-    private Resultat mResultat;
-
-    private App mApplication;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.acivity_exercice);
+        setContentView(R.layout.activity_exercice);
 
         mContext = getApplicationContext();
 
         mApplication = App.getInstance();
+        mResultatApplication = ResultatApp.getInstance();
+
+        mResultatApplication = ResultatApp.getInstance();
         mCurrentEleve = mApplication.getCurrentEleve();
         mActivite = mApplication.getCurrentActivite();
 
         mSerieAdapter = new SerieAdapter(this);
-        mListSeries = (ListView)findViewById(R.id.list_series);
+        ListView mListSeries = (ListView)findViewById(R.id.list_series);
         mListSeries.setAdapter(mSerieAdapter);
 
-        mListSeries.setOnItemClickListener(new AdapterView.OnItemClickListener()
-        {
+        mListSeries.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> arg0, View view, int position, long arg3) {
-                mCurrentSerie = mActivite.getSerieList().get(position);
-                mCurrentExercice = mCurrentSerie.nextExercice(mCurrentEleve, mContext);
-                if(mCurrentExercice == null ){
-                    return;
-                }
-
-                Log.d("Enonce du prochain exercice", mCurrentExercice.getEnonce());
-                switchFragment(mCurrentExercice);
+                mApplication.setCurrentSerie(mActivite.getSerieList().get(position));
+                mCurrentSerie = mApplication.getCurrentSerie();
+                mCurrentExercice = changeExercice();
             }
         });
 
@@ -76,51 +81,113 @@ public class SerieActivity extends SherlockActivity {
         ActionBarService.initActionBar(this, this.getSupportActionBar(), mActivite.getNom());
     }
 
-    private void switchFragment(Exercice exercice) {
-        /*if(mFragment == null) {
-            return;
-        }*/
+    private Fragment switchFragment(Exercice exercice) {
+        Button mValiderBtn = (Button)findViewById(R.id.exercice_btn_ok);
+        Fragment fragment = null;
 
-        Log.d("Type d'exercice", mCurrentExercice.getEnonce());
-
-
-        switch (exercice.getType()){
-            case "text":
-
-                mFragment = new TextFragment();
-                ((TextFragment) mFragment).setParameter(exercice);
-                break;
-            case "audio":
-                mFragment = new AudioFragment();
-                ((AudioFragment) mFragment).setParameter(exercice);
-                break;
-            case "audio-text":
-                break;
+        if (exercice == null) {
+            recommencerSerie(mCurrentSerie);
+            return null;
         }
 
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.replace(R.id.fragment_media_exercice, mFragment).commit();
+        if(exercice.getType().equalsIgnoreCase(TypeExercice.FragmentText.value())) {
+            fragment = new TextFragment();
+            ((TextFragment) fragment).setParameter(mValiderBtn, exercice);
+        } else if(exercice.getType().equalsIgnoreCase(TypeExercice.FragmentAudio.value())) {
+            fragment = new AudioTextFragment();
+            ((AudioTextFragment) fragment).setParameter(mValiderBtn, exercice);
+        } else if(exercice.getType().equalsIgnoreCase(TypeExercice.FragmentCompter.value())) {
+            fragment = new CompterFragment();
+            ((CompterFragment) fragment).setParameter(mValiderBtn, exercice);
+        }
+
+        mFragmentTransaction = getFragmentManager().beginTransaction();
+        mFragmentTransaction.replace(R.id.fragment_media_exercice, fragment).commit();
+        return fragment;
     }
 
-    public void back(View view){
+    public void backToListActivite(View view){
         finish();
     }
 
-    public void validerReponse(View view){
-        if(mCurrentSerie == null || mCurrentExercice == null){
-            return;
-        }
+    public void recommencerSerie(final Serie serie){
+        AlertDialog dialog = new AlertDialog.Builder(this).create();
+        dialog.setMessage(getString(R.string.restart_serie));
 
-        String maReponse = ((TextFragment) mFragment).getResponse();
-
-        for(String uneReponse : mCurrentExercice.getResponses()){
-            if(uneReponse.equalsIgnoreCase(maReponse)){
-                Log.d("Bravo", "Tu as la bonne reponse");
-                mResultat = new Resultat();
-
-                ResultatDAO mResultatDAO = new ResultatDAO(mContext, mCurrentEleve);
-                mResultatDAO.ajouter(mResultat);
+        dialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.no), new AlertDialog.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
             }
+        });
+
+        dialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.yes), new AlertDialog.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                mResultatApplication.updateResultatSerie(mContext, serie);
+                mCurrentExercice = changeExercice();
+                mSerieAdapter.notifyDataSetChanged();
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mSerieAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mResultatApplication.calculateResultActivite(this, mApplication.getCurrentActivite());
+    }
+
+    @Override
+    public void exerciceSuccess() throws IOException {
+        MediaPlayer player = new MediaPlayer();
+
+        AssetFileDescriptor mAssetFileDescriptor = getAssets().openFd("sons/success.mp3");
+        player.setDataSource(mAssetFileDescriptor.getFileDescriptor(), mAssetFileDescriptor.getStartOffset(), mAssetFileDescriptor.getLength());
+
+        player.prepare();
+        player.start();
+    }
+
+    @Override
+    public void exerciceError(String laReponse) {
+        AlertDialog dialog = new AlertDialog.Builder(this).create();
+        dialog.setTitle(getString(R.string.bad_response));
+        dialog.setMessage(getString(R.string.good_solution_is) + laReponse);
+        dialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.ok), new AlertDialog.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+    }
+
+    @Override
+    public void serieIsFinished() {
+        mSerieAdapter.notifyDataSetChanged();
+        mFragmentTransaction = getFragmentManager().beginTransaction();
+        mFragmentTransaction.remove(mFragment).commit();
+    }
+
+    @Override
+    public Exercice changeExercice(){
+        Exercice nextExercice;
+        nextExercice = mCurrentSerie.nextExercice(mCurrentEleve, mContext); //Peut retourner null
+        if((mFragment != null)){
+            mFragmentTransaction = getFragmentManager().beginTransaction();
+            mFragmentTransaction.remove(mFragment).commit();
         }
+        mFragment = switchFragment(nextExercice);
+        return nextExercice;
     }
 }

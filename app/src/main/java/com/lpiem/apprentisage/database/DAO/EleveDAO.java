@@ -72,6 +72,7 @@ public class EleveDAO extends DataBaseAccess {
     private Eleve Cursor2Eleve(Cursor cursor) {
         Eleve eleve = new Eleve();
 
+        eleve.setId(cursor.getLong(cursor.getColumnIndex(ConfigDB.TABLE_ELEVE_COL_ID)));
         eleve.setNom(cursor.getString(cursor.getColumnIndex(ConfigDB.TABLE_ELEVE_COL_NAME)));
         eleve.setPrenom(cursor.getString(cursor.getColumnIndex(ConfigDB.TABLE_ELEVE_COL_PRENOM)));
         eleve.setUsername(cursor.getString(cursor.getColumnIndex(ConfigDB.TABLE_ELEVE_COL_USERNAME)));

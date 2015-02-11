@@ -4,13 +4,15 @@
 package com.lpiem.apprentisage.metier;
 
 import android.content.Context;
-import android.util.Log;
 
+import com.lpiem.apprentisage.Utils.Consts;
 import com.lpiem.apprentisage.database.DAO.ResultatDAO;
 
 import java.util.ArrayList;
 
 public class Serie extends BaseEntity {
+    public static final String LOG = Consts.TAG_APPLICATION + " : " + Serie.class.getSimpleName();
+
     private String mNom;
     private String mDescription;
     private int mDifficulte;
@@ -94,7 +96,6 @@ public class Serie extends BaseEntity {
 
         ResultatDAO mResultatDAO = new ResultatDAO(context, eleve);
         for (Exercice exercice : mExercices){
-            Log.d("Enonce de l'exercice", exercice.getEnonce());
             if(mResultatDAO.getResultatByExercice(exercice) == null)
                 return exercice;
         }

@@ -15,10 +15,10 @@
         android:weightSum="1">
 
         <TextView
+            android:id="@+id/titreMatiere"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="New Text"
-            android:id="@+id/titreMatiere"
+            android:text="@string/default_text"
             android:layout_gravity="center"
             android:textColor="@color/white"
             android:textSize="50sp"
@@ -55,8 +55,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
-            android:layout_weight="50"
-            android:weightSum="100">
+            android:layout_weight="50">
 
             <ListView
                 android:id="@+id/sub_categorie_list"
@@ -66,19 +65,20 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="20dp"
-                android:layout_weight="15" />
+                android:layout_weight="10" />
 
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="Retour"
+                android:text="@string/back"
                 android:id="@+id/retour"
                 android:layout_gravity="center_vertical|right"
-                android:layout_weight="85"
-                android:textColor="@color/white"
-                android:textSize="50sp"
+                android:layout_weight="60"
+                android:background="@drawable/button_selector"
+                android:textSize="25sp"
                 android:layout_marginBottom="10dp"
-                android:layout_marginRight="30dp" />
+                android:layout_marginRight="30dp"
+                android:onClick="backToProfile"/>
         </LinearLayout>
     </LinearLayout>
 

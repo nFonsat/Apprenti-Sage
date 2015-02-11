@@ -3,6 +3,7 @@
  */
 package com.lpiem.apprentisage.fragment;
 
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.lpiem.apprentisage.Utils.Consts;
 import com.lpiem.apprentisage.R;
@@ -24,23 +24,17 @@ import com.lpiem.apprentisage.metier.Serie;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class TextFragment extends CoreExerciceFragment {
-    public static final String LOG = Consts.TAG_APPLICATION + " : " + TextFragment.class.getSimpleName();
+public class AudioTextFragment extends CoreExerciceFragment {
+    public static final String LOG = Consts.TAG_APPLICATION + " : " + AudioTextFragment.class.getSimpleName();
 
     private EditText mReponse;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_text_text, container, false);
+        View view = inflater.inflate(R.layout.fragment_exercice_audio_text, container, false);
 
-        final TextView mEnonce = (TextView) view.findViewById(R.id.enonce_exercice_txt);
-        Button mPlayEnonce = (Button) view.findViewById(R.id.play_exercice_btn);
         mReponse = (EditText) view.findViewById(R.id.reponse_exercice_txt);
-
-        if(mCurrentExercice != null){
-            mEnonce.setText(mCurrentExercice.getEnonce());
-        }
-
+        Button mPlayEnonce = (Button) view.findViewById(R.id.lecture_btn_player);
         mPlayEnonce.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
