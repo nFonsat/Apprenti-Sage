@@ -67,8 +67,8 @@ public class SplashTask extends AsyncTask<Void, Void, String[]>{
 
         msg = Message.obtain();
 
-        mExerciceDAO.removeAllExercice();
-        mSerieDAO.removeAllSerie();
+        //mExerciceDAO.removeAllExercice();
+        //mSerieDAO.removeAllSerie();
     }
 
     @Override
