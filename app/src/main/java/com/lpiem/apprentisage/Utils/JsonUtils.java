@@ -114,7 +114,6 @@ public class JsonUtils {
         JSONObject media = object.getJSONObject("media");
         exercice.setType(media.getString("media"));
 
-
         //exercice.setMedia(object.getString(""));
 
         ArrayList<String> responses = new ArrayList<>();

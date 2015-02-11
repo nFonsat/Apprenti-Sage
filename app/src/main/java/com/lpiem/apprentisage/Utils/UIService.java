@@ -4,7 +4,7 @@
 *
 * UIService.java
 * 
-* Michael Breton - Cl�ment Bretin
+* Michael Breton - Clement Bretin
 * LP IEM - 2014
 *
 *******************************************************************************************************************/
