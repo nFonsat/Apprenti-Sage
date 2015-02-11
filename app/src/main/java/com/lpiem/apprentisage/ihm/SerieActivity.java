@@ -112,16 +112,16 @@ public class SerieActivity extends SherlockActivity implements FragmentAccess {
 
     public void recommencerSerie(final Serie serie){
         AlertDialog dialog = new AlertDialog.Builder(this).create();
-        dialog.setMessage("Veux tu recommencer cette série ?");
+        dialog.setMessage(getString(R.string.restart_serie));
 
-        dialog.setButton(AlertDialog.BUTTON_NEGATIVE, "NON", new AlertDialog.OnClickListener() {
+        dialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.no), new AlertDialog.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
             }
         });
 
-        dialog.setButton(AlertDialog.BUTTON_POSITIVE, "YES", new AlertDialog.OnClickListener() {
+        dialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.yes), new AlertDialog.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 mResultatApplication.updateResultatSerie(mContext, serie);
@@ -160,8 +160,8 @@ public class SerieActivity extends SherlockActivity implements FragmentAccess {
     @Override
     public void exerciceError(String laReponse) {
         AlertDialog dialog = new AlertDialog.Builder(this).create();
-        dialog.setTitle("Dommage tu n'as pas la bonne réponse");
-        dialog.setMessage("La bonne réponse était " + laReponse);
+        dialog.setTitle(getString(R.string.bad_response));
+        dialog.setMessage(getString(R.string.good_solution_is) + laReponse);
         dialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.ok), new AlertDialog.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {

@@ -40,7 +40,7 @@ public class SplashScreenActivity extends SherlockActivity {
                     break;
                 case Consts.SPLASHTASK_ERROR:
                     Log.e(CLASS_TAG + " : Response URL", String.valueOf(msg.arg1));
-                    Toast.makeText(getApplicationContext(), "Impossible de récupérer les données sur le serveur", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.error_network), Toast.LENGTH_LONG).show();
                     goToHome();
                     break;
             }
@@ -70,7 +70,7 @@ public class SplashScreenActivity extends SherlockActivity {
                 if(isConnected || isWiFi){
                     new SplashTask(getApplicationContext(), mAsyncHandler).execute();
                 } else {
-                    Toast.makeText(getApplicationContext(), "Impossible de récupérer les données sur le serveur", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.error_network), Toast.LENGTH_LONG).show();
                 }
 			}
 		}, 3000);
