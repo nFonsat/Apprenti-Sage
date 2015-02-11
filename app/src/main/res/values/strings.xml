@@ -3,16 +3,21 @@
     <string name="app_name">Apprenti-Sage</string>
 
     <!-- Common String -->
-    <string name="ok">OK</string>
+    <string name="ok">Ok</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
     <string name="back">Back</string>
     <string name="default_text">Text</string>
     <string name="action_settings">Setting</string>
     <string name="content_description">Description image</string>
 
     <!-- Exercice Activity -->
-    <string name="choose_serie">Choose one serie in the list</string>
+    <string name="choose_serie">Choose series in the list</string>
     <string name="success_serie">Serie is done</string>
     <string name="valider">Valid</string>
+    <string name="good_solution_is">the good response is </string>
+    <string name="bad_response">hoooooww you don\'t have the good response</string>
+    <string name="restart_serie">Do you want restart the exercises</string>
 
     <!-- Profile Activity -->
     <string name="profile_title">Profile</string>
@@ -24,6 +29,9 @@
 
     <!-- Category Activity -->
     <string name="cat_titre">Choose one category</string>
+
+    <!-- Error -->
+    <string name="error_network">Cannot to get data</string>
 
     <!-- RANGER -->
     <string name="ranger_warning_valider">Tu dois placer tous les mots pour valider ta réponse !</string>

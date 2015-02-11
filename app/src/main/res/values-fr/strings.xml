@@ -4,27 +4,35 @@
     <string name="app_name">Apprenti-Sage</string>
 
     <!-- Common String -->
-    <string name="ok">OK</string>
+    <string name="ok">Ok</string>
+    <string name="no">Non</string>
+    <string name="yes">Oui</string>
     <string name="back">Retour</string>
     <string name="default_text">Texte</string>
     <string name="action_settings">Paramètre</string>
     <string name="content_description">Description de l\'image</string>
 
     <!-- Exercice Activity -->
-    <string name="choose_serie">Clique sur une série dans la liste.</string>
-    <string name="success_serie">séries reussies</string>
     <string name="valider">Valider</string>
+    <string name="success_serie">séries reussies</string>
+    <string name="good_solution_is">La bonne réponse est </string>
+    <string name="restart_serie">Veux tu recommencer cette série ?</string>
+    <string name="choose_serie">Clique sur une série dans la liste.</string>
+    <string name="bad_response">Dommage tu n\'as pas la bonne réponse</string>
 
     <!-- Profile Activity -->
-    <string name="profile_title">Profil</string>
-    <string name="deconnection">Déconnexion</string>
-    <string name="percent_success">Pourcentages de réussite : </string>
     <string name="profile_name">Nom : </string>
-    <string name="profile_firstname">Prénom : </string>
+    <string name="profile_title">Profil</string>
     <string name="profile_class">Classe : </string>
+    <string name="deconnection">Déconnexion</string>
+    <string name="profile_firstname">Prénom : </string>
+    <string name="percent_success">Pourcentages de réussite : </string>
 
     <!-- Category Activity -->
     <string name="cat_titre">Choisi une catégorie</string>
+
+    <!-- Error -->
+    <string name="error_network">Impossible de récupérer les données sur le serveur</string>
 
     <!-- RANGER -->
     <string name="ranger_warning_valider">Tu dois placer tous les mots pour valider ta réponse !</string>
