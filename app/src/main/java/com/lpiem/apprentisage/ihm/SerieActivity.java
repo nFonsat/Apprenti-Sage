@@ -161,7 +161,7 @@ public class SerieActivity extends SherlockActivity implements FragmentAccess {
     public void exerciceError(String laReponse) {
         AlertDialog dialog = new AlertDialog.Builder(this).create();
         dialog.setTitle(getString(R.string.bad_response));
-        dialog.setMessage(getString(R.string.good_solution_is) + laReponse);
+        dialog.setMessage(getString(R.string.good_solution_is) + " " + laReponse);
         dialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.ok), new AlertDialog.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {

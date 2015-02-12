@@ -71,6 +71,7 @@ public class SplashScreenActivity extends SherlockActivity {
                     new SplashTask(getApplicationContext(), mAsyncHandler).execute();
                 } else {
                     Toast.makeText(getApplicationContext(), getString(R.string.error_network), Toast.LENGTH_LONG).show();
+                    goToHome();
                 }
 			}
 		}, 3000);

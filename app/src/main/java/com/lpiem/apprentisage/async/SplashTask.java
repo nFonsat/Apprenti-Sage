@@ -11,7 +11,6 @@ import android.os.Message;
 import android.util.Log;
 
 import com.lpiem.apprentisage.Utils.Consts;
-
 import com.lpiem.apprentisage.Utils.JsonUtils;
 
 import com.lpiem.apprentisage.database.DAO.ClasseDAO;

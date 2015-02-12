@@ -63,7 +63,7 @@ public class TextFragment extends CoreExerciceFragment {
         @Override
         public void onClick(View v) {
             String maReponse = mReponse.getText().toString();
-            if (maReponse.isEmpty() || maReponse == null){
+            if (maReponse == null ||maReponse.isEmpty()){
                 return;
             }
 
